@@ -1784,7 +1784,7 @@ function layoutHome(){
   const half = Math.ceil(els.length / 2);
   els.forEach((el, i)=>{
     const target = (wide && i >= half) ? colR : colL;
-    if(el.parentNode !== target) target.appendChild(el);
+    target.appendChild(el);  /* 이미 그 칸에 있어도 순서대로 다시 붙여 순서를 맞춘다 */
   });
   renderBlockBars();
 }
