@@ -133,10 +133,10 @@
     position:absolute;left:50%;top:-12px;width:8px;height:12px;border-radius:50%;
     border-left:2px solid rgba(120,170,90,.75);animation:stinkUp 2s ease-out infinite
   }
-  .grass{position:absolute;inset:0;z-index:5;pointer-events:none}
+  .grass{position:absolute;inset:0;z-index:8;pointer-events:none}
   .tuft{position:absolute;bottom:8%;font-size:22px;transform:translateX(-50%);cursor:pointer;pointer-events:auto;animation:popIn .3s ease-out}
   .tuft:active{transform:translateX(-50%) scale(.9)}
-  .ball{position:absolute;right:14%;bottom:20%;font-size:30px;z-index:5;display:none;cursor:pointer;
+  .ball{position:absolute;right:8%;bottom:32%;font-size:30px;z-index:8;display:none;cursor:pointer;
         animation:bob 1.1s ease-in-out infinite}
   .ball.show{display:block}
 
@@ -1075,8 +1075,8 @@ function hitBall(){
   el.char.classList.remove('hop'); void el.char.offsetWidth; el.char.classList.add('hop');
   sfx('pop');
   fx(pick(['✨','💫','😆','⚡']), 50, 40, 2);
-  el.ball.style.right = rnd(6, 24) + '%';
-  el.ball.style.bottom = rnd(12, 26) + '%';
+  el.ball.style.right = rnd(4, 18) + '%';
+  el.ball.style.bottom = rnd(22, 36) + '%';
   say(pick(['받아랏!', '통통!', '신난다~', '한 번 더!']), 1200);
   express('happy', 900);
   renderStats(); save();
