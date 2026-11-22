@@ -796,9 +796,9 @@ function catOf(key){
 }
 const STICKERS = ['chikawa_lie','hachiware_eh','usagi_hey','duo_happy','chikawa_hand','chikawa_yay','usagi_lie','chikawa_huh'];
 /* ---------- 칭찬 판(여러 개) / 홈 블록 순서 : v4.0 ---------- */
-const PRAISE_ICONS = ['⭐','💗','🌈','🍀','🐣','📚','✏️','🎨','🏃','🎵','🦷','🧹','🌻','🏅','🍚','🐾'];
+const PRAISE_ICONS = ['⭐️','💗','🌈','🍀','🐣','📚','✏️','🎨','🏃','🎵','🦷','🧹','🌻','🏅','🍚','🐾'];
 const PRAISE_COLORS = ['#FF93B3','#63B4E0','#71C08A','#F5C94B','#B992F2','#FF9E64','#54C6C0','#E4778B'];
-const DEFAULT_BOARD = {id:'p_main', title:'기본 칭찬', icon:'⭐', color:'#FF93B3'};
+const DEFAULT_BOARD = {id:'p_main', title:'기본 칭찬', icon:'⭐️', color:'#FF93B3'};
 const HOME_BLOCKS = ['cheer','hero','now','weather','today','study','praise','mv'];
 const HOME_BLOCK_NAMES = {cheer:'힘 되는 말', hero:'테마 그림', now:'지금 연우는?', weather:'날씨', today:'오늘의 일정', study:'오늘 연우의 공부', praise:'칭찬 스티커', mv:'다른 기기로 옮기기'};
 function newBoardId(){ return 'pb' + Date.now().toString(36) + Math.floor(Math.random()*900+100).toString(36); }
@@ -812,7 +812,7 @@ function normBoard(b){
   return {
     id: (typeof b.id === 'string' && b.id) ? b.id : newBoardId(),
     title: title,
-    icon: PRAISE_ICONS.indexOf(b.icon) >= 0 ? b.icon : '⭐',
+    icon: PRAISE_ICONS.indexOf(b.icon) >= 0 ? b.icon : PRAISE_ICONS[0],
     color: /^#[0-9a-fA-F]{6}$/.test(String(b.color||'')) ? String(b.color) : PRAISE_COLORS[0],
     current: cleanStampList(b.current),
     total: Math.max(0, Math.floor(Number(b.total)||0)),
