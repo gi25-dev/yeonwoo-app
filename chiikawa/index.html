@@ -1214,7 +1214,7 @@ function endCatch(){
 el.gameQuit.addEventListener('click', endCatch);
 el.basket.addEventListener('pointerdown', e => e.stopPropagation());
 el.arena.addEventListener('pointerdown', e => moveBasket(e));
-el.arena.addEventListener('pointermove', e => { if(e.buttons || e.pointerType === 'touch') moveBasket(e); });
+el.arena.addEventListener('pointermove', e => moveBasket(e));
 function moveBasket(e){
   const r = el.arena.getBoundingClientRect();
   G.basketX = clamp((e.clientX - r.left) / r.width * 100, 8, 92);
