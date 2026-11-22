@@ -1097,13 +1097,13 @@ function startGrass(){
   stopGrass(true);
   grassGame.on = true; grassGame.left = 6;
   el.grass.innerHTML = '';
-  const lanes = [8, 15, 24, 76, 85, 92];
+  const lanes = [[10,5],[20,13],[30,4],[70,4],[80,13],[90,5]];
   for(let i = 0; i < 6; i++){
     const t = document.createElement('div');
     t.className = 'tuft';
     t.textContent = pick(['🌱','🌿','🍀','🌾']);
-    t.style.left = (lanes[i] + rnd(-2.5, 2.5)) + '%';
-    t.style.bottom = rnd(4, 11) + '%';
+    t.style.left = lanes[i][0] + '%';
+    t.style.bottom = lanes[i][1] + '%';
     t.style.animationDelay = (i * .05) + 's';
     t.addEventListener('click', (e)=>{ e.stopPropagation(); pullTuft(t); });
     el.grass.appendChild(t);
