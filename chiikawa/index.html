@@ -113,7 +113,7 @@
 
   /* ── CHARACTER ─────────────────────── */
   .char-wrap{
-    position:absolute;left:50%;bottom:13%;height:min(70%,260px);max-width:78%;aspect-ratio:1;transform:translateX(-50%);
+    position:absolute;left:50%;bottom:13%;height:clamp(150px,46%,400px);max-width:78%;aspect-ratio:1;transform:translateX(-50%);
     touch-action:manipulation;z-index:6
   }
   .char-shadow{
@@ -203,7 +203,7 @@
   }
   @media (max-width:739px),(max-aspect-ratio:1/1){
     #app.panel-open{grid-template-areas:"hud" "stage" "panel" "stats" "dock";grid-template-rows:auto minmax(0,1fr) auto auto auto}
-    #app.panel-open .char-wrap{height:min(58%,215px);bottom:12%}
+    #app.panel-open .char-wrap{height:clamp(140px,46%,320px);bottom:12%}
     #app.panel-open .bubble{top:4%}
   }
   #app.panel-open .panel{display:flex;animation:panelIn .22s ease-out}
@@ -281,7 +281,7 @@
     }
     .panel-head .round{display:none}
     .stats{grid-template-columns:repeat(4,1fr);gap:8px}
-    .char-wrap{height:min(66%,255px);bottom:9%}
+    .char-wrap{height:clamp(140px,54%,320px);bottom:9%}
     .dock-btn{flex-direction:row;gap:5px;padding:7px 4px}
     .dock-btn .lb{font-size:12px}
     .bubble{font-size:14px;top:6%}
