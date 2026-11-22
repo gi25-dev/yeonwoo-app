@@ -471,6 +471,7 @@ input,select{font-family:inherit;font-size:16px;color:var(--ink)}
 .bchip{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;padding:8px 10px;border-radius:14px;background:#fff;box-shadow:var(--shadow-s);font-size:11.5px;font-weight:900;color:#8B8492;transition:.15s}
 .bchip.on{background:linear-gradient(160deg,#FFF2F7,#FFF9F2);color:#C4567A;box-shadow:0 0 0 2px #FFD6E1, var(--shadow-s)}
 .bchip-ic{font-size:13px;line-height:1;font-style:normal}
+.bchip-t{max-width:108px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bchip-n{font-size:9.5px;font-weight:900;color:#BBA9B3;font-variant-numeric:tabular-nums}
 .bchip.on .bchip-n{color:#D98AA4}
 .board-add{width:100%;margin:0 0 12px;padding:9px 0;border-radius:13px;border:1.5px dashed #FFD2DF;background:#FFF8FB;font-size:11.5px;font-weight:900;color:#D0688A}
@@ -1441,16 +1442,30 @@ function renderPraise(){
   document.getElementById('stamps').innerHTML = html;
   renderPraiseMini();
 }
+function scrollActiveChip(){
+  const bar = document.getElementById('boardBar');
+  if(!bar) return;
+  const el = bar.querySelector('.bchip.on');
+  if(!el) return;
+  try{
+    const left = el.offsetLeft, w = el.offsetWidth;
+    if(left < bar.scrollLeft || left + w > bar.scrollLeft + bar.clientWidth){
+      bar.scrollLeft = Math.max(0, left - (bar.clientWidth - w)/2);
+    }
+  }catch(e){}
+}
 function selectBoard(id){
   if(!boardById(id)) return;
   state.praise.activeId = id;
   save();
   renderPraise();
+  scrollActiveChip();
 }
 function goBoard(id){
   if(boardById(id)) state.praise.activeId = id;
   save();
   switchView('praise');
+  scrollActiveChip();
   setTimeout(function(){
     const el = document.getElementById('praiseBoard');
     if(!el || !el.scrollIntoView) return;
