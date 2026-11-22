@@ -203,6 +203,8 @@
   }
   @media (max-width:739px),(max-aspect-ratio:1/1){
     #app.panel-open{grid-template-areas:"hud" "stage" "panel" "stats" "dock";grid-template-rows:auto minmax(0,1fr) auto auto auto}
+    #app.panel-open .char-wrap{height:min(58%,215px);bottom:12%}
+    #app.panel-open .bubble{top:4%}
   }
   #app.panel-open .panel{display:flex;animation:panelIn .22s ease-out}
   .panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px 4px;border-bottom:2.5px dashed #ffc1d8;flex:0 0 auto}
@@ -840,11 +842,6 @@ function renderDecos(){
     add('🎀', 'left:47%;top:11%;font-size:18px', 'small');
     add('☁️', 'left:16%;top:22%;font-size:22px', 'small');
     add('📚', 'right:6%;bottom:32%;font-size:24px');
-    add('💗', 'left:30%;top:3%;font-size:14px', 'tiny');
-    add('⭐', 'left:36%;top:2.5%;font-size:13px', 'tiny');
-    add('💗', 'left:42%;top:3%;font-size:14px', 'tiny');
-    add('⭐', 'left:48%;top:2.5%;font-size:13px', 'tiny');
-    add('💗', 'left:54%;top:3%;font-size:14px', 'tiny');
   }else if(S.room === 'flower'){
     add('🌻', 'left:5%;bottom:27%;font-size:30px');
     add('🌷', 'left:16%;bottom:24%;font-size:22px', 'small');
