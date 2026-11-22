@@ -432,7 +432,7 @@
             <rect x="158" y="96" width="46" height="26" rx="12" fill="#4b3b55" stroke="#3b2a20" stroke-width="3.6"/>
             <path d="M 100 102 l 12 -2" stroke="#fff" stroke-width="4" opacity=".55" stroke-linecap="round"/>
           </g>
-          <g id="wandLayer" style="display:none">
+          <g id="wandLayer" style="display:none" transform="translate(24,30)">
             <path d="M 252 220 L 232 150" stroke="#c99b5e" stroke-width="7" stroke-linecap="round"/>
             <path d="M 232 148 L 240 126 L 262 120 L 246 105 L 250 83 L 232 95 L 212 86 L 216 108
                      L 200 121 L 222 124 Z" fill="#ffd35c" stroke="#3b2a20" stroke-width="3.4" stroke-linejoin="round"/>
@@ -558,12 +558,12 @@ const ROOMS = [
 ];
 
 const HAT_SVG = {
-  ribbon:`<g transform="translate(0,0)">
+  ribbon:`<g transform="translate(-2,3)">
     <path d="M 68 14 C 60 2 46 8 54 18 C 46 28 60 34 68 22 Z" fill="#ff8fb8" stroke="#3b2a20" stroke-width="3.4" stroke-linejoin="round"/>
     <path d="M 80 14 C 88 2 102 8 94 18 C 102 28 88 34 80 22 Z" fill="#ff8fb8" stroke="#3b2a20" stroke-width="3.4" stroke-linejoin="round"/>
     <circle cx="74" cy="18" r="5.5" fill="#ffb7d0" stroke="#3b2a20" stroke-width="3"/>
   </g>`,
-  straw:`<g>
+  straw:`<g transform="translate(0,3)">
     <ellipse cx="150" cy="30" rx="104" ry="15" fill="#f6dda6" stroke="#3b2a20" stroke-width="3.6"/>
     <path d="M 106 26 C 108 0 192 0 194 26 Z" fill="#ffedc4" stroke="#3b2a20" stroke-width="3.6" stroke-linejoin="round"/>
     <path d="M 108 20 C 130 28 170 28 192 20" fill="none" stroke="#e2688f" stroke-width="7"/>
@@ -581,7 +581,7 @@ const HAT_SVG = {
     <circle cx="131" cy="24" r="3" fill="#8fd3ff" stroke="#3b2a20" stroke-width="2"/>
     <circle cx="169" cy="24" r="3" fill="#8fd3ff" stroke="#3b2a20" stroke-width="2"/>
   </g>`,
-  flower:`<g>
+  flower:`<g transform="translate(0,6)">
     <path d="M 92 34 C 108 14 192 14 208 34" fill="none" stroke="#6cb98a" stroke-width="5" stroke-linecap="round"/>
     <g fill="#ffd0e2" stroke="#3b2a20" stroke-width="2.6">
       <circle cx="108" cy="24" r="7"/><circle cx="130" cy="17" r="7"/><circle cx="152" cy="15" r="7"/>
