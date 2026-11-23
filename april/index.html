@@ -67,8 +67,6 @@ mark.chk{background:#D6F2B8;padding:1px 2px;border-radius:4px;color:#1E4B2E}
 .subtabs::-webkit-scrollbar{display:none}
 .subtabs button{flex:0 0 auto;margin-right:7px;padding:9px 14px;border-radius:999px;background:#fff;border:1.5px solid #E1EBE4;font-size:14px;font-weight:800;color:#5C6F65;white-space:nowrap}
 .subtabs button.on{background:#0C7A50;border-color:#0C7A50;color:#fff}
-.progress-pills{display:flex;flex-wrap:wrap;margin:2px 0 10px}
-.progress-pills .pill{margin:0 6px 6px 0;font-size:11.5px}
 
 /* ---------- passage ---------- */
 .lesson-head{background:linear-gradient(135deg,#E9F9EF,#F7FFF9);border:1px solid #D8EFE1}
@@ -115,12 +113,45 @@ mark.chk{background:#D6F2B8;padding:1px 2px;border-radius:4px;color:#1E4B2E}
 .mode-row button{flex:1;padding:9px;border-radius:11px;border:1.5px solid #E1EBE4;background:#fff;font-size:13.5px;font-weight:800;color:#5C6F65}
 .mode-row button:first-child{margin-right:6px}
 .mode-row button.on{background:#E7F7EF;border-color:#9FDCBF;color:#0C7A50}
-.wordlist{margin-top:12px;border-top:1px dashed #DCE9E0;padding-top:10px}
-.wl-item{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid #F1F5F2}
-.wl-item:last-child{border-bottom:0}
-.wl-en{flex:1;font-weight:800;font-size:16px;color:#1E3A2E}
-.wl-kr{flex:1;font-size:15px;color:#5C6F65}
-.wl-sp{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:#E7F7EF;font-size:15px;display:flex;align-items:center;justify-content:center}
+/* ---------- spelling mode ---------- */
+.spell-top{text-align:center;margin:6px 0 0}
+.spell-kr{font-size:34px;font-weight:800;color:#C4392A;line-height:1.2;word-break:keep-all}
+.spell-sub{font-size:12.5px;color:#7C8F85;font-weight:700;margin-top:4px}
+.slots{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;margin:16px 0 0}
+.slot{width:44px;height:56px;margin:0 3px 8px;border:0;border-bottom:3px solid #A9BFB2;border-radius:9px 9px 0 0;background:#F7FCF9;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#1E4B2E}
+.slot.filled{background:#D6F2B8;border-bottom-color:#7FC79B}
+.slot-gap{width:16px;height:56px;margin:0 0 8px}
+.slot-hy{height:56px;margin:0 3px 8px;display:flex;align-items:center;font-size:26px;font-weight:800;color:#8AA79A}
+.tiles{display:flex;flex-wrap:wrap;justify-content:center;margin:10px -3px 0}
+.tile{width:52px;height:52px;margin:0 3px 8px;border-radius:12px;background:#fff;border:2px solid #DCE9E0;box-shadow:0 2px 8px rgba(20,80,55,.06);font-size:24px;font-weight:800;color:#14352A;display:flex;align-items:center;justify-content:center}
+.tile.used{opacity:.25;background:#F1F5F2;box-shadow:none}
+.spell-msg{text-align:center;font-size:19px;font-weight:800;margin-top:8px}
+.spell-msg.ok{color:#0C7A50}
+.spell-msg.no{color:#E9503A}
+.spell-actions{display:flex;margin-top:12px}
+.spell-actions .btn{flex:1}
+.spell-actions .btn:first-child{margin-right:8px}
+.shake{animation:shk .34s}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}60%{transform:translateX(7px)}80%{transform:translateX(-3px)}}
+.pop{animation:pop .5s}
+@keyframes pop{0%{transform:scale(.55);opacity:0}60%{transform:scale(1.12);opacity:1}100%{transform:scale(1)}}
+
+/* ---------- handwriting (Apple Pencil) ---------- */
+.hw-box{margin:4px 0 0}
+canvas.hw{display:block;width:100%;height:118px;border:1.5px dashed #C9DED2;border-radius:12px;background-color:#FCFEFC;background-image:repeating-linear-gradient(#FCFEFC,#FCFEFC 28px,#E9F2EC 28px,#E9F2EC 29px);touch-action:none}
+canvas.hw.done{border-style:solid;border-color:#BFE3D2}
+.hw-bar{display:flex;justify-content:flex-end;margin-top:4px}
+.hw-bar button{font-size:12.5px;font-weight:800;color:#5C6F65;background:#EEF3EF;border-radius:9px;padding:5px 10px}
+.mk-row{display:flex;align-items:center;margin-top:8px}
+.mk-row button{min-width:54px;min-height:42px;margin-right:8px;border-radius:11px;border:1.5px solid #E1EBE4;background:#fff;font-size:19px;font-weight:800;line-height:1;opacity:.5}
+.mk-row button.ok.on{opacity:1;background:#E7F7EF;border-color:#13A06B}
+.mk-row button.no.on{opacity:1;background:#FFF1EE;border-color:#E9503A}
+.mk-row .mk-hint{font-size:12px;color:#7C8F85;font-weight:700}
+@media (min-width:700px){canvas.hw{height:150px}}
+@media (min-width:700px){
+  .paper{max-width:820px;margin-left:auto;margin-right:auto}
+  #spellWrap{max-width:560px;margin-left:auto;margin-right:auto}
+}
 
 /* ---------- test ---------- */
 .paper{background:#fff;border-radius:16px;box-shadow:0 4px 14px rgba(20,80,55,.07);padding:14px;margin-bottom:12px;border:1px solid #EDF3EE}
@@ -138,7 +169,7 @@ mark.chk{background:#D6F2B8;padding:1px 2px;border-radius:4px;color:#1E4B2E}
 .q-mk.no{color:#E9503A}
 .q-prompt{font-size:17px;line-height:1.5;color:#22332A;margin:0 0 6px 24px;font-weight:600}
 .q-prompt .bl{display:inline-block;min-width:80px;border-bottom:2px solid #9FB5A8;color:#9FB5A8;text-align:center;font-weight:700}
-.q input.ans{width:100%;min-height:46px;border:1.5px solid #DCE9E0;border-radius:11px;padding:9px 12px;background:#FCFEFC;font-size:17px;outline:none}
+.q input.ans{width:100%;min-height:52px;border:1.5px solid #DCE9E0;border-radius:11px;padding:12px;background:#FCFEFC;font-size:18px;outline:none}
 .q input.ans:focus{border-color:#13A06B;background:#fff}
 .q input.ans.ok{border-color:#8FD3AE;background:#F1FBF5}
 .q input.ans.no{border-color:#F0B2A8;background:#FFF6F4}
@@ -301,7 +332,7 @@ mark.chk{background:#D6F2B8;padding:1px 2px;border-radius:4px;color:#1E4B2E}
   <div class="hdr"><div class="hdr-in">
     <div class="hdr-top">
       <div class="logo"><span class="em">📚</span>Lina’s<span class="ap">April</span></div>
-      <div class="book-chip" id="hdrBook">Seed 1 · A3</div>
+      <div class="book-chip" id="hdrBook">Seed 1</div>
     </div>
     <nav class="tabs" id="tabs">
       <button data-tab="chunk" class="on"><span class="ic">📖</span>Chunk Book</button>
@@ -322,6 +353,9 @@ mark.chk{background:#D6F2B8;padding:1px 2px;border-radius:4px;color:#1E4B2E}
    ========================================================= */
 var LS_KEY = 'linas-april-v1';
 var DEFAULT_BOOK = 'Seed 1 · A3';
+var DEFAULT_SEED = 'Seed 1';
+var DEFAULT_BOOK_CODE = 'A3';
+var BOOK_CODES = ['A1','A2','A3','B1','B2','B3'];
 
 /* ---------- seed data: Lesson 7 · The Morning Mix-Up ---------- */
 function seedLesson7(){
@@ -329,6 +363,7 @@ function seedLesson7(){
     id: 'l7',
     book: DEFAULT_BOOK,
     no: 7,
+    bookCode: 'A3',
     title: 'The Morning Mix-Up',
     passage: [
       'In the morning, Mom is busy.',
@@ -399,6 +434,7 @@ function seedLesson8(){
     id: 'l8',
     book: DEFAULT_BOOK,
     no: 8,
+    bookCode: 'A3',
     title: 'Animal Spots and Stripes',
     passage: [
       'Some animals have patterns.',
@@ -550,6 +586,22 @@ function currentBook(){
   var b = byId(DB.books, DB.last.bookId);
   return b || DB.books[0];
 }
+/* 'Seed 1 · A3' → 'Seed 1' (배지에는 Seed만 보여 줘요) */
+function seedOf(name){
+  var s = String(name == null ? '' : name);
+  var at = s.indexOf('·');
+  if(at >= 0) s = s.substring(0, at);
+  s = s.replace(/^\s+|\s+$/g,'');
+  return s || DEFAULT_SEED;
+}
+/* 이 Lesson이 Seed 1의 어느 책(A1~B3)인지 — 저장된 옛 데이터에는 없을 수 있어요 */
+function codeOf(l){
+  if(!l) return DEFAULT_BOOK_CODE;
+  var c = String(l.bookCode || '').toUpperCase();
+  if(BOOK_CODES.indexOf(c) >= 0) return c;
+  var m = String(l.book || '').toUpperCase().match(/\b([AB][123])\b/);
+  return m ? m[1] : DEFAULT_BOOK_CODE;
+}
 function toast(msg){
   var t = $('toast'); t.textContent = msg; t.className = 'on';
   clearTimeout(t._tm); t._tm = setTimeout(function(){ t.className = ''; }, 2200);
@@ -697,6 +749,7 @@ var UI = {
   section: DB.last.section || 'lesson',
   bookId: DB.last.bookId || DB.books[0].id,
   vocaAll: false, vi: 0, ki: 0, ci: 0, cmode: 'sentence',
+  vmode: 'card', si: 0, spell: null, tpen: 'type',
   vtest: null, ctest: null,
   game: null, match: null, blank: null
 };
@@ -710,14 +763,14 @@ function renderChunk(){
   var opts = '';
   for(var i=0;i<lessons.length;i++){
     var l = lessons[i];
-    opts += '<option value="'+esc(l.id)+'"'+(l.id===L.id?' selected':'')+'>Lesson '+esc(l.no)+' · '+esc(l.title)+'</option>';
+    opts += '<option value="'+esc(l.id)+'"'+(l.id===L.id?' selected':'')+'>'+esc(codeOf(l))+' - Lesson '+esc(l.no)+' · '+esc(l.title)+'</option>';
   }
   var secs = [
-    ['lesson','1 · Lesson','📖'],
-    ['vocab','2 · Vocabulary','🗂'],
-    ['key','3 · Key Voca','🔑'],
-    ['chunk','4 · Chunk Writing','✍️'],
-    ['test','5 · Test','📝']
+    ['lesson','Lesson','📖'],
+    ['vocab','Vocabulary','🗂'],
+    ['key','Key Vocabulary','🔑'],
+    ['chunk','Chunk Writing','✍️'],
+    ['test','Test','📝']
   ];
   var sub = '';
   for(var s=0;s<secs.length;s++){
@@ -763,18 +816,11 @@ function renderChunk(){
 
 function renderSection(){
   var L = currentLesson();
-  var p = prog(L.id);
-  var seenV = p.seen.vocab.length, seenK = p.seen.key.length, seenC = p.seen.chunk.length;
-  var pills = '<div class="progress-pills">' +
-    '<span class="pill">🗂 단어 '+seenV+'/'+L.vocab.length+'</span>' +
-    '<span class="pill">🔑 Key '+seenK+'/'+L.keyVoca.length+'</span>' +
-    '<span class="pill">✍️ Chunk '+seenC+'/'+L.chunk.length+'</span>' +
-    '</div>';
   var box = $('section');
-  if(UI.section === 'lesson') box.innerHTML = pills + secLesson(L);
-  else if(UI.section === 'vocab') box.innerHTML = pills + secVocab(L);
-  else if(UI.section === 'key') box.innerHTML = pills + secKey(L);
-  else if(UI.section === 'chunk') box.innerHTML = pills + secChunk(L);
+  if(UI.section === 'lesson') box.innerHTML = secLesson(L);
+  else if(UI.section === 'vocab') box.innerHTML = secVocab(L);
+  else if(UI.section === 'key') box.innerHTML = secKey(L);
+  else if(UI.section === 'chunk') box.innerHTML = secChunk(L);
   else box.innerHTML = secTest(L);
   bindSection(L);
 }
@@ -793,7 +839,7 @@ function secLesson(L){
     }
   }
   return '<div class="card lesson-head">' +
-      '<div class="lesson-no">LESSON ' + esc(L.no) + ' · ' + esc(L.book) + '</div>' +
+      '<div class="lesson-no">LESSON ' + esc(L.no) + ' · ' + esc(seedOf(L.book)) + ' · ' + esc(codeOf(L)) + '</div>' +
       '<h1 class="lesson-title">' + esc(L.title) + '</h1>' +
       '<div class="speak-bar">' +
         '<button class="btn" id="speakAll">🔊 전체 지문 읽어주기</button>' +
@@ -811,21 +857,29 @@ function secLesson(L){
 }
 
 /* ---- 2. Vocabulary ---- */
-function secVocab(L){
+function vocaList(L){
   var list = UI.vocaAll ? L.vocab.slice() : L.vocab.filter(function(v){ return v.bold; });
   if(!list.length) list = L.vocab.slice();
+  return list;
+}
+function secVocab(L){
+  var list = vocaList(L);
   if(UI.vi >= list.length) UI.vi = 0;
-  var v = list[UI.vi];
-  var pl = '';
-  for(var i=0;i<list.length;i++){
-    pl += '<div class="wl-item"><span class="wl-en">'+esc(list[i].w)+'</span><span class="wl-kr">'+esc(list[i].m)+'</span>' +
-      '<button class="wl-sp" data-wsay="'+i+'">🔊</button></div>';
+  var spell = UI.vmode === 'spell';
+  var head = '<div class="row sp" style="margin-bottom:10px">' +
+      '<div><div class="sec-title">Vocabulary</div><div class="sec-sub">'+(UI.vocaAll ? '전체 '+L.vocab.length+'단어' : '시험에 나오는 핵심 '+list.length+'단어')+'</div></div>' +
+      '<button class="btn cream sm" id="btnVocaAll">'+(UI.vocaAll ? '핵심 10개만' : '전체 '+L.vocab.length+'개')+'</button>' +
+    '</div>' +
+    '<div class="mode-row">' +
+      '<button data-vmode="card" class="'+(spell?'':'on')+'">🃏 플래시카드</button>' +
+      '<button data-vmode="spell" class="'+(spell?'on':'')+'">🔤 스펠링 맞추기</button>' +
+    '</div>';
+  if(spell){
+    if(!UI.spell || UI.spell.lessonId !== L.id || UI.spell.mode !== !!UI.vocaAll) spellNew(list, L);
+    return '<div class="card">' + head + '<div id="spellWrap"><div id="spellInner">' + spellInnerHTML(list) + '</div></div></div>';
   }
-  return '<div class="card">' +
-      '<div class="row sp" style="margin-bottom:10px">' +
-        '<div><div class="sec-title">Vocabulary</div><div class="sec-sub">'+(UI.vocaAll ? '전체 '+L.vocab.length+'단어' : '시험에 나오는 핵심 '+list.length+'단어')+'</div></div>' +
-        '<button class="btn cream sm" id="btnVocaAll">'+(UI.vocaAll ? '핵심 10개만' : '전체 '+L.vocab.length+'개')+'</button>' +
-      '</div>' +
+  var v = list[UI.vi];
+  return '<div class="card">' + head +
       '<div class="fc-top"><span class="pill">'+(UI.vocaAll?'ALL':'CORE')+'</span><span class="fc-count">'+(UI.vi+1)+' / '+list.length+'</span></div>' +
       '<div class="fc-card" id="fcCard">' +
         '<div class="fc-label">WORD</div>' +
@@ -841,8 +895,152 @@ function secVocab(L){
         '<button class="btn cream" id="btnMean">👀 뜻 확인</button>' +
         '<button class="btn" id="btnSay">🔊 발음 듣기</button>' +
       '</div>' +
-      '<div class="wordlist"><div class="hint" style="font-weight:800;color:#33473D;margin-bottom:2px">단어 목록</div>' + pl + '</div>' +
     '</div>';
+}
+
+/* ---- 2-1. Spelling (알파벳 타일로 단어 맞추기) ---- */
+function spellNew(list, L){
+  if(!list || !list.length) return;
+  if(UI.si >= list.length) UI.si = 0;
+  var v = list[UI.si % list.length];
+  var w = String(v.w || '');
+  var ans = [], tokens = [];
+  for(var i=0;i<w.length;i++){
+    var ch = w.charAt(i);
+    if(/[A-Za-z]/.test(ch)){ tokens.push({t:'l', s:ans.length}); ans.push(ch); }
+    else if(ch === ' '){ tokens.push({t:'g'}); }
+    else if(ch === '-' || ch === '\u2013' || ch === '\u2014'){ tokens.push({t:'h', ch:ch}); }
+    else { tokens.push({t:'g'}); }
+  }
+  var tiles = ans.slice();
+  var target = ans.join('').toLowerCase();
+  var guard = 0;
+  do { shuffle(tiles); guard++; } while(tiles.join('').toLowerCase() === target && tiles.length > 2 && guard < 20);
+  var tl = [];
+  for(var t=0;t<tiles.length;t++) tl.push({ch:tiles[t], used:false});
+  var fill = [];
+  for(var f=0;f<ans.length;f++) fill.push(null);
+  UI.spell = {
+    lessonId: L.id, mode: !!UI.vocaAll, word: v.w, kr: v.m,
+    ans: ans, tokens: tokens, tiles: tl, fill: fill, done: false, ok: false
+  };
+}
+function spellInnerHTML(list){
+  var S = UI.spell;
+  if(!S) return '';
+  var idx = (UI.si % list.length) + 1;
+  var n = S.ans.length;
+  var avail = Math.min(window.innerWidth - 72, 520);
+  var sz = Math.floor((avail - 4 * n) / n);
+  if(sz > 46) sz = 46;
+  if(sz < 24) sz = 24;
+  var tz = sz + 6;
+  var tmax = Math.floor(avail / n) - 4;
+  if(tz > tmax) tz = tmax;
+  if(tz > 54) tz = 54;
+  if(tz < 30) tz = 30;
+  var slotStyle = 'width:'+sz+'px;height:'+Math.round(sz*1.28)+'px;font-size:'+Math.round(sz*0.62)+'px;margin:0 2px 8px';
+  var tileStyle = 'width:'+tz+'px;height:'+tz+'px;font-size:'+Math.round(tz*0.46)+'px;margin:0 2px 8px';
+  var slots = '';
+  for(var i=0;i<S.tokens.length;i++){
+    var t = S.tokens[i];
+    if(t.t === 'l'){
+      var f = S.fill[t.s];
+      var filled = (f !== null && typeof f !== 'undefined');
+      slots += '<button class="slot'+(filled?' filled':'')+'" data-slot="'+t.s+'" style="'+slotStyle+'">'+(filled?esc(S.tiles[f].ch):'')+'</button>';
+    } else if(t.t === 'h'){
+      slots += '<span class="slot-hy" style="height:'+Math.round(sz*1.28)+'px;font-size:'+Math.round(sz*0.62)+'px;margin:0 2px 8px">'+esc(t.ch)+'</span>';
+    } else {
+      slots += '<span class="slot-gap" style="width:'+Math.round(sz*0.42)+'px;height:'+Math.round(sz*1.28)+'px;margin:0 0 8px"></span>';
+    }
+  }
+  var tiles = '';
+  for(var j=0;j<S.tiles.length;j++){
+    tiles += '<button class="tile'+(S.tiles[j].used?' used':'')+'" data-tile="'+j+'" style="'+tileStyle+'">'+esc(S.tiles[j].ch)+'</button>';
+  }
+  var msg;
+  if(S.ok) msg = '<div class="spell-msg ok pop">🎉 정답! '+esc(S.word)+'</div>';
+  else if(S.done) msg = '<div class="spell-msg no">아쉬워요, 한 번 더! 💪</div>';
+  else msg = '<div class="hint" style="text-align:center;margin-top:10px">알파벳 타일을 순서대로 눌러 단어를 완성해요. 누른 칸을 다시 누르면 지워져요.</div>';
+  var hasSep = S.tokens.length > S.ans.length;
+  return '<div class="fc-top"><span class="pill">SPELLING</span><span class="fc-count" id="spellCount">'+idx+' / '+list.length+'</span></div>' +
+    '<div class="spell-top">' +
+      '<div class="spell-kr">'+esc(S.kr)+'</div>' +
+      '<div class="spell-sub">'+S.ans.length+'글자'+(hasSep?' · 띄어쓰기·붙임표는 그대로 둬요':'')+'</div>' +
+      '<button class="btn sm" id="btnSpellSay" style="margin-top:8px">🔊 발음 듣기</button>' +
+    '</div>' +
+    '<div class="slots" id="spellSlots">'+slots+'</div>' +
+    '<div class="tiles">'+tiles+'</div>' +
+    msg +
+    '<div class="spell-actions">' +
+      '<button class="btn ghost" id="btnSpellClear">🧽 지우기</button>' +
+      (S.ok ? '<button class="btn" id="btnSpellNext">다음 단어 ›</button>' : '<button class="btn ghost" id="btnSpellSkip">건너뛰기 ›</button>') +
+    '</div>';
+}
+function spellPaintCurrent(){
+  var box = $('spellInner');
+  if(box) box.innerHTML = spellInnerHTML(vocaList(currentLesson()));
+}
+function spellTapTile(j){
+  var S = UI.spell;
+  if(!S || S.ok || !S.tiles[j] || S.tiles[j].used) return;
+  for(var i=0;i<S.fill.length;i++){
+    if(S.fill[i] === null){ S.fill[i] = j; S.tiles[j].used = true; break; }
+  }
+  S.done = false;
+  spellPaintCurrent();
+  spellAutoCheck();
+}
+function spellTapSlot(k){
+  var S = UI.spell;
+  if(!S || S.ok) return;
+  var j = S.fill[k];
+  if(j === null || typeof j === 'undefined') return;
+  S.fill[k] = null; S.tiles[j].used = false;
+  S.done = false;
+  spellPaintCurrent();
+}
+function spellAutoCheck(){
+  var S = UI.spell;
+  if(!S) return;
+  for(var i=0;i<S.fill.length;i++){ if(S.fill[i] === null) return; }
+  var word = '';
+  for(var j=0;j<S.fill.length;j++) word += S.tiles[S.fill[j]].ch;
+  if(word.toLowerCase() === S.ans.join('').toLowerCase()){
+    S.ok = true; S.done = true;
+    spellPaintCurrent();
+    var sl0 = $('spellSlots');
+    if(sl0){
+      sl0.className = 'slots pop';
+      setTimeout(function(){ var x = $('spellSlots'); if(x) x.className = 'slots'; }, 560);
+    }
+    var L = currentLesson();
+    markSeen(L.id, 'vocab', UI.si % vocaList(L).length);
+    try{ Speech.speakOne(S.word); }catch(e){}
+  } else {
+    S.done = true;
+    spellPaintCurrent();
+    var sl = $('spellSlots');
+    if(sl){
+      sl.className = 'slots shake';
+      setTimeout(function(){ var x = $('spellSlots'); if(x) x.className = 'slots'; }, 380);
+    }
+  }
+}
+function spellReset(){
+  var S = UI.spell;
+  if(!S) return;
+  for(var i=0;i<S.fill.length;i++) S.fill[i] = null;
+  for(var j=0;j<S.tiles.length;j++) S.tiles[j].used = false;
+  S.done = false; S.ok = false;
+  spellPaintCurrent();
+}
+function spellNext(){
+  var L = currentLesson();
+  var list = vocaList(L);
+  UI.si = (UI.si + 1) % list.length;
+  spellNew(list, L);
+  spellPaintCurrent();
 }
 
 /* ---- 3. Key Vocabulary ---- */
@@ -957,20 +1155,20 @@ function buildVocaTest(L){
   var words = L.vocab.filter(function(v){ return v.bold; });
   if(words.length < 1) words = L.vocab.slice();
   var items = pickN(words, words.length).map(function(v){
-    return {m:v.m, w:v.w, val:'', alt:[v.w]};
+    return {m:v.m, w:v.w, val:'', alt:[v.w], mk:null};
   });
-  return {items:items, graded:false};
+  return {items:items, graded:false, checked:false};
 }
 function buildChunkTest(L){
   var part1 = pickN(L.keyVoca, Math.min(5, L.keyVoca.length)).map(function(k){
     var b = blankWordInPhrase(k.phrase, k.word);
-    return {kind:'key', prompt:b.q, m:k.m, a:b.a, alt:b.alt, val:''};
+    return {kind:'key', prompt:b.q, m:k.m, a:b.a, alt:b.alt, val:'', mk:null};
   });
   var part2 = pickN(L.chunk, Math.min(3, L.chunk.length)).map(function(c){
     var b = blankSentence(c.s);
-    return {kind:'chunk', prompt:b.q, m:c.m, a:b.a, alt:[b.a], val:''};
+    return {kind:'chunk', prompt:b.q, m:c.m, a:b.a, alt:[b.a], val:'', mk:null};
   });
-  return {items:part1.concat(part2), part1:part1.length, graded:false};
+  return {items:part1.concat(part2), part1:part1.length, graded:false, checked:false};
 }
 
 function secTest(L){
@@ -984,21 +1182,65 @@ function secTest(L){
   return tab + (mode==='voca' ? testVocaHTML(L) : testChunkHTML(L));
 }
 
+function tpenRow(){
+  var m = UI.tpen === 'pencil' ? 'pencil' : 'type';
+  return '<div class="mode-row" style="margin:12px 0 4px">' +
+    '<button data-tpen="pencil" class="'+(m==='pencil'?'on':'')+'">✏️ 펜슬 쓰기</button>' +
+    '<button data-tpen="type" class="'+(m==='type'?'on':'')+'">⌨️ 타이핑 / 펜슬인식</button>' +
+  '</div>';
+}
 function testVocaHTML(L){
   var t = UI.vtest;
+  var pen = UI.tpen === 'pencil';
   var rows = '';
   for(var i=0;i<t.items.length;i++){
     var it = t.items[i];
-    var cls = '', mk = '';
-    if(t.graded){
-      var ok = isRight(it.val, it.alt);
-      cls = ok ? ' ok' : ' no';
-      mk = ok ? '<span class="q-mk ok">✓</span>' : '<span class="q-mk no">✗</span>';
+    if(pen){
+      var mkCls = it.mk === 1 ? 'q-mk ok' : (it.mk === 0 ? 'q-mk no' : 'q-mk');
+      var mkTxt = it.mk === 1 ? '⭕' : (it.mk === 0 ? '❌' : '');
+      rows += '<div class="q">' +
+        '<div class="q-top"><span class="q-no">'+(i+1)+'</span><span class="q-kr">'+esc(it.m)+'</span>' +
+          '<span class="'+mkCls+'" id="qmk'+i+'">'+mkTxt+'</span></div>' +
+        '<div class="hw-box"><canvas class="hw'+(t.checked?' done':'')+'" id="hw'+i+'" data-hw="'+i+'"></canvas></div>' +
+        '<div class="hw-bar"><button data-hwclear="'+i+'">🧽 지우기</button></div>' +
+        '<div class="q-answer" id="qans'+i+'" style="display:'+(t.checked?'block':'none')+'">정답: '+esc(it.w)+'</div>' +
+        '<div class="mk-row" id="qmr'+i+'" style="display:'+(t.checked?'flex':'none')+'">' +
+          '<button class="ok'+(it.mk===1?' on':'')+'" data-mark="'+i+'" data-v="1">⭕</button>' +
+          '<button class="no'+(it.mk===0?' on':'')+'" data-mark="'+i+'" data-v="0">❌</button>' +
+          '<span class="mk-hint">맞으면 ⭕, 틀리면 ❌</span>' +
+        '</div>' +
+      '</div>';
+    } else {
+      var cls = '', mk = '';
+      if(t.graded){
+        var ok = isRight(it.val, it.alt);
+        cls = ok ? ' ok' : ' no';
+        mk = ok ? '<span class="q-mk ok">✓</span>' : '<span class="q-mk no">✗</span>';
+      }
+      rows += '<div class="q">' +
+        '<div class="q-top"><span class="q-no">'+(i+1)+'</span><span class="q-kr">'+esc(it.m)+'</span>'+mk+'</div>' +
+        '<input class="ans'+cls+'" data-vi="'+i+'" type="text" value="'+esc(it.val)+'" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="영어로 쓰기" '+(t.graded?'disabled':'')+'>' +
+        (t.graded && !isRight(it.val,it.alt) ? '<div class="q-answer">정답: '+esc(it.w)+'</div>' : '') +
+      '</div>';
     }
-    rows += '<div class="q">' +
-      '<div class="q-top"><span class="q-no">'+(i+1)+'</span><span class="q-kr">'+esc(it.m)+'</span>'+mk+'</div>' +
-      '<input class="ans'+cls+'" data-vi="'+i+'" type="text" value="'+esc(it.val)+'" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="영어로 쓰기" '+(t.graded?'disabled':'')+'>' +
-      (t.graded && !isRight(it.val,it.alt) ? '<div class="q-answer">정답: '+esc(it.w)+'</div>' : '') +
+  }
+  if(pen){
+    var cnt = 0;
+    for(var q=0;q<t.items.length;q++){ if(t.items[q].mk === 1) cnt++; }
+    return '<div class="paper">' +
+      '<div class="paper-head"><b>Vocabulary Quiz</b><span>Lesson '+esc(L.no)+' · '+t.items.length+'문제</span></div>' +
+      tpenRow() +
+      '<div class="hint" style="margin:2px 0 10px">한국어 뜻을 보고 영어 단어를 펜슬로 써 보세요. 다 쓰면 <b>✅ 정답 확인</b>을 누르고, 문제마다 ⭕/❌를눌러 총점을 매겨요.</div>' +
+      rows +
+      '<div class="test-actions">' +
+        (t.checked ? '' : '<button class="btn" id="btnCheckV">✅ 정답 확인</button>') +
+        '<button class="btn ghost" id="btnResetV">🔄 리셋</button>' +
+      '</div>' +
+      '<div class="result-card" id="penResV" style="display:'+(t.checked?'block':'none')+'">' +
+        '<div class="score-big" id="penScoreV">'+cnt+' / '+t.items.length+'</div>' +
+        '<div class="msg">⭕ 맞은 개수 / 전체 문제</div>' +
+        '<div class="hint" style="margin-top:4px">문제마다 ⭕ 또는 ❌를 눌러 주세요.</div>' +
+      '</div>' +
     '</div>';
   }
   var res = '';
@@ -1013,7 +1255,8 @@ function testVocaHTML(L){
   }
   return '<div class="paper">' +
     '<div class="paper-head"><b>Vocabulary Quiz</b><span>Lesson '+esc(L.no)+' · '+t.items.length+'문제</span></div>' +
-    '<div class="hint" style="margin-bottom:8px">한국어 뜻을 보고 영어 단어를 쓰세요. 대소문자·마침표는 상관없어요.</div>' +
+    tpenRow() +
+    '<div class="hint" style="margin:2px 0 8px">한국어 뜻을 보고 영어 단어를 쓰세요. 대소문자·마침표는 상관없어요. (아이패드에서는 펜슬로 써도 글씨가 바로 입력돼요)</div>' +
     rows +
     '<div class="test-actions">' +
       '<button class="btn" id="btnGradeV">'+(t.graded?'다시 채점':'채점하기')+'</button>' +
@@ -1024,26 +1267,64 @@ function testVocaHTML(L){
 
 function testChunkHTML(L){
   var t = UI.ctest;
+  var pen = UI.tpen === 'pencil';
   var rows1 = '', rows2 = '', n = 0;
   for(var i=0;i<t.items.length;i++){
     var it = t.items[i];
-    var ok = t.graded ? isRight(it.val, it.alt) : false;
-    var cls = t.graded ? (ok?' ok':' no') : '';
-    var mk = t.graded ? (ok?'<span class="q-mk ok">✓</span>':'<span class="q-mk no">✗</span>') : '';
-    n++;
-    var prompt;
-    if(it.kind === 'key'){
-      prompt = esc(it.prompt).replace('______','<span class="bl">______</span>');
+    var prompt = esc(it.prompt).replace('______','<span class="bl">______</span>');
+    var row;
+    if(pen){
+      n++;
+      var mkCls = it.mk === 1 ? 'q-mk ok' : (it.mk === 0 ? 'q-mk no' : 'q-mk');
+      var mkTxt = it.mk === 1 ? '⭕' : (it.mk === 0 ? '❌' : '');
+      row = '<div class="q">' +
+        '<div class="q-top"><span class="q-no">'+n+'</span><span class="q-kr">'+esc(it.m)+'</span>' +
+          '<span class="'+mkCls+'" id="qmk'+i+'">'+mkTxt+'</span></div>' +
+        '<div class="q-prompt">'+prompt+'</div>' +
+        '<div class="hw-box"><canvas class="hw'+(t.checked?' done':'')+'" id="hw'+i+'" data-hw="'+i+'"></canvas></div>' +
+        '<div class="hw-bar"><button data-hwclear="'+i+'">🧽 지우기</button></div>' +
+        '<div class="q-answer" id="qans'+i+'" style="display:'+(t.checked?'block':'none')+'">정답: '+esc(it.a)+'</div>' +
+        '<div class="mk-row" id="qmr'+i+'" style="display:'+(t.checked?'flex':'none')+'">' +
+          '<button class="ok'+(it.mk===1?' on':'')+'" data-mark="'+i+'" data-v="1">⭕</button>' +
+          '<button class="no'+(it.mk===0?' on':'')+'" data-mark="'+i+'" data-v="0">❌</button>' +
+          '<span class="mk-hint">맞으면 ⭕, 틀리면 ❌</span>' +
+        '</div>' +
+      '</div>';
     } else {
-      prompt = esc(it.prompt).replace('______','<span class="bl">______</span>');
+      var ok = t.graded ? isRight(it.val, it.alt) : false;
+      var cls = t.graded ? (ok?' ok':' no') : '';
+      var mk = t.graded ? (ok?'<span class="q-mk ok">✓</span>':'<span class="q-mk no">✗</span>') : '';
+      n++;
+      row = '<div class="q">' +
+        '<div class="q-top"><span class="q-no">'+n+'</span><span class="q-kr">'+esc(it.m)+'</span>'+mk+'</div>' +
+        '<div class="q-prompt">'+prompt+'</div>' +
+        '<input class="ans'+cls+'" data-ci="'+i+'" type="text" value="'+esc(it.val)+'" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="빈칸에 들어갈 말" '+(t.graded?'disabled':'')+'>' +
+        (t.graded && !ok ? '<div class="q-answer">정답: '+esc(it.a)+'</div>' : '') +
+      '</div>';
     }
-    var row = '<div class="q">' +
-      '<div class="q-top"><span class="q-no">'+n+'</span><span class="q-kr">'+esc(it.m)+'</span>'+mk+'</div>' +
-      '<div class="q-prompt">'+prompt+'</div>' +
-      '<input class="ans'+cls+'" data-ci="'+i+'" type="text" value="'+esc(it.val)+'" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="빈칸에 들어갈 말" '+(t.graded?'disabled':'')+'>' +
-      (t.graded && !ok ? '<div class="q-answer">정답: '+esc(it.a)+'</div>' : '') +
-    '</div>';
     if(it.kind === 'key') rows1 += row; else rows2 += row;
+  }
+  if(pen){
+    var cnt = 0;
+    for(var q=0;q<t.items.length;q++){ if(t.items[q].mk === 1) cnt++; }
+    return '<div class="paper">' +
+      '<div class="paper-head"><b>Chunk Quiz</b><span>Lesson '+esc(L.no)+' · Seed 1</span></div>' +
+      tpenRow() +
+      '<div class="hint" style="margin:2px 0 10px">뜻을 보고 빈칸에 들어갈 말을 펜슬로 써 보세요. 다 쓰면 <b>✅ 정답 확인</b>으로 정답을 보고 ⭕/❌를 눌러요.</div>' +
+      '<div class="part-bar">Part 1 · Key Vocabulary — Complete the phrases with the correct words.</div>' +
+      rows1 +
+      '<div class="part-bar">Part 2 · Chunk Writing — Fill in the blanks with the correct chunks.</div>' +
+      rows2 +
+      '<div class="test-actions">' +
+        (t.checked ? '' : '<button class="btn" id="btnCheckC">✅ 정답 확인</button>') +
+        '<button class="btn ghost" id="btnResetC">🔄 리셋</button>' +
+      '</div>' +
+      '<div class="result-card" id="penResC" style="display:'+(t.checked?'block':'none')+'">' +
+        '<div class="score-big" id="penScoreC">'+cnt+' / '+t.items.length+'</div>' +
+        '<div class="msg">⭕ 맞은 개수 / 전체 문제</div>' +
+        '<div class="hint" style="margin-top:4px">문제마다 ⭕ 또는 ❌를 눌러 주세요.</div>' +
+      '</div>' +
+    '</div>';
   }
   var res = '';
   if(t.graded){
@@ -1057,6 +1338,7 @@ function testChunkHTML(L){
   }
   return '<div class="paper">' +
     '<div class="paper-head"><b>Chunk Quiz</b><span>Lesson '+esc(L.no)+' · Seed 1</span></div>' +
+    tpenRow() +
     '<div class="part-bar">Part 1 · Key Vocabulary — Complete the phrases with the correct words.</div>' +
     rows1 +
     '<div class="part-bar">Part 2 · Chunk Writing — Fill in the blanks with the correct chunks.</div>' +
@@ -1066,6 +1348,102 @@ function testChunkHTML(L){
       '<button class="btn ghost" id="btnResetC">🔄 리셋</button>' +
     '</div>' + res +
   '</div>';
+}
+
+/* ---- pencil (handwriting) helpers ---- */
+function clearCanvas(cv){
+  if(!cv) return;
+  try{
+    var ctx = cv.getContext('2d');
+    ctx.save(); ctx.setTransform(1,0,0,1,0,0);
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ctx.restore();
+  }catch(e){}
+}
+function initCanvas(cv){
+  if(!cv || cv._init) return;
+  var dpr = window.devicePixelRatio || 1;
+  var w = cv.clientWidth || 320;
+  var h = cv.clientHeight || 118;
+  cv.width = Math.round(w * dpr);
+  cv.height = Math.round(h * dpr);
+  var ctx = cv.getContext('2d');
+  if(!ctx) return;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.lineWidth = 2.6;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#1E3A2E';
+  cv._init = true;
+  var drawing = false, last = null;
+  function pos(e){
+    var r = cv.getBoundingClientRect();
+    return {x: e.clientX - r.left, y: e.clientY - r.top};
+  }
+  cv.addEventListener('pointerdown', function(e){
+    if(e.pointerType === 'mouse' && typeof e.button === 'number' && e.button !== 0) return;
+    drawing = true;
+    try{ if(cv.setPointerCapture) cv.setPointerCapture(e.pointerId); }catch(err){}
+    last = pos(e);
+    ctx.beginPath();
+    ctx.arc(last.x, last.y, 1.2, 0, Math.PI*2);
+    ctx.fillStyle = '#1E3A2E';
+    ctx.fill();
+    e.preventDefault();
+  });
+  cv.addEventListener('pointermove', function(e){
+    if(!drawing || !last) return;
+    var p = pos(e);
+    ctx.beginPath();
+    ctx.moveTo(last.x, last.y);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    last = p;
+    e.preventDefault();
+  });
+  function stop(){ drawing = false; last = null; }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+  cv.addEventListener('pointerleave', stop);
+}
+function penUpdateScore(t, scoreId){
+  var c = 0;
+  for(var i=0;i<t.items.length;i++){ if(t.items[i].mk === 1) c++; }
+  var s = $(scoreId);
+  if(s) s.textContent = c + ' / ' + t.items.length;
+}
+function penSetMark(t, i, v, scoreId){
+  t.items[i].mk = v;
+  var mk = $('qmk'+i);
+  if(mk){
+    mk.textContent = v === 1 ? '⭕' : (v === 0 ? '❌' : '');
+    mk.className = 'q-mk' + (v === 1 ? ' ok' : (v === 0 ? ' no' : ''));
+  }
+  var btns = document.querySelectorAll('[data-mark="'+i+'"]');
+  for(var b=0;b<btns.length;b++){
+    var val = parseInt(btns[b].getAttribute('data-v'),10);
+    btns[b].className = (val === 1 ? 'ok' : 'no') + (t.items[i].mk === val ? ' on' : '');
+  }
+  penUpdateScore(t, scoreId);
+}
+function penCheck(t, kind){
+  t.checked = true;
+  for(var i=0;i<t.items.length;i++){
+    var ans = $('qans'+i); if(ans) ans.style.display = 'block';
+    var mr = $('qmr'+i); if(mr) mr.style.display = 'flex';
+    var cv = $('hw'+i); if(cv) cv.className = 'hw done';
+  }
+  var btn = $(kind === 'voca' ? 'btnCheckV' : 'btnCheckC');
+  if(btn) btn.style.display = 'none';
+  var res = $(kind === 'voca' ? 'penResV' : 'penResC');
+  if(res) res.style.display = 'block';
+  penUpdateScore(t, kind === 'voca' ? 'penScoreV' : 'penScoreC');
+}
+function penReset(t){
+  t.checked = false;
+  for(var i=0;i<t.items.length;i++){ t.items[i].mk = null; }
+  renderSection();
+  toast('새 종이에 다시 써 볼 수 있어요');
 }
 
 /* ---- section bindings ---- */
@@ -1097,33 +1475,38 @@ function bindSection(L){
   }
 
   if(UI.section === 'vocab'){
-    var list = UI.vocaAll ? L.vocab : L.vocab.filter(function(x){ return x.bold; });
-    if(!list.length) list = L.vocab;
-    function paint(){
-      var cur = list[UI.vi];
-      var word = $('fcWord'), mean = $('fcMean');
-      if(!word) return;
-      word.innerHTML = '<span class="hl">'+esc(cur.w)+'</span>';
-      mean.innerHTML = esc(cur.m)+'<span class="small">'+esc(cur.w)+'</span>';
-      mean.className = 'fc-meaning hidden';
-      var c = document.querySelectorAll('.fc-count');
-      for(var i=0;i<c.length;i++) c[i].textContent = (UI.vi+1)+' / '+list.length;
-      var dots = document.querySelectorAll('.dots');
-      for(var j=0;j<dots.length;j++) dots[j].textContent = (UI.vi+1)+' / '+list.length;
+    var list = vocaList(L);
+    if(UI.vi >= list.length) UI.vi = 0;
+    var vmodes = document.querySelectorAll('[data-vmode]');
+    for(var vm=0;vm<vmodes.length;vm++){
+      vmodes[vm].onclick = function(){
+        UI.vmode = this.getAttribute('data-vmode');
+        if(UI.vmode === 'spell'){ UI.si = UI.vi; spellNew(vocaList(currentLesson()), currentLesson()); }
+        renderSection();
+      };
     }
-    $('btnMean').onclick = function(){
+    if($('spellWrap')){
+      $('spellWrap').onclick = function(e){
+        var t = e.target;
+        while(t && t !== this && !(t.getAttribute && (t.getAttribute('data-tile') !== null || t.getAttribute('data-slot') !== null || t.id))) t = t.parentNode;
+        if(!t || t === this) return;
+        if(t.getAttribute('data-tile') !== null){ spellTapTile(parseInt(t.getAttribute('data-tile'),10)); return; }
+        if(t.getAttribute('data-slot') !== null){ spellTapSlot(parseInt(t.getAttribute('data-slot'),10)); return; }
+        if(t.id === 'btnSpellClear'){ spellReset(); return; }
+        if(t.id === 'btnSpellSay'){ if(UI.spell) Speech.speakOne(UI.spell.word); return; }
+        if(t.id === 'btnSpellNext' || t.id === 'btnSpellSkip'){ spellNext(); return; }
+      };
+    }
+    if($('btnMean')) $('btnMean').onclick = function(){
       var mean = $('fcMean');
+      if(!mean) return;
       mean.className = mean.className.indexOf('hidden')>=0 ? 'fc-meaning' : 'fc-meaning hidden';
       if(mean.className === 'fc-meaning') markSeen(L.id, 'vocab', UI.vi);
     };
-    $('btnSay').onclick = function(){ Speech.speakOne(list[UI.vi].w); };
-    $('prevCard').onclick = function(){ UI.vi = (UI.vi - 1 + list.length) % list.length; renderSection(); };
-    $('nextCard').onclick = function(){ UI.vi = (UI.vi + 1) % list.length; renderSection(); };
-    $('btnVocaAll').onclick = function(){ UI.vocaAll = !UI.vocaAll; UI.vi = 0; renderSection(); };
-    var sw = document.querySelectorAll('[data-wsay]');
-    for(var k=0;k<sw.length;k++){
-      sw[k].onclick = function(){ Speech.speakOne(list[parseInt(this.getAttribute('data-wsay'),10)].w); };
-    }
+    if($('btnSay')) $('btnSay').onclick = function(){ Speech.speakOne(list[UI.vi].w); };
+    if($('prevCard')) $('prevCard').onclick = function(){ UI.vi = (UI.vi - 1 + list.length) % list.length; renderSection(); };
+    if($('nextCard')) $('nextCard').onclick = function(){ UI.vi = (UI.vi + 1) % list.length; renderSection(); };
+    if($('btnVocaAll')) $('btnVocaAll').onclick = function(){ UI.vocaAll = !UI.vocaAll; UI.vi = 0; UI.si = 0; renderSection(); };
   }
 
   if(UI.section === 'key'){
@@ -1172,6 +1555,37 @@ function bindSection(L){
     for(var t=0;t<tabs.length;t++){
       tabs[t].onclick = function(){ UI.tmode = this.getAttribute('data-tmode'); renderSection(); };
     }
+    var pens = document.querySelectorAll('[data-tpen]');
+    for(var pn=0;pn<pens.length;pn++){
+      pens[pn].onclick = function(){
+        var v = this.getAttribute('data-tpen');
+        if(v === UI.tpen) return;
+        UI.tpen = v;
+        renderSection();
+      };
+    }
+    var cvs = document.querySelectorAll('canvas[data-hw]');
+    for(var ci=0;ci<cvs.length;ci++){ initCanvas(cvs[ci]); }
+    var clrs = document.querySelectorAll('[data-hwclear]');
+    for(var cl=0;cl<clrs.length;cl++){
+      clrs[cl].onclick = function(){
+        var cv = $('hw'+this.getAttribute('data-hwclear'));
+        if(cv) clearCanvas(cv);
+      };
+    }
+    var mks = document.querySelectorAll('[data-mark]');
+    for(var mi=0;mi<mks.length;mi++){
+      mks[mi].onclick = function(){
+        var i = parseInt(this.getAttribute('data-mark'),10);
+        var v = parseInt(this.getAttribute('data-v'),10);
+        var chunkMode = UI.tmode === 'chunk';
+        var tt = chunkMode ? UI.ctest : UI.vtest;
+        if(!tt || !tt.items[i]) return;
+        penSetMark(tt, i, tt.items[i].mk === v ? null : v, chunkMode ? 'penScoreC' : 'penScoreV');
+      };
+    }
+    if($('btnCheckV')) $('btnCheckV').onclick = function(){ penCheck(UI.vtest, 'voca'); };
+    if($('btnCheckC')) $('btnCheckC').onclick = function(){ penCheck(UI.ctest, 'chunk'); };
     var ins = document.querySelectorAll('[data-vi]');
     for(var i2=0;i2<ins.length;i2++){
       ins[i2].oninput = function(){ UI.vtest.items[parseInt(this.getAttribute('data-vi'),10)].val = this.value; };
@@ -1194,7 +1608,10 @@ function bindSection(L){
       var r = document.querySelector('.result-card');
       if(r) r.scrollIntoView({block:'center'});
     };
-    if($('btnResetV')) $('btnResetV').onclick = function(){ UI.vtest = buildVocaTest(L); renderSection(); };
+    if($('btnResetV')) $('btnResetV').onclick = function(){
+      if(UI.tpen === 'pencil'){ penReset(UI.vtest); return; }
+      UI.vtest = buildVocaTest(L); renderSection();
+    };
 
     var cins = document.querySelectorAll('[data-ci]');
     for(var i3=0;i3<cins.length;i3++){
@@ -1217,7 +1634,10 @@ function bindSection(L){
       var r2 = document.querySelector('.result-card');
       if(r2) r2.scrollIntoView({block:'center'});
     };
-    if($('btnResetC')) $('btnResetC').onclick = function(){ UI.ctest = buildChunkTest(L); renderSection(); };
+    if($('btnResetC')) $('btnResetC').onclick = function(){
+      if(UI.tpen === 'pencil'){ penReset(UI.ctest); return; }
+      UI.ctest = buildChunkTest(L); renderSection();
+    };
   }
 }
 
@@ -1552,7 +1972,7 @@ function renderLevel(){
   for(var i=0;i<DB.books.length;i++){
     books += '<option value="'+esc(DB.books[i].id)+'"'+(DB.books[i].id===b.id?' selected':'')+'>'+esc(DB.books[i].name)+'</option>';
   }
-  $('hdrBook').textContent = b.name;
+  $('hdrBook').textContent = seedOf(b.name);
   var chart = chartHTML(b);
   var rows = '';
   for(var n=1;n<=8;n++){
@@ -1743,6 +2163,11 @@ function deleteBook(id){
 
 function openAddLesson(){
   var b = currentBook();
+  var curCode = codeOf(currentLesson());
+  var codeOpts = '';
+  for(var ci=0;ci<BOOK_CODES.length;ci++){
+    codeOpts += '<option value="'+BOOK_CODES[ci]+'"'+(BOOK_CODES[ci]===curCode?' selected':'')+'>'+BOOK_CODES[ci]+'</option>';
+  }
   openSheet(
     '<h2>＋ 새 Lesson 추가</h2>' +
     '<div class="hint">교재 사진을 고르면 파일 이름에서 Lesson 번호를 찾아 채워 드려요. 지문·단어·Key Voca·Chunk를 아래에 붙여 넣으면 돼요.</div>' +
@@ -1752,7 +2177,8 @@ function openAddLesson(){
     '</div>' +
     '<div class="field"><label>Lesson 번호</label><input type="number" id="lno" min="1" max="99" value="8"></div>' +
     '<div class="field"><label>제목</label><input type="text" id="ltitle" placeholder="예: The Morning Mix-Up"></div>' +
-    '<div class="field"><label>책</label><input type="text" id="lbook" value="'+esc(b.name)+'"></div>' +
+    '<div class="field"><label>권 (Seed 1의 책)</label><select id="lbookCode">'+codeOpts+'</select>' +
+      '<div class="hint">A1 → A2 → A3 → B1 → B2 → B3 순서로 올라가요. 위 Lesson 드롭다운에 「A3 - Lesson 8 · …」처럼 표시돼요.</div></div>' +
     '<div class="field"><label>지문 (문단은 줄바꿈, 청크는 [[ ]]로 감싸기)</label>' +
       '<textarea id="lpass" placeholder="In the morning, Mom is busy.\nLily chooses [[a checkered shirt]]."></textarea>' +
       '<div class="hint">예: Lily chooses [[a checkered shirt]]. → 청크가 초록색으로 표시돼요.</div></div>' +
@@ -1791,7 +2217,9 @@ function openAddLesson(){
 function saveNewLesson(){
   var no = parseInt($('lno').value,10) || (DB.lessons.length + 1);
   var title = $('ltitle').value.replace(/^\s+|\s+$/g,'');
-  var book = $('lbook').value.replace(/^\s+|\s+$/g,'') || currentBook().name;
+  var codeEl = $('lbookCode');
+  var picked = codeEl ? String(codeEl.value).toUpperCase() : DEFAULT_BOOK_CODE;
+  if(BOOK_CODES.indexOf(picked) < 0) picked = DEFAULT_BOOK_CODE;
   var jsonTxt = $('ljson').value.replace(/^\s+|\s+$/g,'');
   var L = null;
   if(jsonTxt){
@@ -1850,7 +2278,9 @@ function saveNewLesson(){
     L = {title:title || ('Lesson ' + no), passage:pass, dialog:dlg, vocab:voc, keyVoca:key, chunk:ch};
   }
   if(!L.passage || !L.passage.length){ toast('지문을 적어 주세요.'); return; }
-  L.book = L.book || book;
+  if(L.book && /[AB][123]/i.test(String(L.book))) picked = codeOf({book:L.book});
+  L.bookCode = picked;
+  L.book = seedOf(L.book || currentBook().name);
   L.no = L.no || no;
   L.title = L.title || title || ('Lesson ' + L.no);
   L.id = 'l' + L.no + '-' + ((new Date()).getTime());
@@ -1930,7 +2360,7 @@ function openRestore(){
 function renderApp(){
   Speech.stop();
   UI.tab = UI.tab || 'chunk';
-  $('hdrBook').textContent = (currentLesson().book || currentBook().name);
+  $('hdrBook').textContent = seedOf(currentLesson().book || currentBook().name);
   var btns = $('tabs').childNodes;
   for(var i=0;i<btns.length;i++){
     if(btns[i].tagName === 'BUTTON') btns[i].className = btns[i].getAttribute('data-tab') === UI.tab ? 'on' : '';
