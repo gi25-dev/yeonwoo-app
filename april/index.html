@@ -21,20 +21,22 @@ img{max-width:100%}
 .app{max-width:1080px;margin:0 auto;padding:0 12px 40px}
 
 /* ---------- header ---------- */
-.hdr{position:sticky;top:0;z-index:30;background:#FFF8EE;padding:10px 0 0}
-.hdr-in{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(20,80,55,.09);padding:10px 12px}
+.hdr{position:sticky;top:0;z-index:30;background:#FFF8EE;padding:8px 0 10px}
+.hdr::after{content:'';position:absolute;left:0;right:0;top:100%;height:9px;background:linear-gradient(#FFF8EE,rgba(255,248,238,0));pointer-events:none}
+.hdr-in{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(20,80,55,.09);padding:8px 12px 7px}
 .hdr-top{display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:20px;font-weight:800;letter-spacing:-.4px;color:#0C7A50;display:flex;align-items:center}
-.logo .em{font-size:19px;margin-right:5px}
+.logo{font-size:19px;font-weight:800;letter-spacing:-.4px;color:#0C7A50;display:flex;align-items:center}
+.logo .em{font-size:18px;margin-right:5px}
 .logo .ap{color:#E9503A;margin-left:4px}
-.book-chip{font-size:12px;font-weight:700;color:#0C7A50;background:#E7F7EF;border-radius:999px;padding:5px 10px;white-space:nowrap;max-width:46%;overflow:hidden;text-overflow:ellipsis}
-.tabs{display:flex;margin-top:10px;background:#F1F6F2;border-radius:14px;padding:4px}
-.tabs button{flex:1;padding:11px 2px;border-radius:11px;font-size:14px;font-weight:700;color:#5C6F65;line-height:1.2;white-space:nowrap}
+.book-chip{font-size:12px;font-weight:700;color:#0C7A50;background:#E7F7EF;border-radius:999px;padding:4px 10px;white-space:nowrap;max-width:46%;overflow:hidden;text-overflow:ellipsis}
+.tabs{display:flex;margin-top:8px;background:#F1F6F2;border-radius:14px;padding:4px}
+.tabs button{flex:1;padding:9px 2px;border-radius:11px;font-size:13.5px;font-weight:700;color:#5C6F65;line-height:1.2;white-space:nowrap}
 .tabs button.on{background:#13A06B;color:#fff;box-shadow:0 3px 10px rgba(19,160,107,.3)}
 .tabs button .ic{margin-right:3px}
 
 /* ---------- common ---------- */
-main{padding-top:12px}
+main{padding-top:14px}
+.hidden{display:none!important}
 .card{background:#fff;border-radius:18px;box-shadow:0 4px 14px rgba(20,80,55,.07);padding:14px;margin-bottom:12px}
 .row{display:flex;align-items:center}
 .sp{justify-content:space-between}
@@ -65,7 +67,7 @@ mark.chk{background:#D6F2B8;padding:1px 2px;border-radius:4px;color:#1E4B2E}
 .subtabs::-webkit-scrollbar{display:none}
 .subtabs button{flex:0 0 auto;margin-right:7px;padding:9px 14px;border-radius:999px;background:#fff;border:1.5px solid #E1EBE4;font-size:14px;font-weight:800;color:#5C6F65;white-space:nowrap}
 .subtabs button.on{background:#0C7A50;border-color:#0C7A50;color:#fff}
-.progress-pills{display:flex;flex-wrap:wrap;margin:0 0 10px}
+.progress-pills{display:flex;flex-wrap:wrap;margin:2px 0 10px}
 .progress-pills .pill{margin:0 6px 6px 0;font-size:11.5px}
 
 /* ---------- passage ---------- */
@@ -99,6 +101,10 @@ mark.chk{background:#D6F2B8;padding:1px 2px;border-radius:4px;color:#1E4B2E}
 .fc-meaning{margin-top:14px;font-size:24px;font-weight:800;color:#C4392A;line-height:1.35}
 .fc-meaning.hidden{display:none}
 .fc-meaning .small{display:block;font-size:13px;font-weight:600;color:#8AA79A;margin-top:4px}
+.fc-kr{margin-top:12px;font-size:21px;font-weight:800;color:#C4392A;line-height:1.35;word-break:keep-all}
+.fc-card .bl{display:inline-block;min-width:92px;border-bottom:3px solid #A9BFB2;color:#A9BFB2;letter-spacing:2px;line-height:1.15}
+.fc-fill{display:inline-block;background:#D6F2B8;border-radius:9px;padding:1px 7px;margin:0 2px;color:#1E4B2E;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.fc-word.blankq{font-size:26px}
 .fc-nav{display:flex;align-items:center;justify-content:center;margin:12px 0 2px}
 .fc-nav button{width:52px;height:52px;border-radius:50%;background:#fff;border:1.5px solid #DCE9E0;font-size:22px;font-weight:800;color:#0C7A50;display:flex;align-items:center;justify-content:center}
 .fc-nav .dots{flex:1;text-align:center;font-size:13px;color:#7C8F85;font-weight:700}
@@ -775,12 +781,29 @@ function secChunk(L){
   if(!list.length) return '<div class="card">Chunk Writing이 없어요.</div>';
   if(UI.ci >= list.length) UI.ci = 0;
   var c = list[UI.ci];
-  var front;
-  if(UI.cmode === 'blank'){
-    var b = blankSentence(c.s);
-    front = esc(b.q).replace('______','<span class="bl">______</span>');
+  var blank = UI.cmode === 'blank';
+  var body, actions, hint;
+  var b = blank ? blankSentence(c.s) : null;
+  if(blank && b.a){
+    var front = esc(b.q).replace('______',
+      '<span class="bl" id="blSlot">______</span>' +
+      '<span class="fc-fill hidden" id="blAns">'+esc(b.a)+'</span>');
+    body = '<div class="fc-word small blankq" id="fcWord">'+front+'</div>' +
+      '<div class="fc-kr" id="fcKr">'+esc(c.m)+'</div>';
+    actions = '<button class="btn cream" id="btnReveal">✨ 빈칸 확인</button>' +
+      '<button class="btn" id="btnSay">🔊 발음 듣기</button>';
+    hint = '빈칸 연습: 뜻을 보고 빈칸에 들어갈 영어를 말해 본 뒤, ✨ 빈칸 확인으로 정답을 확인해요.';
+  } else if(blank){
+    body = '<div class="fc-word small" id="fcWord">'+esc(b.q)+'</div>' +
+      '<div class="fc-kr" id="fcKr">'+esc(c.m)+'</div>';
+    actions = '<button class="btn" id="btnSay">🔊 발음 듣기</button>';
+    hint = '이 문장에는 빈칸으로 가릴 청크가 없어요.';
   } else {
-    front = renderChunks(c.s);
+    body = '<div class="fc-word small" id="fcWord">'+renderChunks(c.s)+'</div>' +
+      '<div class="fc-meaning hidden" id="fcMean">'+esc(c.m)+'</div>';
+    actions = '<button class="btn cream" id="btnMean">👀 뜻 확인</button>' +
+      '<button class="btn" id="btnSay">🔊 발음 듣기</button>';
+    hint = '문장 보기: 초록색 청크를 통째로 읽어 봐요. 뜻은 👀 뜻 확인으로 볼 수 있어요.';
   }
   return '<div class="card">' +
       '<div class="row sp" style="margin-bottom:10px">' +
@@ -792,18 +815,14 @@ function secChunk(L){
       '</div>' +
       '<div class="fc-top"><span class="pill blue">CHUNK</span><span class="fc-count">'+(UI.ci+1)+' / '+list.length+'</span></div>' +
       '<div class="fc-card" id="fcCard">' +
-        '<div class="fc-label">'+(UI.cmode==='blank'?'FILL THE BLANK':'SENTENCE')+'</div>' +
-        '<div class="fc-word small" id="fcWord">'+front+'</div>' +
-        '<div class="fc-meaning hidden" id="fcMean">'+esc(c.m)+'</div>' +
+        '<div class="fc-label">'+(blank?'FILL THE BLANK':'SENTENCE')+'</div>' +
+        body +
       '</div>' +
       '<div class="fc-nav">' +
         '<button id="prevCard">‹</button><div class="dots">'+(UI.ci+1)+' / '+list.length+'</div><button id="nextCard">›</button>' +
       '</div>' +
-      '<div class="fc-actions">' +
-        '<button class="btn cream" id="btnMean">👀 뜻 확인</button>' +
-        '<button class="btn" id="btnSay">🔊 발음 듣기</button>' +
-      '</div>' +
-      '<div class="hint" style="margin-top:10px">빈칸 연습: 청크 부분이 가려져요. 뜻을 확인하면 정답 청크도 함께 보여요.</div>' +
+      '<div class="fc-actions">'+actions+'</div>' +
+      '<div class="hint" style="margin-top:10px">'+hint+'</div>' +
     '</div>';
 }
 
@@ -1019,17 +1038,24 @@ function bindSection(L){
 
   if(UI.section === 'chunk'){
     var cl = L.chunk;
-    $('btnMean').onclick = function(){
-      var mean = $('fcMean');
-      mean.className = mean.className.indexOf('hidden')>=0 ? 'fc-meaning' : 'fc-meaning hidden';
-      if(mean.className === 'fc-meaning'){
-        if(UI.cmode === 'blank'){
-          var b = blankSentence(cl[UI.ci].s);
-          mean.innerHTML = esc(cl[UI.ci].m) + '<span class="small">'+esc(b.a)+'</span>';
-        }
-        markSeen(L.id, 'chunk', UI.ci);
-      }
-    };
+    if($('btnReveal')){
+      $('btnReveal').onclick = function(){
+        var slot = $('blSlot'), ans = $('blAns');
+        if(!slot || !ans) return;
+        var show = ans.className.indexOf('hidden') >= 0;
+        slot.className = show ? 'bl hidden' : 'bl';
+        ans.className = show ? 'fc-fill' : 'fc-fill hidden';
+        this.innerHTML = show ? '🙈 정답 숨기기' : '✨ 빈칸 확인';
+        if(show) markSeen(L.id, 'chunk', UI.ci);
+      };
+    }
+    if($('btnMean')){
+      $('btnMean').onclick = function(){
+        var mean = $('fcMean');
+        mean.className = mean.className.indexOf('hidden')>=0 ? 'fc-meaning' : 'fc-meaning hidden';
+        if(mean.className === 'fc-meaning') markSeen(L.id, 'chunk', UI.ci);
+      };
+    }
     $('btnSay').onclick = function(){ Speech.speakOne(stripMarks(cl[UI.ci].s)); };
     $('prevCard').onclick = function(){ UI.ci = (UI.ci - 1 + cl.length) % cl.length; renderSection(); };
     $('nextCard').onclick = function(){ UI.ci = (UI.ci + 1) % cl.length; renderSection(); };
