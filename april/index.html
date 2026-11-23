@@ -284,6 +284,10 @@ mark.chk{background:#D6F2B8;padding:1px 2px;border-radius:4px;color:#1E4B2E}
   .game-tile{flex:1 1 30%}
   .sheet{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-50%);width:92%;max-width:680px;border-radius:20px;max-height:88%}
 }
+@media (max-width:430px){
+  .lesson-bar select{font-size:13px;letter-spacing:-.1px;padding:8px 23px 8px 9px;background-position:calc(100% - 15px) 20px,calc(100% - 10px) 20px}
+  .lesson-bar .add{font-size:12.5px;padding:0 9px}
+}
 @media (max-width:380px){
   .fc-word{font-size:34px}
   .passage p{font-size:18px}
@@ -320,7 +324,7 @@ var LS_KEY = 'linas-april-v1';
 var DEFAULT_BOOK = 'Seed 1 · A3';
 
 /* ---------- seed data: Lesson 7 · The Morning Mix-Up ---------- */
-function seedLesson(){
+function seedLesson7(){
   return {
     id: 'l7',
     book: DEFAULT_BOOK,
@@ -389,10 +393,104 @@ function seedLesson(){
   };
 }
 
+/* ---------- seed data: Lesson 8 · Animal Spots and Stripes ---------- */
+function seedLesson8(){
+  return {
+    id: 'l8',
+    book: DEFAULT_BOOK,
+    no: 8,
+    title: 'Animal Spots and Stripes',
+    passage: [
+      'Some animals have patterns.',
+      'Is there a reason?',
+      'Yes! These patterns help the animals.',
+      'Leopards have spots.',
+      'The spots look like light and shadow.',
+      'They help leopards [[hide in trees]].',
+      'Then, they can [[hunt for food]].',
+      'Zebras have stripes.',
+      'They help zebras escape from lions.',
+      'When zebras see lions, they run together.',
+      'They look like one big animal.',
+      'The lions [[get confused]].',
+      'So, the zebras can [[get away]].'
+    ],
+    dialog: [
+      {who:'A', text:'Where are all the animals?'},
+      {who:'B', text:'Right there! See the chameleon with green skin?'},
+      {who:'A', text:'It looks just like the trees and leaves!'},
+      {who:'B', text:'Yes, it’s hiding.'}
+    ],
+    vocab: [
+      {w:'escape', m:'달아나다', bold:true},
+      {w:'hide', m:'숨다', bold:true},
+      {w:'hunt', m:'사냥하다', bold:true},
+      {w:'leopard', m:'표범', bold:true},
+      {w:'light', m:'빛', bold:true},
+      {w:'lion', m:'사자', bold:true},
+      {w:'shadow', m:'그림자', bold:true},
+      {w:'spot', m:'반점', bold:true},
+      {w:'stripe', m:'줄무늬', bold:true},
+      {w:'zebra', m:'얼룩말', bold:true},
+      {w:'chameleon', m:'카멜레온', bold:false},
+      {w:'confused', m:'혼란스러워 하는', bold:false},
+      {w:'food', m:'먹이', bold:false},
+      {w:'from', m:'~로부터', bold:false},
+      {w:'get away', m:'도망치다', bold:false},
+      {w:'help', m:'돕다', bold:false},
+      {w:'reason', m:'이유', bold:false},
+      {w:'run', m:'달리다', bold:false},
+      {w:'skin', m:'피부', bold:false},
+      {w:'together', m:'함께', bold:false}
+    ],
+    keyVoca: [
+      {word:'escape', phrase:'escape from lions', m:'사자들로부터 달아나다'},
+      {word:'hide', phrase:'hide in trees', m:'나무에 숨다'},
+      {word:'hunt', phrase:'hunt for food', m:'먹이를 사냥하다'},
+      {word:'leopard', phrase:'Leopards have spots.', m:'표범들은 반점이 있다.'},
+      {word:'light', phrase:'light and shadow', m:'빛과 그림자'},
+      {word:'lion', phrase:'from lions', m:'사자들로부터'},
+      {word:'shadow', phrase:'light and shadow', m:'빛과 그림자'},
+      {word:'spot', phrase:'Leopards have spots.', m:'표범들은 반점이 있다.'},
+      {word:'stripe', phrase:'have stripes', m:'줄무늬가 있다'},
+      {word:'zebra', phrase:'when zebras see lions,', m:'얼룩말들은 사자들을 보면'}
+    ],
+    chunk: [
+      {s:'The spots help leopards [[hide in trees]].', m:'반점은 표범들이 나무에 숨는 데 도움이 됩니다.'},
+      {s:'Then, they can [[hunt for food]].', m:'그러면 그들은 먹이를 사냥할 수 있습니다.'},
+      {s:'The lions [[get confused]].', m:'사자들은 혼란스러워합니다.'},
+      {s:'So, the zebras can [[get away]].', m:'그래서 얼룩말들은 도망칠 수 있습니다.'}
+    ],
+    created: '2026-11-23'
+  };
+}
+
+/* 기본 내장 레슨 — 앱을 열 때 저장된 기록에 빠진 레슨은 자동으로 합쳐요 */
+function builtinLessons(){
+  return [seedLesson7(), seedLesson8()];
+}
+
+/* 저장된 데이터는 그대로 두고, 없는 내장 레슨만 뒤에 덧붙입니다 */
+function mergeBuiltins(d){
+  var added = [];
+  if(!d || !d.lessons) return added;
+  var built = builtinLessons();
+  for(var i=0;i<built.length;i++){
+    var has = false;
+    for(var j=0;j<d.lessons.length;j++){
+      var L = d.lessons[j];
+      if(!L) continue;
+      if(L.id === built[i].id || parseInt(L.no,10) === built[i].no){ has = true; break; }
+    }
+    if(!has){ d.lessons.push(built[i]); added.push(built[i]); }
+  }
+  return added;
+}
+
 function freshDB(){
   return {
     v: 1,
-    lessons: [seedLesson()],
+    lessons: builtinLessons(),
     books: [{id:'b1', name: DEFAULT_BOOK, scores:{}, max10:false}],
     progress: {},
     games: {match:{best:0, plays:0}, blank:{best:0, plays:0}},
@@ -402,6 +500,8 @@ function freshDB(){
 }
 
 var DB = loadDB();
+var NEW_LESSONS = DB._added || [];
+if(NEW_LESSONS.length){ delete DB._added; save(); }
 
 function loadDB(){
   try{
@@ -414,6 +514,8 @@ function loadDB(){
     if(!d.games) d.games = {match:{best:0,plays:0}, blank:{best:0,plays:0}};
     if(!d.last) d.last = {tab:'chunk', lessonId:d.lessons[0].id, section:'lesson', bookId:d.books[0].id};
     if(!d.settings) d.settings = {rate:1.0};
+    var added = mergeBuiltins(d);
+    if(added.length) d._added = added;
     return d;
   }catch(e){
     var f = freshDB(); f._lsfail = true; return f;
@@ -1813,6 +1915,7 @@ function openRestore(){
         if(!DB.games) DB.games = {match:{best:0}, blank:{best:0}};
         if(!DB.last) DB.last = {tab:'chunk', lessonId:DB.lessons[0].id, section:'lesson', bookId:DB.books[0].id};
         if(!DB.settings) DB.settings = {rate:1};
+        mergeBuiltins(DB);
         save(); closeSheet(); UI.tab = DB.last.tab || 'chunk'; renderApp();
         toast('백업을 불러왔어요');
       }catch(e){ toast('백업 파일을 읽을 수 없어요.'); }
@@ -1848,6 +1951,11 @@ $('tabs').onclick = function(e){
 };
 
 renderApp();
+if(NEW_LESSONS.length){
+  var _names = [];
+  for(var _n=0;_n<NEW_LESSONS.length;_n++) _names.push('Lesson ' + NEW_LESSONS[_n].no);
+  setTimeout(function(){ toast('📚 ' + _names.join(', ') + ' 새 레슨이 추가됐어요!'); }, 800);
+}
 window.addEventListener('beforeunload', function(){ Speech.stop(); });
 </script>
 </body>
