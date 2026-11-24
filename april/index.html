@@ -289,6 +289,17 @@ canvas.hw.done{border-style:solid;border-color:#BFE3D2}
 #toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#25352D;color:#fff;font-size:14px;font-weight:700;padding:11px 16px;border-radius:99px;z-index:200;opacity:0;pointer-events:none;transition:opacity .2s;max-width:86%;text-align:center}
 #toast.on{opacity:1}
 
+/* ---------- confirm dialog ---------- */
+.confirm-mask{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(18,38,28,.5);z-index:300;display:flex;align-items:center;justify-content:center;padding:22px}
+.confirm-box{width:100%;max-width:340px;background:#FFFDF8;border-radius:20px;padding:22px 18px 16px;box-shadow:0 18px 40px rgba(10,40,28,.3);text-align:center}
+.confirm-box h3{font-size:20px;font-weight:800;color:#14352A;margin:0 0 8px;letter-spacing:-.3px}
+.confirm-box p{font-size:14.5px;color:#5C6F65;margin:0 0 18px;line-height:1.5}
+.confirm-btns{display:flex}
+.confirm-btns .btn{flex:1;min-height:54px;font-size:17px}
+.confirm-btns .btn:first-child{margin-right:10px}
+.confirm-btns .btn.no{background:#EEF3EF;color:#4B6056;border:1.5px solid #D5E2DA;box-shadow:none}
+.confirm-btns .btn.yes{background:#E9503A;color:#fff;box-shadow:0 3px 10px rgba(233,80,58,.28)}
+
 /* ---------- tablet ---------- */
 @media (min-width:700px){
   body{font-size:18px}
@@ -961,7 +972,7 @@ function spellInnerHTML(list){
   var msg;
   if(S.ok) msg = '<div class="spell-msg ok pop">🎉 정답! '+esc(S.word)+'</div>';
   else if(S.done) msg = '<div class="spell-msg no">아쉬워요, 한 번 더! 💪</div>';
-  else msg = '<div class="hint" style="text-align:center;margin-top:10px">알파벳 타일을 순서대로 눌러 단어를 완성해요. 누른 칸을 다시 누르면 지워져요.</div>';
+  else msg = '<div class="hint" style="text-align:center;margin-top:10px">알파벳 타일을 순서대로 눌러 단어를 완성해요. 지우기를 누르면 마지막 글자부터 하나씩 지워지고, 채운 칸을 누르면 그 글자만 빠져요.</div>';
   var hasSep = S.tokens.length > S.ans.length;
   return '<div class="fc-top"><span class="pill">SPELLING</span><span class="fc-count" id="spellCount">'+idx+' / '+list.length+'</span></div>' +
     '<div class="spell-top">' +
@@ -1027,12 +1038,18 @@ function spellAutoCheck(){
     }
   }
 }
-function spellReset(){
+function spellBackspace(){
   var S = UI.spell;
-  if(!S) return;
-  for(var i=0;i<S.fill.length;i++) S.fill[i] = null;
-  for(var j=0;j<S.tiles.length;j++) S.tiles[j].used = false;
-  S.done = false; S.ok = false;
+  if(!S || S.ok) return;
+  var last = -1;
+  for(var i=S.fill.length-1;i>=0;i--){
+    if(S.fill[i] !== null && typeof S.fill[i] !== 'undefined'){ last = i; break; }
+  }
+  if(last < 0) return;
+  var j = S.fill[last];
+  S.fill[last] = null;
+  if(j !== null && typeof j !== 'undefined' && S.tiles[j]) S.tiles[j].used = false;
+  S.done = false;
   spellPaintCurrent();
 }
 function spellNext(){
@@ -1446,6 +1463,38 @@ function penReset(t){
   toast('새 종이에 다시 써 볼 수 있어요');
 }
 
+/* ---- reset confirm (in-app dialog, no window.confirm) ---- */
+function askReset(kind){
+  closeResetConfirm();
+  var mask = document.createElement('div');
+  mask.className = 'confirm-mask';
+  mask.id = 'resetConfirm';
+  mask.innerHTML = '<div class="confirm-box" role="dialog" aria-modal="true" aria-labelledby="rcTitle">' +
+      '<h3 id="rcTitle">정말 리셋하시겠습니까?</h3>' +
+      '<p>지금까지 적은 답과 채점 결과가 모두 지워져요.</p>' +
+      '<div class="confirm-btns">' +
+        '<button class="btn no" id="rcNo">No</button>' +
+        '<button class="btn yes" id="rcYes">Yes</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(mask);
+  mask.onclick = function(e){ if(e.target === mask) closeResetConfirm(); };
+  $('rcNo').onclick = function(){ closeResetConfirm(); };
+  $('rcYes').onclick = function(){ closeResetConfirm(); doReset(kind); };
+}
+function closeResetConfirm(){
+  var m = document.getElementById('resetConfirm');
+  if(m && m.parentNode) m.parentNode.removeChild(m);
+}
+function doReset(kind){
+  var L = currentLesson();
+  if(UI.tpen === 'pencil'){ penReset(kind === 'chunk' ? UI.ctest : UI.vtest); return; }
+  if(kind === 'chunk') UI.ctest = buildChunkTest(L);
+  else UI.vtest = buildVocaTest(L);
+  renderSection();
+  toast('새 문제로 다시 시작해요');
+}
+
 /* ---- section bindings ---- */
 function bindSection(L){
   var v = $('view');
@@ -1492,7 +1541,7 @@ function bindSection(L){
         if(!t || t === this) return;
         if(t.getAttribute('data-tile') !== null){ spellTapTile(parseInt(t.getAttribute('data-tile'),10)); return; }
         if(t.getAttribute('data-slot') !== null){ spellTapSlot(parseInt(t.getAttribute('data-slot'),10)); return; }
-        if(t.id === 'btnSpellClear'){ spellReset(); return; }
+        if(t.id === 'btnSpellClear'){ spellBackspace(); return; }
         if(t.id === 'btnSpellSay'){ if(UI.spell) Speech.speakOne(UI.spell.word); return; }
         if(t.id === 'btnSpellNext' || t.id === 'btnSpellSkip'){ spellNext(); return; }
       };
@@ -1608,10 +1657,7 @@ function bindSection(L){
       var r = document.querySelector('.result-card');
       if(r) r.scrollIntoView({block:'center'});
     };
-    if($('btnResetV')) $('btnResetV').onclick = function(){
-      if(UI.tpen === 'pencil'){ penReset(UI.vtest); return; }
-      UI.vtest = buildVocaTest(L); renderSection();
-    };
+    if($('btnResetV')) $('btnResetV').onclick = function(){ askReset('voca'); };
 
     var cins = document.querySelectorAll('[data-ci]');
     for(var i3=0;i3<cins.length;i3++){
@@ -1634,10 +1680,7 @@ function bindSection(L){
       var r2 = document.querySelector('.result-card');
       if(r2) r2.scrollIntoView({block:'center'});
     };
-    if($('btnResetC')) $('btnResetC').onclick = function(){
-      if(UI.tpen === 'pencil'){ penReset(UI.ctest); return; }
-      UI.ctest = buildChunkTest(L); renderSection();
-    };
+    if($('btnResetC')) $('btnResetC').onclick = function(){ askReset('chunk'); };
   }
 }
 
