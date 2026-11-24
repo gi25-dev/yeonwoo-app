@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>원앙식당</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#17181c">
+<meta name="description" content="원앙식당 태블릿 POS - 오프라인 주문/정산/매출 관리">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="원앙식당">
+<style>
+:root{
+  --bg:#eceef1; --card:#ffffff; --line:#e2e5ea; --line-soft:#f0f2f5;
+  --ink:#23262c; --ink2:#3a3f47; --muted:#7b828d; --muted2:#9aa1ab;
+  --sidebar:#17181c; --sidebar2:#2a2d35;
+  --slate:#566b90; --slate-dark:#455777; --slate-soft:#e9edf4;
+  --green:#17794f; --red:#bf3b2b; --amber:#a9721c;
+  --radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%;width:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR","Helvetica Neue",Arial,sans-serif;
+  font-size:15px;color:var(--ink);background:var(--bg);
+  -webkit-font-smoothing:antialiased;overflow:hidden;
+}
+button{font-family:inherit}
+h1,h2,h3,h4,p{margin:0}
+input,select,button,textarea{font-family:inherit}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#cfd5dd;border-radius:4px}
+::-webkit-scrollbar-track{background:transparent}
+
+.app{display:-webkit-box;display:flex;height:100vh;min-height:100vh;overflow:hidden}
+
+/* ---------------- sidebar ---------------- */
+.sidebar{
+  width:196px;-webkit-box-flex:0;flex:0 0 196px;background:var(--sidebar);color:#fff;
+  display:-webkit-box;display:flex;flex-direction:column;padding:18px 12px 16px;
+}
+.brand{display:-webkit-box;display:flex;align-items:center;padding:2px 8px 20px}
+.brand-mark{
+  width:40px;height:40px;border-radius:12px;overflow:hidden;margin-right:10px;flex:0 0 40px;
+  background:#22252c;border:1px solid #2f333c;
+}
+.brand-mark img{width:100%;height:100%;display:block}
+.brand-text strong{display:block;font-size:16px;font-weight:700;letter-spacing:.1px;line-height:1.2}
+.brand-text span{display:block;font-size:10px;color:#7f8593;letter-spacing:2.4px;margin-top:3px}
+.nav{display:-webkit-box;display:flex;flex-direction:column;flex:1;min-height:0}
+.nav-item{
+  display:-webkit-box;display:flex;align-items:center;background:transparent;border:0;color:#9da3b0;
+  font-size:14px;padding:13px 12px;border-radius:11px;margin-bottom:4px;text-align:left;cursor:pointer;
+  transition:background .15s,color .15s;width:100%;
+}
+.nav-item .ico{width:22px;height:18px;margin-right:9px;flex:0 0 22px;display:-webkit-box;display:flex;align-items:center;justify-content:center;color:inherit}
+.nav-item .lbl{flex:1;text-align:left;white-space:nowrap;overflow:hidden}
+.nav-item.active{background:var(--sidebar2);color:#fff;font-weight:600}
+.nav-item.active .ico{opacity:1}
+.nav-count{
+  background:#c8553d;color:#fff;font-style:normal;font-size:11px;font-weight:700;
+  min-width:20px;height:20px;line-height:20px;text-align:center;border-radius:10px;padding:0 6px;
+}
+.nav-count.zero{background:#33373f;color:#9da3b0}
+.nav-bottom{padding-top:10px;border-top:1px solid #262a31;margin-top:6px}
+.sidebar-note{font-size:10px;color:#5d626d;padding:10px 12px 0;line-height:1.5}
+
+/* ---------------- main ---------------- */
+.main{flex:1;min-width:0;display:-webkit-box;display:flex;flex-direction:column;min-height:0}
+.view{display:none;flex-direction:column;flex:1;min-height:0;padding:16px 20px 18px}
+.view.active{display:-webkit-box;display:flex}
+.view-head{display:-webkit-box;display:flex;align-items:flex-start;justify-content:space-between;flex:0 0 auto;margin-bottom:14px}
+.h-title{font-size:21px;font-weight:700;letter-spacing:-.3px;line-height:1.2}
+.h-sub{font-size:12px;color:#8b929d;margin-top:5px}
+.head-right{text-align:right;flex:0 0 auto;padding-left:12px}
+.clock{font-size:12px;color:#79808b;white-space:nowrap}
+.clock b{font-size:17px;color:var(--ink);font-weight:700;margin-left:7px;font-variant-numeric:tabular-nums}
+.chips{display:-webkit-box;display:flex;flex-wrap:wrap;justify-content:flex-end;margin-top:8px}
+.chip{
+  display:-webkit-box;display:flex;align-items:center;background:#fff;border:1px solid var(--line);
+  border-radius:16px;padding:5px 11px;font-size:11.5px;color:#68707c;margin-left:6px;white-space:nowrap;
+}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:#2e9e6b;margin-right:6px}
+.chip.offline{border-color:#ecd9b6;background:#fdf6e8;color:#8a6516}
+.chip.offline .dot{background:#d99b1c}
+.chip.warn{border-color:#f0d9d4;background:#fdf1ef;color:#a33b2c}
+.chip.warn .dot{background:#c0392b}
+
+.seat-pill{
+  display:-webkit-box;display:inline-flex;align-items:center;background:#fff;border:1px solid var(--line);
+  border-radius:20px;padding:8px 15px;font-size:13px;color:#5f6671;box-shadow:0 1px 2px rgba(16,24,40,.04);
+  white-space:nowrap;
+}
+.seat-pill b{color:var(--ink);font-size:14px;margin:0 2px}
+.seat-dot{width:8px;height:8px;border-radius:50%;background:#2e9e6b;margin-right:8px}
+
+/* ---------------- tables ---------------- */
+.table-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;grid-gap:14px;
+  flex:1;min-height:0;overflow:auto;align-content:stretch;padding-bottom:2px;
+}
+.table-card{
+  display:-webkit-box;display:flex;flex-direction:column;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;padding:0;text-align:left;
+  cursor:pointer;color:inherit;font-size:14px;box-shadow:0 1px 2px rgba(16,24,40,.04);
+  transition:box-shadow .15s,transform .08s;min-height:150px;
+}
+.table-card:hover{box-shadow:0 3px 10px rgba(16,24,40,.08)}
+.table-card:active{transform:scale(.994)}
+.tc-head{display:-webkit-box;display:flex;align-items:center;justify-content:space-between;padding:14px 15px 12px;flex:0 0 auto}
+.tc-name{font-size:17px;font-weight:700;letter-spacing:-.2px;color:var(--ink)}
+.tc-wait{display:-webkit-box;display:flex;align-items:center;font-size:12.5px;color:#98a0ab}
+.tc-wait .chev{
+  width:19px;height:19px;border-radius:50%;background:#eef0f4;color:#b7bec8;font-size:10px;
+  display:-webkit-box;display:flex;align-items:center;justify-content:center;margin-left:6px;
+}
+.table-card.occupied .tc-head{background:var(--slate);padding:13px 15px;border-bottom:1px solid var(--slate-dark)}
+.table-card.occupied .tc-name{color:#fff}
+.badge-orders{
+  background:rgba(255,255,255,.16);color:#fff;border-radius:12px;padding:3px 5px 3px 9px;
+  font-size:11.5px;display:-webkit-box;display:flex;align-items:center;white-space:nowrap;
+}
+.badge-orders i{
+  font-style:normal;background:#fff;color:var(--slate-dark);border-radius:50%;width:17px;height:17px;
+  line-height:17px;text-align:center;font-size:10.5px;font-weight:700;margin-left:6px;
+}
+.badge-draft{background:rgba(255,255,255,.14);color:#e9eef7;border-radius:11px;padding:4px 9px;font-size:11.5px}
+.tc-body{flex:1;min-height:0;overflow:auto;padding:4px 15px 2px}
+.tc-items{list-style:none;margin:0;padding:0}
+.tc-items li{display:-webkit-box;display:flex;justify-content:space-between;font-size:13.5px;padding:6px 0;color:#3f444c;border-bottom:1px solid #f3f4f6}
+.tc-items li:last-child{border-bottom:0}
+.tc-items li .q{color:#8b929d;margin-left:10px;font-variant-numeric:tabular-nums}
+.tc-empty{
+  flex:1;display:-webkit-box;display:flex;align-items:center;justify-content:center;
+  color:#c3c9d3;font-size:12.5px;letter-spacing:.2px;
+}
+.tc-foot{
+  flex:0 0 auto;border-top:1px solid #eef0f3;padding:11px 15px;display:-webkit-box;display:flex;
+  justify-content:space-between;align-items:center;font-size:12.5px;color:#8b929d;
+}
+.tc-foot b{font-size:16px;color:var(--ink);letter-spacing:-.3px}
+
+/* ---------------- order screen ---------------- */
+.overlay{
+  position:fixed;top:0;right:0;bottom:0;left:0;background:var(--bg);z-index:50;
+  display:none;flex-direction:column;
+}
+.overlay.open{display:-webkit-box;display:flex}
+.order-top{
+  flex:0 0 auto;display:-webkit-box;display:flex;align-items:center;padding:12px 18px;
+  background:#fff;border-bottom:1px solid #e3e6eb;
+}
+.back-btn{
+  width:40px;height:40px;border-radius:11px;border:1px solid var(--line);background:#f7f8fa;
+  font-size:17px;color:var(--ink2);cursor:pointer;margin-right:12px;flex:0 0 40px;
+}
+.ot-title{font-size:17px;font-weight:700;letter-spacing:-.2px}
+.ot-sub{font-size:11.5px;color:#8b929d;margin-top:3px}
+.ot-right{margin-left:auto;display:-webkit-box;display:flex;align-items:center}
+.ot-total{text-align:right;margin-right:14px}
+.ot-total span{display:block;font-size:10.5px;color:#8b929d;margin-bottom:2px}
+.ot-total b{font-size:19px;letter-spacing:-.4px}
+.ot-seat{font-size:11px;color:#5f6671;background:#f2f4f7;border-radius:12px;padding:6px 11px}
+.order-main{flex:1;display:-webkit-box;display:flex;min-height:0}
+.menu-pane{flex:1;min-width:0;min-height:0;display:-webkit-box;display:flex;flex-direction:column;padding:14px 16px 16px}
+.cat-tabs{display:-webkit-box;display:flex;flex-wrap:wrap;flex:0 0 auto;margin-bottom:10px}
+.cat-tab{
+  border:1px solid #dfe3e9;background:#fff;color:#5f6671;font-size:13.5px;padding:9px 18px;
+  border-radius:22px;margin:0 8px 8px 0;cursor:pointer;
+}
+.cat-tab.active{background:#23262c;border-color:#23262c;color:#fff;font-weight:600}
+.menu-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));grid-gap:10px;
+  overflow:auto;flex:1;min-height:0;align-content:start;padding-bottom:2px;
+}
+.menu-btn{
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 14px;text-align:left;
+  cursor:pointer;color:inherit;box-shadow:0 1px 2px rgba(16,24,40,.04);
+  display:-webkit-box;display:flex;flex-direction:column;justify-content:space-between;min-height:76px;
+  transition:background .12s,border-color .12s;
+}
+.menu-btn:hover{border-color:#c9d1dd;background:#fbfcfd}
+.menu-btn:active{background:#eff3f8}
+.mb-name{font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.35;word-break:keep-all}
+.mb-price{font-size:12.5px;color:#7f8792;margin-top:8px;font-variant-numeric:tabular-nums}
+
+.order-pane{
+  flex:0 0 358px;display:-webkit-box;display:flex;flex-direction:column;background:#fff;
+  border-left:1px solid #e3e6eb;min-height:0;
+}
+.op-head{
+  flex:0 0 auto;display:-webkit-box;display:flex;align-items:center;justify-content:space-between;
+  padding:15px 18px 9px;
+}
+.op-head h2{font-size:15px;font-weight:700}
+.op-clear{border:0;background:transparent;color:#a3aab4;font-size:11.5px;cursor:pointer;padding:4px 0;text-decoration:underline}
+.op-list{flex:1;min-height:0;overflow:auto;padding:0 14px 8px}
+.op-empty{color:#a8afb9;font-size:12.5px;text-align:center;padding:44px 12px;line-height:1.6}
+.oi{display:-webkit-box;display:flex;align-items:center;padding:10px 0;border-bottom:1px solid #f2f3f6}
+.oi-info{flex:1;min-width:0;margin-right:6px}
+.oi-name{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oi-price{font-size:11.5px;color:#8b929d;margin-top:2px;font-variant-numeric:tabular-nums}
+.oi-qty{display:-webkit-box;display:flex;align-items:center;margin-right:8px;flex:0 0 auto}
+.qbtn{
+  width:27px;height:27px;border-radius:8px;border:1px solid var(--line);background:#f7f8fa;color:var(--ink2);
+  font-size:15px;line-height:1;cursor:pointer;padding:0;
+}
+.qbtn:active{background:#e9ecf0}
+.oi-qty b{min-width:24px;text-align:center;font-size:13.5px;font-variant-numeric:tabular-nums}
+.oi-sum{font-size:13.5px;font-weight:600;min-width:62px;text-align:right;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.oi-del{border:0;background:transparent;color:#c4cad3;font-size:14px;cursor:pointer;padding:4px 2px 4px 8px;line-height:1}
+.op-foot{flex:0 0 auto;border-top:1px solid #e8eaee;padding:13px 16px 15px;background:#fbfbfc}
+.op-total-row{display:-webkit-box;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}
+.op-total-row span{font-size:12.5px;color:#6f7783}
+.op-total-row b{font-size:23px;letter-spacing:-.6px}
+.op-actions{display:-webkit-box;display:flex}
+.btn{
+  font-size:14px;font-weight:600;border-radius:11px;border:1px solid transparent;cursor:pointer;padding:13px 8px;
+}
+.btn-ghost{flex:0 0 41%;margin-right:10px;background:#fff;border-color:#dfe3e9;color:var(--ink2)}
+.btn-ghost:active{background:#f2f4f7}
+.btn-pay{flex:1;background:var(--green);color:#fff;font-size:15.5px;box-shadow:0 2px 8px rgba(23,121,79,.22);display:-webkit-box;display:flex;align-items:center;justify-content:center}
+.pay-ico{display:-webkit-box;display:flex;align-items:center;margin-right:7px}
+.btn-pay:active{background:#12643f}
+
+/* ---------------- menu management ---------------- */
+.btn-primary{
+  background:#23262c;color:#fff;border:1px solid #23262c;border-radius:11px;font-size:13.5px;font-weight:600;
+  padding:11px 16px;cursor:pointer;white-space:nowrap;
+}
+.btn-primary:active{background:#000}
+.menu-panel{flex:1;min-height:0}
+.menu-head-row,.menu-row{display:-webkit-box;display:flex;align-items:center;padding:11px 16px}
+.menu-head-row{
+  font-size:11.5px;color:#8b929d;border-bottom:1px solid #eef0f3;background:#fafbfc;flex:0 0 auto;
+}
+.menu-head-row .mh-name,.menu-head-row .mr-name{flex:1}
+.menu-head-row span,.menu-row .mr-cell{font-size:12px}
+.mh-cat,.mr-cat{flex:0 0 88px;color:#7f8792;font-size:12px}
+.mh-price,.mr-price{flex:0 0 104px;text-align:right;color:#7f8792;font-size:12px}
+.mh-act,.mr-acts{flex:0 0 104px;text-align:right}
+.mr-acts{display:-webkit-box;display:flex;justify-content:flex-end;align-items:center}
+.menu-list{flex:1;min-height:0;overflow:auto}
+.menu-row{border-bottom:1px solid #f4f5f7}
+.menu-row:last-child{border-bottom:0}
+.mr-name{flex:1;min-width:0;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:10px}
+.mr-price{font-variant-numeric:tabular-nums;color:var(--ink2);font-size:13.5px!important;font-weight:600}
+.cat-chip{display:inline-block;border-radius:9px;padding:3px 9px;font-size:11px;font-weight:600}
+.cat-메인{background:var(--slate-soft);color:#46597a}
+.cat-식사{background:#e8f3ec;color:#2c6b48}
+.cat-주류{background:#fbf0e0;color:#93611a}
+.icon-act{
+  border:1px solid var(--line);background:#fff;border-radius:8px;font-size:11.5px;color:#5f6671;
+  padding:6px 9px;margin-left:5px;cursor:pointer;white-space:nowrap;flex:0 0 auto;
+}
+.icon-act:hover{background:#f7f8fa}
+.icon-act.danger{color:#b03a2b;border-color:#f0dad5}
+.menu-empty{color:#a8afb9;font-size:13px;text-align:center;padding:50px 12px}
+
+/* ---------------- sales ---------------- */
+.seg{display:-webkit-box;display:inline-flex;background:#e3e7ec;border-radius:12px;padding:3px}
+.seg-btn{
+  border:0;background:transparent;color:#5f6671;font-size:13px;font-weight:600;padding:9px 20px;
+  border-radius:9px;cursor:pointer;
+}
+.seg-btn.active{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(16,24,40,.12)}
+.sales-controls{display:-webkit-box;display:flex;align-items:center;flex:0 0 auto;margin-bottom:12px;flex-wrap:wrap}
+.icon-btn{
+  width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:16px;
+  color:#5f6671;cursor:pointer;margin-right:6px;padding:0;line-height:1;
+}
+.date-input{
+  border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 10px;font-size:13px;
+  color:var(--ink2);margin-right:6px;height:34px;
+}
+.link-btn{border:0;background:transparent;color:#46597a;font-size:12.5px;font-weight:600;cursor:pointer;padding:6px 8px;text-decoration:underline}
+.sales-caption{font-size:12px;color:#8b929d;margin-left:8px}
+.sales-scroll{flex:1;min-height:0;overflow:auto;padding-right:2px;padding-bottom:4px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-gap:12px;margin-bottom:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 16px}
+.stat span{font-size:11.5px;color:#8b929d;display:block}
+.stat b{display:block;font-size:21px;margin-top:7px;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.stat small{display:block;font-size:11px;color:#9aa1ab;margin-top:5px}
+.sales-cols{display:-webkit-box;display:flex;align-items:flex-start}
+.sales-col{flex:1;min-width:0}
+.sales-col + .sales-col{margin-left:12px;flex:0 0 38%}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:12px;display:-webkit-box;display:flex;flex-direction:column;min-height:0}
+.panel-head{
+  display:-webkit-box;display:flex;align-items:center;justify-content:space-between;
+  padding:13px 16px 11px;font-size:13px;font-weight:700;border-bottom:1px solid #f2f3f6;flex:0 0 auto;
+}
+.panel-sub{font-size:11.5px;color:#9aa1ab;font-weight:500}
+.panel-body{padding:6px 16px 12px}
+.method-row{display:-webkit-box;display:flex;align-items:center;padding:10px 0 7px;flex-wrap:wrap}
+.method-row .m-label{font-size:13px;color:var(--ink2);flex:1;display:-webkit-box;display:flex;align-items:center}
+.method-row .mi{display:-webkit-box;display:flex;align-items:center;margin-right:7px;color:#6d7a8c}
+.method-row b{font-size:14px;font-variant-numeric:tabular-nums;margin-left:8px}
+.method-row .m-count{font-size:11.5px;color:#9aa1ab;flex:0 0 40px;text-align:right;margin-left:8px}
+.method-row .bar{flex:0 0 100%;height:7px;background:#f0f2f5;border-radius:4px;margin-top:7px;overflow:hidden}
+.method-row .bar i{display:block;height:100%;background:var(--slate);border-radius:4px}
+.receipt{display:-webkit-box;display:flex;align-items:center;padding:10px 0;border-bottom:1px solid #f4f5f7;flex-wrap:wrap}
+.receipt:last-child{border-bottom:0}
+.rc-time{flex:0 0 46px;font-size:12px;color:#8b929d;font-variant-numeric:tabular-nums}
+.rc-main{flex:1;min-width:0;padding-right:8px}
+.rc-main b{font-size:13px;font-weight:600;margin-right:6px}
+.rc-main span{font-size:11.5px;color:#8b929d;display:block;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc-method{flex:0 0 auto;font-size:11px;background:#f2f4f7;color:#5f6671;border-radius:8px;padding:3px 8px;margin-right:9px}
+.rc-amt{flex:0 0 82px;text-align:right;font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.rc-cancel{border:0;background:transparent;color:#c0c6cf;font-size:11px;cursor:pointer;padding:4px 0 4px 8px;text-decoration:underline}
+.menu-agg{display:-webkit-box;display:flex;align-items:center;padding:8px 0;border-bottom:1px solid #f6f7f9}
+.menu-agg:last-child{border-bottom:0}
+.ma-rank{flex:0 0 22px;font-size:11.5px;color:#a8afb9;font-variant-numeric:tabular-nums}
+.ma-name{flex:1;font-size:13px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:6px}
+.ma-qty{flex:0 0 44px;text-align:right;font-size:11.5px;color:#8b929d}
+.ma-amt{flex:0 0 74px;text-align:right;font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.panel-empty{color:#a8afb9;font-size:12.5px;text-align:center;padding:34px 8px}
+.mchart{display:-webkit-box;display:flex;align-items:flex-end;height:104px;padding:8px 0 0;border-bottom:1px solid #eef0f3}
+.mbar{flex:1;margin-right:3px;display:-webkit-box;display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.mbar:last-child{margin-right:0}
+.mbar i{display:block;width:100%;background:#c7d2e2;border-radius:3px 3px 0 0;min-height:0}
+.mbar.hot i{background:var(--slate)}
+.mchart-axis{display:-webkit-box;display:flex;margin-top:4px}
+.mchart-axis span{flex:1;font-size:9px;color:#adb4be;text-align:center;margin-right:3px}
+.day-row{display:-webkit-box;display:flex;align-items:center;padding:7px 0;border-bottom:1px solid #f6f7f9}
+.day-row:last-child{border-bottom:0}
+.dr-date{flex:0 0 62px;font-size:12px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.dr-count{flex:0 0 34px;font-size:11px;color:#9aa1ab;text-align:right;padding-right:8px}
+.dr-bar{flex:1;height:8px;background:#f0f2f5;border-radius:4px;overflow:hidden;margin-right:10px}
+.dr-bar i{display:block;height:100%;background:#9db0cd;border-radius:4px}
+.dr-amt{flex:0 0 82px;text-align:right;font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums}
+
+/* ---------------- modal ---------------- */
+.modal-layer{
+  position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(16,20,28,.46);z-index:80;
+  display:none;align-items:center;justify-content:center;padding:18px;
+}
+.modal-layer.open{display:-webkit-box;display:flex;align-items:center;justify-content:center}
+.modal{
+  background:#fff;border-radius:16px;width:100%;max-width:420px;max-height:90vh;display:-webkit-box;display:flex;
+  flex-direction:column;overflow:hidden;box-shadow:0 20px 50px rgba(10,15,25,.28);
+}
+.modal.wide{max-width:540px}
+.modal-head{padding:19px 20px 10px;flex:0 0 auto}
+.modal-head h3{font-size:17px;font-weight:700;letter-spacing:-.2px}
+.modal-head p{font-size:12.5px;color:#8b929d;margin-top:6px;line-height:1.5}
+.modal-body{padding:0 20px;overflow:auto;flex:1;min-height:0}
+.modal-foot{padding:14px 20px 18px;display:-webkit-box;display:flex;flex:0 0 auto}
+.modal-foot .btn{flex:1;padding:13px}
+.modal-foot .btn + .btn{margin-left:9px}
+.btn-cancel{background:#f4f5f7;color:var(--ink2);border-color:#e6e9ee}
+.btn-danger{background:var(--red);color:#fff}
+.btn-ok{background:#23262c;color:#fff}
+.btn-green{background:var(--green);color:#fff}
+.pay-amt{font-size:30px;font-weight:700;text-align:center;margin:4px 0 18px;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.pay-methods{display:-webkit-box;display:flex;flex-direction:column;padding-bottom:6px}
+.pay-m{
+  display:-webkit-box;display:flex;align-items:center;background:#f7f8fa;border:1px solid #e5e9ef;
+  border-radius:13px;padding:15px 16px;margin-bottom:10px;font-size:14.5px;font-weight:600;cursor:pointer;
+  text-align:left;color:var(--ink);width:100%;
+}
+.pay-m:active{background:#eaeef4}
+.pay-m .pi{margin-right:12px;width:24px;display:-webkit-box;display:flex;align-items:center;justify-content:center;color:#54606f}
+.pay-m .pdesc{font-size:11.5px;color:#8b929d;font-weight:500;margin-left:8px}
+.pay-m .arrow{margin-left:auto;color:#b6bcc6;font-size:14px}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12px;color:#6f7783;margin-bottom:6px;font-weight:600}
+.field input,.field select{
+  width:100%;border:1px solid #dfe3e9;border-radius:10px;padding:12px;font-size:15px;color:var(--ink);
+  background:#fff;height:46px;
+}
+.field input:focus,.field select:focus{outline:0;border-color:#9fb0c9;box-shadow:0 0 0 3px rgba(86,107,144,.12)}
+.field .err{color:#b03a2b;font-size:11.5px;margin-top:5px;display:none}
+.field.invalid input{border-color:#dd8878}
+.field.invalid .err{display:block}
+.cat-select{display:-webkit-box;display:flex}
+.cat-opt{
+  flex:1;border:1px solid #dfe3e9;background:#fff;color:#5f6671;font-size:13.5px;padding:11px 6px;
+  cursor:pointer;border-radius:0;margin-left:-1px;
+}
+.cat-opt:first-child{border-radius:10px 0 0 10px;margin-left:0}
+.cat-opt:last-child{border-radius:0 10px 10px 0}
+.cat-opt.active{background:#23262c;border-color:#23262c;color:#fff;font-weight:600;position:relative;z-index:1}
+.set-section{border-top:1px solid #f0f2f5;padding:14px 0}
+.set-section:first-child{border-top:0;padding-top:4px}
+.set-row{display:-webkit-box;display:flex;align-items:center;justify-content:space-between;padding:7px 0}
+.set-row .s-label{font-size:13px;font-weight:600;color:var(--ink2)}
+.set-row .s-desc{font-size:11.5px;color:#9aa1ab;margin-top:3px;line-height:1.4}
+.stepper{display:-webkit-box;display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.stepper button{width:36px;height:36px;border:0;background:#f7f8fa;font-size:16px;color:var(--ink2);cursor:pointer;padding:0}
+.stepper span{min-width:46px;text-align:center;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.set-btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--ink2);cursor:pointer}
+.set-btn + .set-btn{margin-left:8px}
+.set-btn.danger{color:#b03a2b;border-color:#f0dad5}
+.info-list{font-size:11.5px;color:#8b929d;line-height:1.75}
+.info-list b{color:#5f6671;font-weight:600}
+.info-note{background:#f7f9fc;border:1px solid #e8eef6;border-radius:11px;padding:11px 13px;font-size:11.5px;color:#5c6b82;line-height:1.6;margin-top:10px}
+
+/* ---------------- toast ---------------- */
+.toast-wrap{position:fixed;bottom:96px;left:0;right:0;z-index:120;display:-webkit-box;display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.toast{
+  background:#22262d;color:#fff;border-radius:12px;padding:12px 16px;font-size:13px;margin-top:8px;
+  display:-webkit-box;display:flex;align-items:center;box-shadow:0 8px 24px rgba(10,15,25,.24);
+  pointer-events:auto;max-width:88%;transition:opacity .22s,transform .22s;
+}
+.toast.out{opacity:0;transform:translateY(8px)}
+.toast .t-undo{
+  border:0;background:rgba(255,255,255,.16);color:#fff;font-size:12px;font-weight:700;border-radius:8px;
+  padding:7px 11px;margin-left:14px;cursor:pointer;white-space:nowrap;
+}
+.toast.success{background:#1c6b49}
+.toast.warn{background:#8a5a12}
+
+/* ---------------- responsive ---------------- */
+@media (max-width:900px){
+  .app{flex-direction:column}
+  .sidebar{
+    width:auto;flex:0 0 auto;flex-direction:row;align-items:center;padding:8px 10px;
+    border-bottom:1px solid #22252c;
+  }
+  .brand{padding:0 10px 0 2px;margin-right:4px}
+  .brand-mark{width:30px;height:30px;flex:0 0 30px;border-radius:9px;margin-right:8px}
+  .brand-text strong{font-size:14px}
+  .brand-text span{display:none}
+  .nav{flex-direction:row;flex:1;min-width:0}
+  .nav-item{flex:1;flex-direction:column;padding:7px 4px;margin:0 2px;border-radius:9px;font-size:10.5px}
+  .nav-item .ico{margin:0 0 3px;font-size:15px;width:auto;flex:0 0 auto}
+  .nav-item .lbl{text-align:center;font-size:10.5px}
+  .nav-count{position:absolute;display:none}
+  .nav-bottom{border:0;padding:0;margin:0;flex:0 0 auto}
+  .nav-bottom .nav-item{width:52px;flex:0 0 52px}
+  .sidebar-note{display:none}
+  .view{padding:12px 12px 14px}
+  .h-title{font-size:18px}
+  .table-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:minmax(148px,1fr);grid-gap:10px}
+  .tc-name{font-size:15.5px}
+  .head-right .clock b{font-size:15px}
+  .chips{margin-top:5px}
+  .chip{font-size:10px;padding:4px 8px;margin-left:0}
+  .chip .dot{width:6px;height:6px;margin-right:5px}
+  .seat-pill{font-size:12px;padding:7px 12px}
+  .order-pane{flex:0 0 44%;max-height:52%;border-left:0;border-top:1px solid #e3e6eb}
+  .order-main{flex-direction:column}
+  .menu-pane{padding:10px 12px 10px;flex:1}
+  .menu-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));grid-gap:8px}
+  .menu-btn{padding:10px 11px;min-height:66px}
+  .mb-name{font-size:13.5px}
+  .ot-total{display:none}
+  .order-top{padding:10px 12px}
+  .op-foot{padding:10px 12px 12px}
+  .op-total-row b{font-size:20px}
+  .btn{padding:12px 6px;font-size:13.5px}
+  .btn-pay{font-size:14.5px}
+  .sales-cols{flex-direction:column}
+  .sales-col + .sales-col{margin-left:0;flex:1 1 auto;width:100%}
+  .stat-grid{grid-template-columns:repeat(2,1fr);grid-gap:9px}
+  .stat:first-child{grid-column:1 / -1}
+  .stat b{font-size:18px}
+  .sales-col{width:100%}
+  .menu-head-row .mh-cat,.mr-cat{flex:0 0 62px}
+  .mh-price,.mr-price{flex:0 0 78px}
+  .mh-act,.mr-acts{flex:0 0 76px}
+  .dr-date{flex:0 0 54px}
+  .dr-amt{flex:0 0 70px}
+  .modal{max-height:92vh}
+}
+@media (max-width:520px){
+  .view{padding:10px 10px 12px}
+  .view-head{margin-bottom:10px}
+  .h-title{font-size:17px}
+  .table-grid{grid-gap:8px;grid-auto-rows:minmax(132px,1fr)}
+  .tc-head{padding:11px 11px 9px}
+  .tc-body{padding:2px 11px}
+  .tc-foot{padding:9px 11px}
+  .tc-items li{font-size:12.5px;padding:5px 0}
+  .seat-pill{font-size:11px;padding:6px 10px}
+  .head-right .clock{font-size:10.5px}
+  .head-right .clock b{font-size:13px;margin-left:4px}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .menu-head-row .mh-cat,.mr-cat{display:none}
+  .mr-cat{display:none}
+  .rc-time{flex:0 0 40px}
+  .rc-amt{flex:0 0 70px}
+  .seg-btn{padding:8px 14px;font-size:12px}
+  .pay-amt{font-size:26px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><img src="./icon-192.png" alt="원앙식당"></div>
+      <div class="brand-text"><strong>원앙식당</strong><span>POS</span></div>
+    </div>
+    <nav class="nav">
+      <button class="nav-item active" data-view="orders">
+        <span class="ico"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.8h10v14.4l-1.7-1.2-1.7 1.2-1.6-1.2-1.7 1.2-1.7-1.2L5 17.2z"/><path d="M7.6 6.4h4.8M7.6 9.4h4.8M7.6 12.4h3"/></svg></span><span class="lbl">주문현황</span><em class="nav-count zero" id="navCount">0</em>
+      </button>
+      <button class="nav-item" data-view="menu">
+        <span class="ico"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="7.2"/><circle cx="10" cy="10" r="3.2"/></svg></span><span class="lbl">메뉴관리</span>
+      </button>
+      <button class="nav-item" data-view="sales">
+        <span class="ico"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3.4 16.6V9.4M8.1 16.6V4.4M12.8 16.6v-5M17.5 16.6V7.2"/></svg></span><span class="lbl">매출현황</span>
+      </button>
+    </nav>
+    <div class="nav-bottom">
+      <button class="nav-item" id="openSettings">
+        <span class="ico"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 6.2h14M3 13.8h14"/><circle cx="7.4" cy="6.2" r="2.1"/><circle cx="12.6" cy="13.8" r="2.1"/></svg></span><span class="lbl">설정</span>
+      </button>
+      <div class="sidebar-note">오프라인 저장 · 태블릿 POS<br>기기에 주문·매출이 저장됩니다</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <section class="view active" id="view-orders">
+      <div class="view-head">
+        <div>
+          <h1 class="h-title">주문현황</h1>
+          <div class="seat-pill" style="margin-top:9px"><span class="seat-dot"></span>좌석 현황 : 이용중 <b id="seatUsed">0</b> · 공석 <b id="seatFree">8</b></div>
+        </div>
+        <div class="head-right">
+          <div class="clock"><span id="nowDate">2026. 11. 24 (화)</span><b id="nowTime">00:00:00</b></div>
+          <div class="chips">
+            <span class="chip" id="saveChip"><span class="dot"></span><span id="saveChipText">오프라인 저장됨</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="table-grid" id="tableGrid"></div>
+    </section>
+
+    <section class="view" id="view-menu">
+      <div class="view-head">
+        <div>
+          <h1 class="h-title">메뉴관리</h1>
+          <div class="h-sub" id="menuSummary">총 0개 메뉴</div>
+        </div>
+        <button class="btn-primary" id="addMenuBtn">＋ 새 메뉴 추가</button>
+      </div>
+      <div class="cat-tabs" id="menuCats"></div>
+      <div class="panel menu-panel">
+        <div class="menu-head-row">
+          <span class="mh-name">메뉴명</span>
+          <span class="mh-cat">카테고리</span>
+          <span class="mh-price">가격</span>
+          <span class="mh-act"></span>
+        </div>
+        <div class="menu-list" id="menuList"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-sales">
+      <div class="view-head">
+        <div>
+          <h1 class="h-title">매출현황</h1>
+          <div class="h-sub">일매출 · 월매출 정산 기록</div>
+        </div>
+        <div class="seg" id="salesTabs">
+          <button class="seg-btn active" data-tab="day">일매출</button>
+          <button class="seg-btn" data-tab="month">월매출</button>
+        </div>
+      </div>
+      <div class="sales-controls" id="dayControls">
+        <button class="icon-btn" id="dayPrev" aria-label="이전 날">‹</button>
+        <input type="date" class="date-input" id="dayDate">
+        <button class="icon-btn" id="dayNext" aria-label="다음 날">›</button>
+        <button class="link-btn" id="dayToday">오늘</button>
+        <span class="sales-caption" id="dayCaption"></span>
+      </div>
+      <div class="sales-controls" id="monthControls">
+        <button class="icon-btn" id="monthPrev" aria-label="이전 달">‹</button>
+        <input type="month" class="date-input" id="monthInput">
+        <button class="icon-btn" id="monthNext" aria-label="다음 달">›</button>
+        <button class="link-btn" id="monthThis">이번 달</button>
+      </div>
+      <div class="sales-scroll" id="salesContent"></div>
+    </section>
+  </main>
+</div>
+
+<div class="overlay" id="orderScreen">
+  <div class="order-top">
+    <button class="back-btn" id="orderBack" aria-label="닫기">←</button>
+    <div>
+      <div class="ot-title" id="orderTitle">1번 테이블</div>
+      <div class="ot-sub" id="orderMeta">주문 내역 없음</div>
+    </div>
+    <div class="ot-right">
+      <div class="ot-total"><span>합계</span><b id="orderTotalMini">0원</b></div>
+      <div class="ot-seat" id="orderSeat">이용중</div>
+    </div>
+  </div>
+  <div class="order-main">
+    <div class="menu-pane">
+      <div class="cat-tabs" id="orderCats"></div>
+      <div class="menu-grid" id="orderMenuGrid"></div>
+    </div>
+    <div class="order-pane">
+      <div class="op-head">
+        <h2>주문 내역</h2>
+        <button class="op-clear" id="clearOrder">전체 삭제</button>
+      </div>
+      <div class="op-list" id="orderList"></div>
+      <div class="op-foot">
+        <div class="op-total-row"><span>총 결제 금액</span><b id="orderTotal">0원</b></div>
+        <div class="op-actions">
+          <button class="btn btn-ghost" id="saveOrder">주문 저장(닫기)</button>
+          <button class="btn btn-pay" id="payBtn"><span class="pay-ico"><svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.4" y="4.6" width="15.2" height="10.8" rx="2"/><path d="M2.4 8.1h15.2"/></svg></span>결제 완료(정산)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-layer" id="modalLayer"></div>
+<div class="toast-wrap" id="toastWrap"></div>
+<script>
+/* 원앙식당 POS - single-file offline restaurant POS */
+(function () {
+  'use strict';
+
+  var LS_KEY = 'wonang_pos_v1';
+  var APP_VERSION = '1.0.0';
+  var MENU_CATS = ['메인', '식사', '주류'];
+  var ICON_CARD = '<svg viewBox="0 0 20 20" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.4" y="4.6" width="15.2" height="10.8" rx="2"/><path d="M2.4 8.1h15.2"/><path d="M5.4 12.6h3"/></svg>';
+  var ICON_CASH = '<svg viewBox="0 0 20 20" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.2" y="5.4" width="15.6" height="9.2" rx="1.8"/><circle cx="10" cy="10" r="2.3"/><path d="M4.9 7.7v.01M15.1 12.3v.01"/></svg>';
+  var ICON_BANK = '<svg viewBox="0 0 20 20" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2.8 8.2 10 4l7.2 4.2"/><path d="M5 9.4v5.9M10 9.4v5.9M15 9.4v5.9M3 17h14"/></svg>';
+  var METHODS = [
+    { key: '카드', icon: ICON_CARD },
+    { key: '현금', icon: ICON_CASH },
+    { key: '계좌이체', icon: ICON_BANK }
+  ];
+
+  /* ---------- helpers ---------- */
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function esc(v) {
+    return String(v === null || v === undefined ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function won(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function todayStr(d) { d = d || new Date(); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+  function thisMonth() { return todayStr().slice(0, 7); }
+  function weekdayKR(d) { return ['일', '월', '화', '수', '목', '금', '토'][d.getDay()]; }
+  function fmtDateKR(s) { var p = String(s).split('-'); return p[0] + '. ' + Number(p[1]) + '. ' + Number(p[2]) + '.'; }
+  function timeOf(ts) { var d = new Date(ts); return pad2(d.getHours()) + ':' + pad2(d.getMinutes()); }
+  function timeSec(d) { return pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds()); }
+  function uid(p) { return (p || '') + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function clone(v) { return JSON.parse(JSON.stringify(v)); }
+
+  /* ---------- data ---------- */
+  var DEFAULT_MENU = [
+    ['삼겹살', 13000, '메인'], ['목살', 13000, '메인'], ['항정살', 16000, '메인'],
+    ['차돌박이', 20000, '메인'], ['등심', 35000, '메인'], ['육회(소)', 30000, '메인'],
+    ['육회(대)', 50000, '메인'],
+    ['제육볶음', 11000, '식사'], ['갈비탕', 10000, '식사'], ['김치찌개', 10000, '식사'],
+    ['된장찌개', 8000, '식사'], ['비빔냉면', 8000, '식사'], ['물냉면', 6000, '식사'],
+    ['소면', 4000, '식사'], ['밥', 2000, '식사'],
+    ['소주', 5000, '주류'], ['맥주', 5000, '주류'], ['음료', 2000, '주류']
+  ];
+
+  function defaultMenus() {
+    return DEFAULT_MENU.map(function (r, i) {
+      return { id: 'm' + (i + 1), name: r[0], price: r[1], cat: r[2] };
+    });
+  }
+  function makeTable(n) {
+    return { id: n, name: n + '번', items: [], savedCount: 0, openedAt: null, dirty: false };
+  }
+  function makeTables(n) {
+    var t = [];
+    for (var i = 1; i <= n; i++) t.push(makeTable(i));
+    return t;
+  }
+  function defaultState() {
+    return {
+      version: 1, shop: '원앙식당', tableCount: 8,
+      tables: makeTables(8), menus: defaultMenus(), sales: [],
+      createdAt: Date.now(), updatedAt: null
+    };
+  }
+
+  function normalize(p) {
+    var s = defaultState();
+    if (!p || typeof p !== 'object') return s;
+
+    if (p.menus && p.menus.length) {
+      var menus = [];
+      p.menus.forEach(function (m, i) {
+        if (!m || !m.name) return;
+        menus.push({
+          id: m.id || ('m' + (i + 1)),
+          name: String(m.name),
+          price: Math.max(0, Number(m.price) || 0),
+          cat: MENU_CATS.indexOf(m.cat) >= 0 ? m.cat : '메인'
+        });
+      });
+      if (menus.length) s.menus = menus;
+    }
+
+    s.tableCount = Math.max(1, Math.min(24, Number(p.tableCount) || 8));
+    var src = p.tables || [];
+    s.tables = [];
+    for (var i = 0; i < s.tableCount; i++) {
+      var t = src[i] || {};
+      var items = [];
+      (t.items || []).forEach(function (it) {
+        if (!it || !it.name) return;
+        items.push({
+          menuId: it.menuId || '',
+          name: String(it.name),
+          price: Math.max(0, Number(it.price) || 0),
+          qty: Math.max(1, Number(it.qty) || 1)
+        });
+      });
+      s.tables.push({
+        id: i + 1, name: (i + 1) + '번', items: items,
+        savedCount: Number(t.savedCount) || 0,
+        openedAt: t.openedAt || null,
+        dirty: !!t.dirty
+      });
+    }
+
+    s.sales = [];
+    (p.sales || []).forEach(function (r) {
+      if (!r || !r.total) return;
+      var items = [];
+      (r.items || []).forEach(function (it) {
+        if (!it || !it.name) return;
+        items.push({
+          menuId: it.menuId || '', name: String(it.name),
+          price: Math.max(0, Number(it.price) || 0),
+          qty: Math.max(1, Number(it.qty) || 1)
+        });
+      });
+      s.sales.push({
+        id: r.id || uid('s'),
+        ts: Number(r.ts) || Date.now(),
+        date: r.date || todayStr(new Date(Number(r.ts) || Date.now())),
+        time: r.time || timeOf(Number(r.ts) || Date.now()),
+        tableName: r.tableName || '',
+        method: METHODS.some(function (m) { return m.key === r.method; }) ? r.method : '카드',
+        items: items,
+        total: Number(r.total) || 0
+      });
+    });
+    return s;
+  }
+
+  var storageOk = true;
+  function loadState() {
+    var raw = null;
+    try { raw = localStorage.getItem(LS_KEY); } catch (e) { storageOk = false; }
+    if (raw) {
+      try { return normalize(JSON.parse(raw)); } catch (e2) { /* broken, start fresh */ }
+    }
+    return defaultState();
+  }
+  function save() {
+    S.updatedAt = Date.now();
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(S));
+      storageOk = true;
+    } catch (e) {
+      storageOk = false;
+    }
+    renderSaveChip();
+  }
+
+  var S = null;
+  var ui = {
+    view: 'orders',
+    orderTableId: null,
+    orderCat: 'all',
+    menuCat: 'all',
+    salesTab: 'day',
+    salesDate: todayStr(),
+    salesMonth: thisMonth()
+  };
+
+  /* ---------- small UI helpers ---------- */
+  function renderSaveChip() {
+    var chip = $('#saveChip');
+    var txt = $('#saveChipText');
+    if (!chip || !txt) return;
+    var offline = !navigator.onLine;
+    var cls = 'chip';
+    if (!storageOk) { cls += ' warn'; txt.textContent = '저장 실패 · 용량 확인'; }
+    else if (offline) { cls += ' offline'; txt.textContent = '오프라인 · 기기 저장'; }
+    else { txt.textContent = '오프라인 저장됨'; }
+    chip.className = cls;
+    if (S && S.updatedAt) chip.title = '마지막 저장 ' + timeSec(new Date(S.updatedAt));
+  }
+
+  var toastWrap = $('#toastWrap');
+  function toast(msg, opts) {
+    opts = opts || {};
+    var el = document.createElement('div');
+    el.className = 'toast' + (opts.type ? ' ' + opts.type : '');
+    var span = document.createElement('span');
+    span.className = 't-msg';
+    span.textContent = msg;
+    el.appendChild(span);
+    var timer = null;
+    function kill() {
+      if (!el.parentNode) return;
+      el.className += ' out';
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 240);
+    }
+    if (opts.undo) {
+      var b = document.createElement('button');
+      b.className = 't-undo';
+      b.textContent = opts.undoLabel || '실행취소';
+      b.onclick = function () { clearTimeout(timer); opts.undo(); kill(); };
+      el.appendChild(b);
+    }
+    while (toastWrap.children.length >= 3) toastWrap.removeChild(toastWrap.firstChild);
+    toastWrap.appendChild(el);
+    timer = setTimeout(kill, opts.undo ? 6500 : 2600);
+  }
+
+  var modalLayer = $('#modalLayer');
+  function closeModal() {
+    modalLayer.className = 'modal-layer';
+    modalLayer.innerHTML = '';
+  }
+  function showModal(o) {
+    var actions = o.actions || [{ label: '닫기', cls: 'btn-cancel', onClick: closeModal }];
+    var html = '<div class="modal' + (o.wide ? ' wide' : '') + '">'
+      + '<div class="modal-head"><h3>' + o.title + '</h3>' + (o.desc ? '<p>' + o.desc + '</p>' : '') + '</div>'
+      + '<div class="modal-body">' + (o.body || '') + '</div>'
+      + '<div class="modal-foot"></div></div>';
+    modalLayer.innerHTML = html;
+    var foot = $('.modal-foot', modalLayer);
+    actions.forEach(function (a, idx) {
+      var btn = document.createElement('button');
+      btn.className = 'btn ' + (a.cls || 'btn-cancel');
+      btn.textContent = a.label;
+      btn.setAttribute('data-act', String(idx));
+      foot.appendChild(btn);
+    });
+    modalLayer.className = 'modal-layer open';
+    foot.onclick = function (e) {
+      var b = e.target.closest ? e.target.closest('[data-act]') : null;
+      if (!b) return;
+      var a = actions[Number(b.getAttribute('data-act'))];
+      if (a && a.onClick) a.onClick();
+    };
+    modalLayer.onclick = function (e) {
+      if (e.target === modalLayer && o.dismissable !== false) closeModal();
+    };
+    return modalLayer;
+  }
+  function confirmDialog(title, message, okLabel, danger, onOk) {
+    showModal({
+      title: title,
+      desc: message,
+      body: '',
+      actions: [
+        { label: '취소', cls: 'btn-cancel', onClick: closeModal },
+        {
+          label: okLabel || '확인', cls: danger ? 'btn-danger' : 'btn-ok',
+          onClick: function () { closeModal(); onOk(); }
+        }
+      ]
+    });
+  }
+
+  /* ---------- tables ---------- */
+  function getTable(id) {
+    for (var i = 0; i < S.tables.length; i++) if (S.tables[i].id === Number(id)) return S.tables[i];
+    return null;
+  }
+  function getMenu(id) {
+    for (var i = 0; i < S.menus.length; i++) if (S.menus[i].id === id) return S.menus[i];
+    return null;
+  }
+  function tableTotal(t) {
+    var sum = 0;
+    t.items.forEach(function (it) { sum += it.price * it.qty; });
+    return sum;
+  }
+  function tableCountActive() {
+    var n = 0;
+    S.tables.forEach(function (t) { if (t.items.length) n++; });
+    return n;
+  }
+
+  function renderTables() {
+    var grid = $('#tableGrid');
+    var html = '';
+    S.tables.forEach(function (t) {
+      var occupied = t.items.length > 0;
+      html += '<button class="table-card' + (occupied ? ' occupied' : '') + '" data-table="' + t.id + '">';
+      html += '<div class="tc-head"><span class="tc-name">' + esc(t.name) + '</span>';
+      if (occupied) {
+        if (t.savedCount > 0) {
+          html += '<span class="badge-orders">주문완료<i>' + t.savedCount + '</i></span>';
+        } else {
+          html += '<span class="badge-draft">작성중</span>';
+        }
+      } else {
+        html += '<span class="tc-wait">입장대기<span class="chev">✓</span></span>';
+      }
+      html += '</div>';
+      if (occupied) {
+        html += '<div class="tc-body"><ul class="tc-items">';
+        t.items.forEach(function (it) {
+          html += '<li><span>' + esc(it.name) + '</span><span class="q">' + it.qty + '</span></li>';
+        });
+        html += '</ul></div><div class="tc-foot"><span>합계</span><b>' + won(tableTotal(t)) + '</b></div>';
+      } else {
+        html += '<div class="tc-empty">눌러서 주문</div>';
+      }
+      html += '</button>';
+    });
+    grid.innerHTML = html;
+
+    var used = tableCountActive();
+    $('#seatUsed').textContent = used;
+    $('#seatFree').textContent = S.tables.length - used;
+    var badge = $('#navCount');
+    badge.textContent = used;
+    badge.className = 'nav-count' + (used ? '' : ' zero');
+  }
+
+  /* ---------- order screen ---------- */
+  function openOrder(id) {
+    var t = getTable(id);
+    if (!t) return;
+    ui.orderTableId = t.id;
+    ui.orderCat = 'all';
+    $('#orderScreen').className = 'overlay open';
+    $('#orderTitle').textContent = t.name + ' 테이블';
+    renderOrderCats();
+    renderOrderMenu();
+    renderOrderList();
+  }
+  function closeOrder() {
+    $('#orderScreen').className = 'overlay';
+    ui.orderTableId = null;
+  }
+  function renderOrderCats() {
+    var cats = [{ k: 'all', n: '전체' }].concat(MENU_CATS.map(function (c) { return { k: c, n: c }; }));
+    var html = '';
+    cats.forEach(function (c) {
+      html += '<button class="cat-tab' + (ui.orderCat === c.k ? ' active' : '') + '" data-ocat="' + esc(c.k) + '">' + esc(c.n) + '</button>';
+    });
+    $('#orderCats').innerHTML = html;
+  }
+  function renderOrderMenu() {
+    var wrap = $('#orderMenuGrid');
+    var list = S.menus.filter(function (m) { return ui.orderCat === 'all' || m.cat === ui.orderCat; });
+    var html = '';
+    list.forEach(function (m) {
+      html += '<button class="menu-btn" data-add="' + esc(m.id) + '">'
+        + '<span class="mb-name">' + esc(m.name) + '</span>'
+        + '<span class="mb-price">' + won(m.price) + '</span></button>';
+    });
+    if (!html) html = '<div class="op-empty">이 카테고리에 메뉴가 없습니다.<br>메뉴관리에서 추가할 수 있어요.</div>';
+    wrap.innerHTML = html;
+  }
+  function findItem(t, menuId) {
+    for (var i = 0; i < t.items.length; i++) if (t.items[i].menuId === menuId) return t.items[i];
+    return null;
+  }
+  function renderOrderList() {
+    var t = getTable(ui.orderTableId);
+    if (!t) return;
+    var html = '';
+    if (!t.items.length) {
+      html = '<div class="op-empty">메뉴를 눌러 주문을 담으세요<br>담은 뒤 ‘주문 저장’ 또는 ‘결제 완료’</div>';
+    } else {
+      t.items.forEach(function (it) {
+        html += '<div class="oi">'
+          + '<div class="oi-info"><div class="oi-name">' + esc(it.name) + '</div>'
+          + '<div class="oi-price">' + won(it.price) + ' × ' + it.qty + '</div></div>'
+          + '<div class="oi-qty">'
+          + '<button class="qbtn" data-dec="' + esc(it.menuId) + '" aria-label="수량 줄이기">−</button>'
+          + '<b>' + it.qty + '</b>'
+          + '<button class="qbtn" data-inc="' + esc(it.menuId) + '" aria-label="수량 늘리기">+</button>'
+          + '</div>'
+          + '<div class="oi-sum">' + won(it.price * it.qty) + '</div>'
+          + '<button class="oi-del" data-del="' + esc(it.menuId) + '" aria-label="삭제">✕</button>'
+          + '</div>';
+      });
+    }
+    $('#orderList').innerHTML = html;
+    var total = tableTotal(t);
+    $('#orderTotal').textContent = won(total);
+    $('#orderTotalMini').textContent = won(total);
+    var meta = [];
+    if (t.savedCount > 0) meta.push('주문완료 ' + t.savedCount + '건');
+    else if (t.items.length) meta.push('아직 저장 전');
+    if (t.openedAt) meta.push('입장 ' + timeOf(t.openedAt));
+    meta.push('메뉴 ' + t.items.length + '종');
+    $('#orderMeta').textContent = meta.join(' · ');
+    $('#orderSeat').textContent = t.items.length ? '이용중' : '입장대기';
+  }
+
+  function addItem(menuId) {
+    var t = getTable(ui.orderTableId);
+    if (!t) return;
+    var m = getMenu(menuId);
+    if (!m) { toast('메뉴를 찾을 수 없습니다', { type: 'warn' }); return; }
+    var it = findItem(t, menuId);
+    if (it) {
+      it.qty += 1;
+      it.name = m.name;
+      it.price = m.price;
+    } else {
+      t.items.push({ menuId: m.id, name: m.name, price: m.price, qty: 1 });
+    }
+    t.dirty = true;
+    if (!t.openedAt) t.openedAt = Date.now();
+    save();
+    renderOrderList();
+    renderTables();
+  }
+  function changeQty(menuId, delta) {
+    var t = getTable(ui.orderTableId);
+    if (!t) return;
+    var it = findItem(t, menuId);
+    if (!it) return;
+    it.qty += delta;
+    if (it.qty <= 0) t.items = t.items.filter(function (x) { return x !== it; });
+    t.dirty = true;
+    save();
+    renderOrderList();
+    renderTables();
+  }
+  function removeItem(menuId) {
+    var t = getTable(ui.orderTableId);
+    if (!t) return;
+    t.items = t.items.filter(function (x) { return x.menuId !== menuId; });
+    if (!t.items.length) { t.savedCount = 0; t.openedAt = null; }
+    t.dirty = true;
+    save();
+    renderOrderList();
+    renderTables();
+  }
+
+  function saveOrderAndClose() {
+    var t = getTable(ui.orderTableId);
+    if (!t) { closeOrder(); return; }
+    if (!t.items.length) {
+      closeOrder();
+      toast('주문 내역이 없어 테이블을 비웠습니다');
+      return;
+    }
+    if (t.dirty) { t.savedCount = (t.savedCount || 0) + 1; t.dirty = false; }
+    if (!t.openedAt) t.openedAt = Date.now();
+    save();
+    renderTables();
+    closeOrder();
+    toast(t.name + ' 주문 저장 · ' + won(tableTotal(t)) + ' (주문완료 ' + t.savedCount + '건)', { type: 'success' });
+  }
+
+  /* ---------- payment ---------- */
+  function openPay() {
+    var t = getTable(ui.orderTableId);
+    if (!t || !t.items.length) { toast('주문 내역이 없습니다', { type: 'warn' }); return; }
+    var total = tableTotal(t);
+    var body = '<div class="pay-amt">' + won(total) + '</div><div class="pay-methods">';
+    METHODS.forEach(function (m) {
+      body += '<button class="pay-m" data-pay="' + m.key + '"><span class="pi">' + m.icon + '</span>'
+        + m.key + '<span class="pdesc">바로 정산</span><span class="arrow">›</span></button>';
+    });
+    body += '</div>';
+    showModal({
+      title: '결제 수단 선택',
+      desc: t.name + ' · 메뉴 ' + t.items.length + '종 · ' + won(total),
+      body: body,
+      actions: [{ label: '취소', cls: 'btn-cancel', onClick: closeModal }]
+    });
+    $$('.pay-m', modalLayer).forEach(function (b) {
+      b.onclick = function () { settle(b.getAttribute('data-pay')); };
+    });
+  }
+
+  function settle(method) {
+    var t = getTable(ui.orderTableId);
+    if (!t || !t.items.length) { closeModal(); return; }
+    var total = tableTotal(t);
+    var snapshot = { items: clone(t.items), savedCount: t.savedCount, openedAt: t.openedAt, dirty: t.dirty };
+    var rec = {
+      id: uid('s'),
+      ts: Date.now(),
+      date: todayStr(),
+      time: timeOf(Date.now()),
+      tableName: t.name,
+      method: method,
+      items: clone(t.items),
+      total: total
+    };
+    S.sales.push(rec);
+    t.items = []; t.savedCount = 0; t.openedAt = null; t.dirty = false;
+    save();
+    closeModal();
+    closeOrder();
+    renderTables();
+    if (ui.view === 'sales') renderSales();
+    toast(t.name + ' 정산 완료 · ' + method + ' ' + won(total), {
+      type: 'success',
+      undoLabel: '실행취소',
+      undo: function () {
+        S.sales = S.sales.filter(function (r) { return r.id !== rec.id; });
+        var tt = getTable(t.id);
+        if (tt) {
+          tt.items = snapshot.items;
+          tt.savedCount = snapshot.savedCount;
+          tt.openedAt = snapshot.openedAt;
+          tt.dirty = snapshot.dirty;
+        }
+        save();
+        renderTables();
+        if (ui.view === 'sales') renderSales();
+        toast('정산을 취소했습니다 · ' + tt.name + ' 테이블로 돌아갔습니다');
+      }
+    });
+  }
+
+  /* ---------- menu management ---------- */
+  function renderMenuView() {
+    var cats = [{ k: 'all', n: '전체' }].concat(MENU_CATS.map(function (c) { return { k: c, n: c }; }));
+    var html = '';
+    cats.forEach(function (c) {
+      html += '<button class="cat-tab' + (ui.menuCat === c.k ? ' active' : '') + '" data-mcat="' + esc(c.k) + '">' + esc(c.n) + '</button>';
+    });
+    $('#menuCats').innerHTML = html;
+
+    var list = S.menus.filter(function (m) { return ui.menuCat === 'all' || m.cat === ui.menuCat; });
+    $('#menuSummary').textContent = '총 ' + S.menus.length + '개 메뉴 · 메인 ' + countCat('메인') + ' · 식사 ' + countCat('식사') + ' · 주류 ' + countCat('주류');
+
+    var rows = '';
+    list.forEach(function (m) {
+      rows += '<div class="menu-row">'
+        + '<div class="mr-name">' + esc(m.name) + '</div>'
+        + '<div class="mr-cat"><span class="cat-chip cat-' + esc(m.cat) + '">' + esc(m.cat) + '</span></div>'
+        + '<div class="mr-price">' + won(m.price) + '</div>'
+        + '<div class="mr-acts">'
+        + '<button class="icon-act" data-edit="' + esc(m.id) + '">수정</button>'
+        + '<button class="icon-act danger" data-del-menu="' + esc(m.id) + '">삭제</button>'
+        + '</div></div>';
+    });
+    if (!rows) rows = '<div class="menu-empty">등록된 메뉴가 없습니다.<br>‘＋ 새 메뉴 추가’로 메뉴를 등록하세요.</div>';
+    $('#menuList').innerHTML = rows;
+  }
+  function countCat(c) {
+    var n = 0;
+    S.menus.forEach(function (m) { if (m.cat === c) n++; });
+    return n;
+  }
+
+  function openMenuForm(menu) {
+    var editing = !!menu;
+    var m = menu || { name: '', price: '', cat: ui.menuCat === 'all' ? '메인' : ui.menuCat };
+    var catBtns = '';
+    MENU_CATS.forEach(function (c) {
+      catBtns += '<button type="button" class="cat-opt' + (m.cat === c ? ' active' : '') + '" data-mcat-opt="' + c + '">' + c + '</button>';
+    });
+    showModal({
+      title: editing ? '메뉴 수정' : '새 메뉴 추가',
+      desc: editing ? '이름·가격·카테고리를 바꿀 수 있습니다.' : '카테고리를 고르고 메뉴명과 가격을 입력하세요.',
+      body: '<div class="field" id="fName"><label>메뉴명</label>'
+        + '<input id="inName" type="text" maxlength="30" placeholder="예) 삼겹살" value="' + esc(m.name) + '">'
+        + '<div class="err">메뉴명을 입력하세요</div></div>'
+        + '<div class="field"><label>카테고리</label><div class="cat-select">' + catBtns + '</div></div>'
+        + '<div class="field" id="fPrice"><label>가격(원)</label>'
+        + '<input id="inPrice" type="number" inputmode="numeric" min="0" step="100" placeholder="13000" value="' + (editing ? m.price : '') + '">'
+        + '<div class="err">0 이상의 숫자로 입력하세요</div></div>',
+      actions: [
+        { label: '취소', cls: 'btn-cancel', onClick: closeModal },
+        {
+          label: editing ? '저장' : '추가', cls: 'btn-ok', onClick: function () {
+            var name = $('#inName').value.trim();
+            var priceRaw = $('#inPrice').value.trim();
+            var price = Number(priceRaw);
+            var ok = true;
+            if (!name) { $('#fName').className = 'field invalid'; ok = false; }
+            if (priceRaw === '' || !isFinite(price) || price < 0 || Math.floor(price) !== price) {
+              $('#fPrice').className = 'field invalid'; ok = false;
+            }
+            if (!ok) return;
+            var activeBtn = $('.cat-opt.active', modalLayer);
+            var cat = activeBtn ? activeBtn.getAttribute('data-mcat-opt') : '메인';
+            if (editing) {
+              var target = getMenu(menu.id);
+              if (target) { target.name = name; target.price = price; target.cat = cat; }
+            } else {
+              S.menus.push({ id: uid('m'), name: name, price: price, cat: cat });
+            }
+            save();
+            closeModal();
+            renderMenuView();
+            if (ui.orderTableId) { renderOrderMenu(); renderOrderList(); }
+            toast(editing ? '메뉴를 수정했습니다 · ' + name : '메뉴를 추가했습니다 · ' + name, { type: 'success' });
+          }
+        }
+      ]
+    });
+    $$('.cat-opt', modalLayer).forEach(function (b) {
+      b.onclick = function () {
+        $$('.cat-opt', modalLayer).forEach(function (x) { x.className = 'cat-opt'; });
+        b.className = 'cat-opt active';
+      };
+    });
+    var inName = $('#inName');
+    if (inName) inName.focus();
+  }
+
+  /* ---------- sales ---------- */
+  function renderSales() {
+    var isDay = ui.salesTab === 'day';
+    $('#dayControls').style.display = isDay ? 'flex' : 'none';
+    $('#monthControls').style.display = isDay ? 'none' : 'flex';
+    $('#dayDate').value = ui.salesDate;
+    $('#monthInput').value = ui.salesMonth;
+    $$('#salesTabs .seg-btn').forEach(function (b) {
+      b.className = 'seg-btn' + (b.getAttribute('data-tab') === ui.salesTab ? ' active' : '');
+    });
+    if (isDay) renderDay(); else renderMonth();
+  }
+
+  function methodTotals(list) {
+    var map = {};
+    METHODS.forEach(function (m) { map[m.key] = { count: 0, total: 0 }; });
+    list.forEach(function (r) {
+      if (!map[r.method]) map[r.method] = { count: 0, total: 0 };
+      map[r.method].count += 1;
+      map[r.method].total += r.total;
+    });
+    return map;
+  }
+  function aggregateMenus(list) {
+    var map = {}, arr = [];
+    list.forEach(function (r) {
+      (r.items || []).forEach(function (it) {
+        var key = it.name + '|' + it.price;
+        if (!map[key]) { map[key] = { name: it.name, price: it.price, qty: 0, total: 0 }; arr.push(map[key]); }
+        map[key].qty += it.qty;
+        map[key].total += it.qty * it.price;
+      });
+    });
+    arr.sort(function (a, b) { return (b.qty - a.qty) || (b.total - a.total); });
+    return arr;
+  }
+  function panel(title, body, cls) {
+    return '<div class="panel' + (cls ? ' ' + cls : '') + '"><div class="panel-head">' + title + '</div>'
+      + '<div class="panel-body">' + body + '</div></div>';
+  }
+
+  function methodRowsHtml(mt, total) {
+    var html = '';
+    METHODS.forEach(function (m) {
+      var d = mt[m.key] || { count: 0, total: 0 };
+      var pct = total ? Math.round(d.total / total * 100) : 0;
+      html += '<div class="method-row"><span class="m-label"><span class="mi">' + m.icon + '</span>' + m.key + '</span>'
+        + '<b>' + won(d.total) + '</b><span class="m-count">' + d.count + '건</span>'
+        + '<div class="bar"><i style="width:' + pct + '%"></i></div></div>';
+    });
+    return html;
+  }
+
+  function renderDay() {
+    var date = ui.salesDate;
+    var list = S.sales.filter(function (r) { return r.date === date; })
+      .sort(function (a, b) { return a.ts - b.ts; });
+    var total = 0;
+    list.forEach(function (r) { total += r.total; });
+    var avg = list.length ? Math.round(total / list.length) : 0;
+    var mt = methodTotals(list);
+    var agg = aggregateMenus(list);
+    var d = new Date(date + 'T00:00:00');
+    $('#dayCaption').textContent = fmtDateKR(date) + ' (' + weekdayKR(d) + ')';
+
+    var html = '<div class="stat-grid">'
+      + '<div class="stat"><span>총 매출액</span><b>' + won(total) + '</b><small>' + fmtDateKR(date) + ' 기준</small></div>'
+      + '<div class="stat"><span>결제 건수</span><b>' + list.length + '건</b><small>테이블 정산 기준</small></div>'
+      + '<div class="stat"><span>객단가</span><b>' + won(avg) + '</b><small>총 매출 ÷ 결제 건수</small></div>'
+      + '</div>';
+
+    var receipts;
+    if (!list.length) {
+      receipts = '<div class="panel-empty">이 날짜의 결제 내역이 없습니다</div>';
+    } else {
+      receipts = '';
+      list.forEach(function (r) {
+        var names = (r.items || []).map(function (it) { return it.name + ' ' + it.qty; }).join(' · ');
+        receipts += '<div class="receipt">'
+          + '<div class="rc-time">' + esc(r.time || timeOf(r.ts)) + '</div>'
+          + '<div class="rc-main"><b>' + esc(r.tableName) + '</b><span>' + esc(names) + '</span></div>'
+          + '<div class="rc-method">' + esc(r.method) + '</div>'
+          + '<div class="rc-amt">' + won(r.total) + '</div>'
+          + '<button class="rc-cancel" data-cancel="' + esc(r.id) + '">취소</button>'
+          + '</div>';
+      });
+    }
+
+    var menuRows;
+    if (!agg.length) {
+      menuRows = '<div class="panel-empty">판매된 메뉴가 없습니다</div>';
+    } else {
+      menuRows = '';
+      agg.forEach(function (m, i) {
+        menuRows += '<div class="menu-agg"><span class="ma-rank">' + (i + 1) + '</span>'
+          + '<span class="ma-name">' + esc(m.name) + '</span>'
+          + '<span class="ma-qty">' + m.qty + '개</span>'
+          + '<span class="ma-amt">' + won(m.total) + '</span></div>';
+      });
+    }
+
+    html += '<div class="sales-cols">'
+      + '<div class="sales-col">'
+      + panel('결제수단별 합계', methodRowsHtml(mt, total))
+      + panel('영수증 내역 <span class="panel-sub">' + list.length + '건</span>', receipts)
+      + '</div>'
+      + '<div class="sales-col">'
+      + panel('메뉴별 판매 <span class="panel-sub">' + agg.length + '종</span>', menuRows)
+      + '</div></div>';
+
+    $('#salesContent').innerHTML = html;
+  }
+
+  function renderMonth() {
+    var ym = ui.salesMonth;
+    var list = S.sales.filter(function (r) { return String(r.date).slice(0, 7) === ym; });
+    var total = 0;
+    list.forEach(function (r) { total += r.total; });
+    var dayMap = {};
+    list.forEach(function (r) {
+      if (!dayMap[r.date]) dayMap[r.date] = { count: 0, total: 0 };
+      dayMap[r.date].count += 1;
+      dayMap[r.date].total += r.total;
+    });
+    var dayKeys = Object.keys(dayMap).sort();
+    var maxDay = 0;
+    dayKeys.forEach(function (k) { if (dayMap[k].total > maxDay) maxDay = dayMap[k].total; });
+
+    var y = Number(ym.slice(0, 4)), mm = Number(ym.slice(5, 7));
+    var lastDay = new Date(y, mm, 0).getDate();
+    var chart = '', axis = '';
+    for (var i = 1; i <= lastDay; i++) {
+      var ds = ym + '-' + pad2(i);
+      var v = dayMap[ds] ? dayMap[ds].total : 0;
+      var h = maxDay ? Math.round(v / maxDay * 100) : 0;
+      chart += '<div class="mbar' + (maxDay && v === maxDay ? ' hot' : '') + '"><i style="height:' + h + '%"></i></div>';
+      axis += '<span>' + ((i === 1 || i % 5 === 0 || i === lastDay) ? i : '') + '</span>';
+    }
+
+    var dayRows = '';
+    dayKeys.slice().reverse().forEach(function (k) {
+      var d = dayMap[k];
+      var pct = maxDay ? Math.max(3, Math.round(d.total / maxDay * 100)) : 0;
+      var wd = weekdayKR(new Date(k + 'T00:00:00'));
+      dayRows += '<div class="day-row"><span class="dr-date">' + Number(k.slice(5, 7)) + '/' + Number(k.slice(8, 10)) + ' (' + wd + ')</span>'
+        + '<span class="dr-count">' + d.count + '건</span>'
+        + '<div class="dr-bar"><i style="width:' + pct + '%"></i></div>'
+        + '<span class="dr-amt">' + won(d.total) + '</span></div>';
+    });
+    if (!dayRows) dayRows = '<div class="panel-empty">이 달의 매출 기록이 없습니다</div>';
+
+    var agg = aggregateMenus(list).slice(0, 8);
+    var rankRows = '';
+    if (!agg.length) {
+      rankRows = '<div class="panel-empty">판매된 메뉴가 없습니다</div>';
+    } else {
+      agg.forEach(function (m, i) {
+        rankRows += '<div class="menu-agg"><span class="ma-rank">' + (i + 1) + '</span>'
+          + '<span class="ma-name">' + esc(m.name) + '</span>'
+          + '<span class="ma-qty">' + m.qty + '개</span>'
+          + '<span class="ma-amt">' + won(m.total) + '</span></div>';
+      });
+    }
+
+    var mt = methodTotals(list);
+    var bizDays = dayKeys.length;
+    var avgDay = bizDays ? Math.round(total / bizDays) : 0;
+
+    var html = '<div class="stat-grid">'
+      + '<div class="stat"><span>월 매출액</span><b>' + won(total) + '</b><small>' + ym.replace('-', '. ') + ' 기준</small></div>'
+      + '<div class="stat"><span>결제 건수</span><b>' + list.length + '건</b><small>영업일 ' + bizDays + '일</small></div>'
+      + '<div class="stat"><span>일 평균 매출</span><b>' + won(avgDay) + '</b><small>월 매출 ÷ 영업일</small></div>'
+      + '</div>';
+
+    html += '<div class="sales-cols">'
+      + '<div class="sales-col">'
+      + '<div class="panel"><div class="panel-head">일자별 매출 <span class="panel-sub">막대 = 그날 매출</span></div>'
+      + '<div class="panel-body"><div class="mchart">' + chart + '</div><div class="mchart-axis">' + axis + '</div>'
+      + '<div style="margin-top:10px">' + dayRows + '</div></div></div>'
+      + '</div>'
+      + '<div class="sales-col">'
+      + panel('인기 메뉴 순위 <span class="panel-sub">판매량 기준</span>', rankRows)
+      + panel('결제수단별', methodRowsHtml(mt, total))
+      + '</div></div>';
+
+    $('#salesContent').innerHTML = html;
+  }
+
+  function cancelSale(id) {
+    var rec = null;
+    S.sales.forEach(function (r) { if (r.id === id) rec = r; });
+    if (!rec) return;
+    var names = rec.items.map(function (it) { return it.name + ' ' + it.qty; }).join(', ');
+    confirmDialog('영수증 취소', rec.tableName + ' · ' + rec.method + ' ' + won(rec.total) + '<br>' + esc(names) + '<br><br>이 영수증을 매출에서 취소할까요? 테이블 주문은 되살아나지 않습니다.', '취소하기', true, function () {
+      S.sales = S.sales.filter(function (r) { return r.id !== id; });
+      save();
+      renderSales();
+      toast('영수증을 취소했습니다 · -' + won(rec.total), { type: 'warn' });
+    });
+  }
+
+  /* ---------- settings ---------- */
+  function swLabel() {
+    var v = document.documentElement.getAttribute('data-sw');
+    if (v === 'ready') return '앱 캐시 준비됨';
+    if (v === 'unsupported') return '캐시 미지원';
+    if (v === 'failed') return '캐시 등록 실패';
+    return '캐시 확인 중';
+  }
+
+  function openSettings() {
+    var info = '<div class="info-list">'
+      + '<div>앱 버전 <b>' + APP_VERSION + '</b></div>'
+      + '<div>저장 위치 <b>이 기기 브라우저 저장소</b> (localStorage)</div>'
+      + '<div>오프라인 캐시 <b>' + swLabel() + '</b></div>'
+      + '<div>테이블 <b>' + S.tables.length + '개</b> · 메뉴 <b>' + S.menus.length + '개</b> · 매출 <b>' + S.sales.length + '건</b></div>'
+      + '<div>마지막 저장 <b>' + (S.updatedAt ? timeSec(new Date(S.updatedAt)) : '아직 없음') + '</b></div>'
+      + '<div>저장 상태 <b>' + (storageOk ? '정상' : '저장 불가') + '</b></div>'
+      + '</div>'
+      + '<div class="info-note">와이파이가 끊겨도 이 화면은 그대로 열립니다. 크롬 메뉴 ⋮ → <b>홈 화면에 추가</b>를 해 두면 앱처럼 실행되고, 주문·매출은 이 기기에 계속 쌓입니다. 기기를 바꿀 때는 아래 <b>백업 파일 저장</b>으로 옮기세요.</div>';
+
+    var body = '<div class="set-section">'
+      + '<div class="set-row"><div><div class="s-label">테이블 수</div><div class="s-desc">주문현황에 표시할 테이블 개수 (최대 24)</div></div>'
+      + '<div class="stepper"><button type="button" id="tcMinus">−</button><span id="tcValue">' + S.tables.length + '</span><button type="button" id="tcPlus">+</button></div></div>'
+      + '</div>'
+      + '<div class="set-section">'
+      + '<div class="set-row"><div><div class="s-label">데이터 백업</div><div class="s-desc">메뉴·주문·매출을 JSON 파일로 저장합니다</div></div>'
+      + '<div><button type="button" class="set-btn" id="btnBackup">백업 파일 저장</button>'
+      + '<button type="button" class="set-btn" id="btnRestore">불러오기</button></div></div>'
+      + '<input type="file" id="restoreFile" accept=".json,application/json" style="display:none">'
+      + '</div>'
+      + '<div class="set-section"><div class="s-label" style="margin-bottom:8px">앱 정보</div>' + info + '</div>'
+      + '<div class="set-section"><div class="set-row"><div><div class="s-label">전체 초기화</div><div class="s-desc">메뉴·주문·매출을 모두 지우고 기본값으로 되돌립니다</div></div>'
+      + '<button type="button" class="set-btn danger" id="btnReset">초기화</button></div></div>';
+
+    showModal({
+      title: '설정',
+      desc: '원앙식당 POS · 오프라인 태블릿',
+      wide: true,
+      body: body,
+      actions: [{ label: '닫기', cls: 'btn-cancel', onClick: closeModal }]
+    });
+
+    $('#tcMinus').onclick = function () { changeTableCount(-1); };
+    $('#tcPlus').onclick = function () { changeTableCount(1); };
+    $('#btnBackup').onclick = backup;
+    $('#btnRestore').onclick = function () { $('#restoreFile').click(); };
+    $('#restoreFile').onchange = restoreFile;
+    $('#btnReset').onclick = function () {
+      confirmDialog('전체 초기화', '메뉴·주문·매출 기록이 모두 지워집니다. 되돌릴 수 없습니다.<br>먼저 백업 파일을 저장해 두세요.', '모두 지우기', true, function () {
+        S = defaultState();
+        save();
+        renderAll();
+        closeModal();
+        toast('기본 상태로 초기화했습니다');
+      });
+    };
+  }
+
+  function changeTableCount(delta) {
+    var n = Math.max(1, Math.min(24, S.tables.length + delta));
+    if (n === S.tables.length) return;
+    var dropped = S.tables.slice(n).filter(function (t) { return t.items.length; });
+    var apply = function () {
+      var next = S.tables.slice(0, n);
+      while (next.length < n) next.push(makeTable(next.length + 1));
+      next.forEach(function (t, i) { t.id = i + 1; t.name = (i + 1) + '번'; });
+      S.tables = next;
+      S.tableCount = n;
+      save();
+      renderTables();
+      var v = $('#tcValue');
+      if (v) v.textContent = n;
+      toast('테이블 수를 ' + n + '개로 바꿨습니다');
+    };
+    if (dropped.length) {
+      confirmDialog('테이블 줄이기', dropped.length + '개 테이블에 주문이 남아 있습니다. 줄이면 그 주문이 사라집니다.', '줄이기', true, apply);
+    } else {
+      apply();
+    }
+  }
+
+  function backup() {
+    var payload = {
+      app: '원앙식당 POS',
+      version: APP_VERSION,
+      exportedAt: new Date().toISOString(),
+      data: S
+    };
+    try {
+      var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = '원앙식당-POS-백업-' + todayStr() + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+      toast('백업 파일을 저장했습니다', { type: 'success' });
+    } catch (e) {
+      toast('백업 파일을 만들 수 없습니다', { type: 'warn' });
+    }
+  }
+
+  function restoreFile(e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var parsed = JSON.parse(String(reader.result));
+        var data = parsed && parsed.data ? parsed.data : parsed;
+        if (!data || !data.menus || !data.tables || !data.sales) throw new Error('bad');
+        var next = normalize(data);
+        confirmDialog('백업 불러오기', '현재 데이터를 백업 파일 내용으로 바꿉니다.<br>메뉴 ' + next.menus.length + '개 · 매출 ' + next.sales.length + '건 · 테이블 ' + next.tables.length + '개', '불러오기', false, function () {
+          S = next;
+          save();
+          renderAll();
+          closeModal();
+          openSettings();
+          toast('백업을 불러왔습니다', { type: 'success' });
+        });
+      } catch (err) {
+        toast('백업 파일을 읽을 수 없습니다', { type: 'warn' });
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  }
+
+  /* ---------- view & events ---------- */
+  function switchView(v) {
+    ui.view = v;
+    $$('.nav-item[data-view]').forEach(function (b) {
+      b.className = 'nav-item' + (b.getAttribute('data-view') === v ? ' active' : '');
+    });
+    $$('.view').forEach(function (s) {
+      s.className = 'view' + (s.id === 'view-' + v ? ' active' : '');
+    });
+    if (v === 'menu') renderMenuView();
+    if (v === 'sales') renderSales();
+  }
+
+  function renderAll() {
+    renderTables();
+    renderMenuView();
+    renderSales();
+    renderSaveChip();
+  }
+
+  function tick() {
+    var d = new Date();
+    $('#nowDate').textContent = d.getFullYear() + '. ' + (d.getMonth() + 1) + '. ' + d.getDate() + ' (' + weekdayKR(d) + ')';
+    $('#nowTime').textContent = timeSec(d);
+  }
+
+  function shiftDate(delta) {
+    var d = new Date(ui.salesDate + 'T00:00:00');
+    d.setDate(d.getDate() + delta);
+    ui.salesDate = todayStr(d);
+    renderSales();
+  }
+  function shiftMonth(delta) {
+    var y = Number(ui.salesMonth.slice(0, 4)), m = Number(ui.salesMonth.slice(5, 7)) - 1 + delta;
+    var d = new Date(y, m, 1);
+    ui.salesMonth = d.getFullYear() + '-' + pad2(d.getMonth() + 1);
+    renderSales();
+  }
+
+  function bind() {
+    $$('.nav-item[data-view]').forEach(function (b) {
+      b.onclick = function () { switchView(b.getAttribute('data-view')); };
+    });
+    $('#openSettings').onclick = openSettings;
+
+    $('#tableGrid').addEventListener('click', function (e) {
+      var card = e.target.closest ? e.target.closest('[data-table]') : null;
+      if (card) openOrder(Number(card.getAttribute('data-table')));
+    });
+
+    $('#orderBack').onclick = function () {
+      var t = getTable(ui.orderTableId);
+      if (t && t.dirty && t.items.length) {
+        confirmDialog('주문 저장', '저장하지 않은 주문이 있습니다. 저장하고 닫을까요?', '저장하고 닫기', false, function () { saveOrderAndClose(); });
+        return;
+      }
+      closeOrder();
+    };
+    $('#saveOrder').onclick = saveOrderAndClose;
+    $('#payBtn').onclick = openPay;
+    $('#clearOrder').onclick = function () {
+      var t = getTable(ui.orderTableId);
+      if (!t || !t.items.length) return;
+      confirmDialog('주문 전체 삭제', t.name + ' 테이블의 주문 ' + t.items.length + '종을 모두 지우고 입장대기로 돌립니다.', '모두 삭제', true, function () {
+        t.items = []; t.savedCount = 0; t.openedAt = null; t.dirty = false;
+        save();
+        renderOrderList();
+        renderTables();
+        toast(t.name + ' 주문을 비웠습니다');
+      });
+    };
+    $('#orderCats').addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-ocat]') : null;
+      if (!b) return;
+      ui.orderCat = b.getAttribute('data-ocat');
+      renderOrderCats();
+      renderOrderMenu();
+    });
+    $('#orderMenuGrid').addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-add]') : null;
+      if (b) addItem(b.getAttribute('data-add'));
+    });
+    $('#orderList').addEventListener('click', function (e) {
+      var t = e.target;
+      var inc = t.closest ? t.closest('[data-inc]') : null;
+      var dec = t.closest ? t.closest('[data-dec]') : null;
+      var del = t.closest ? t.closest('[data-del]') : null;
+      if (inc) changeQty(inc.getAttribute('data-inc'), 1);
+      else if (dec) changeQty(dec.getAttribute('data-dec'), -1);
+      else if (del) removeItem(del.getAttribute('data-del'));
+    });
+
+    $('#addMenuBtn').onclick = function () { openMenuForm(null); };
+    $('#menuCats').addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-mcat]') : null;
+      if (!b) return;
+      ui.menuCat = b.getAttribute('data-mcat');
+      renderMenuView();
+    });
+    $('#menuList').addEventListener('click', function (e) {
+      var ed = e.target.closest ? e.target.closest('[data-edit]') : null;
+      var del = e.target.closest ? e.target.closest('[data-del-menu]') : null;
+      if (ed) {
+        var m = getMenu(ed.getAttribute('data-edit'));
+        if (m) openMenuForm(m);
+      } else if (del) {
+        var menu = getMenu(del.getAttribute('data-del-menu'));
+        if (!menu) return;
+        confirmDialog('메뉴 삭제', '‘' + esc(menu.name) + '’ 메뉴를 삭제할까요?<br>이미 정산된 매출 기록은 그대로 남습니다.', '삭제', true, function () {
+          S.menus = S.menus.filter(function (x) { return x.id !== menu.id; });
+          save();
+          renderMenuView();
+          if (ui.orderTableId) { renderOrderMenu(); renderOrderList(); }
+          toast('메뉴를 삭제했습니다 · ' + menu.name, { type: 'warn' });
+        });
+      }
+    });
+
+    $('#salesTabs').addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-tab]') : null;
+      if (!b) return;
+      ui.salesTab = b.getAttribute('data-tab');
+      renderSales();
+    });
+    $('#dayDate').onchange = function () {
+      if (this.value) { ui.salesDate = this.value; renderSales(); }
+    };
+    $('#monthInput').onchange = function () {
+      if (this.value) { ui.salesMonth = this.value; renderSales(); }
+    };
+    $('#dayPrev').onclick = function () { shiftDate(-1); };
+    $('#dayNext').onclick = function () { shiftDate(1); };
+    $('#dayToday').onclick = function () { ui.salesDate = todayStr(); renderSales(); };
+    $('#monthPrev').onclick = function () { shiftMonth(-1); };
+    $('#monthNext').onclick = function () { shiftMonth(1); };
+    $('#monthThis').onclick = function () { ui.salesMonth = thisMonth(); renderSales(); };
+    $('#salesContent').addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-cancel]') : null;
+      if (b) cancelSale(b.getAttribute('data-cancel'));
+    });
+
+    window.addEventListener('online', renderSaveChip);
+    window.addEventListener('offline', renderSaveChip);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        if (modalLayer.className.indexOf('open') >= 0) closeModal();
+        else if ($('#orderScreen').className.indexOf('open') >= 0) closeOrder();
+      }
+    });
+  }
+
+  /* ---------- service worker ---------- */
+  function registerSW() {
+    try {
+      if (!('serviceWorker' in navigator)) {
+        document.documentElement.setAttribute('data-sw', 'unsupported');
+        return;
+      }
+      if (location.protocol !== 'http:' && location.protocol !== 'https:') {
+        document.documentElement.setAttribute('data-sw', 'unsupported');
+        return;
+      }
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./sw.js').then(function () {
+          document.documentElement.setAttribute('data-sw', 'ready');
+        }).catch(function () {
+          document.documentElement.setAttribute('data-sw', 'failed');
+        });
+      });
+    } catch (e) {
+      document.documentElement.setAttribute('data-sw', 'unsupported');
+    }
+  }
+
+  /* ---------- init ---------- */
+  function init() {
+    S = loadState();
+    ui.salesDate = todayStr();
+    ui.salesMonth = thisMonth();
+    $('#dayDate').value = ui.salesDate;
+    $('#monthInput').value = ui.salesMonth;
+    bind();
+    renderAll();
+    tick();
+    setInterval(tick, 1000);
+    registerSW();
+    if (!storageOk) toast('이 브라우저에서는 자동 저장이 제한됩니다', { type: 'warn' });
+    window.__POS = { state: function () { return S; }, version: APP_VERSION };
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+
+</script>
+</body>
+</html>
