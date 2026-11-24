@@ -36,7 +36,7 @@ input,select,button,textarea{font-family:inherit}
 ::-webkit-scrollbar-thumb{background:#cfd5dd;border-radius:4px}
 ::-webkit-scrollbar-track{background:transparent}
 
-.app{display:-webkit-box;display:flex;height:100vh;min-height:100vh;overflow:hidden}
+.app{display:-webkit-box;display:flex;height:100vh;overflow:hidden}
 
 /* ---------------- sidebar ---------------- */
 .sidebar{
@@ -1565,6 +1565,13 @@ input,select,button,textarea{font-family:inherit}
     renderSaveChip();
   }
 
+  function fitHeight() {
+    var app = $('.app');
+    if (!app) return;
+    var h = window.innerHeight || document.documentElement.clientHeight || 0;
+    if (h > 240) app.style.height = h + 'px';
+  }
+
   function tick() {
     var d = new Date();
     $('#nowDate').textContent = d.getFullYear() + '. ' + (d.getMonth() + 1) + '. ' + d.getDate() + ' (' + weekdayKR(d) + ')';
@@ -1728,6 +1735,9 @@ input,select,button,textarea{font-family:inherit}
     $('#monthInput').value = ui.salesMonth;
     bind();
     renderAll();
+    fitHeight();
+    window.addEventListener('resize', fitHeight);
+    window.addEventListener('orientationchange', function () { setTimeout(fitHeight, 250); });
     tick();
     setInterval(tick, 1000);
     registerSW();
