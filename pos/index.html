@@ -1349,7 +1349,7 @@ input,select,button,textarea{font-family:inherit}
       var ds = ym + '-' + pad2(i);
       var v = dayMap[ds] ? dayMap[ds].total : 0;
       var h = maxDay ? Math.round(v / maxDay * 100) : 0;
-      chart += '<div class="mbar' + (maxDay && v === maxDay ? ' hot' : '') + '"><i style="height:' + h + '%"></i></div>';
+      chart += '<div class="mbar' + (maxDay && v === maxDay ? ' hot' : '') + '"><i style="height:' + h + '%' + (v > 0 && h < 3 ? ';min-height:3px' : '') + '"></i></div>';
       axis += '<span>' + ((i === 1 || i % 5 === 0 || i === lastDay) ? i : '') + '</span>';
     }
 
@@ -1390,7 +1390,7 @@ input,select,button,textarea{font-family:inherit}
 
     html += '<div class="sales-cols">'
       + '<div class="sales-col">'
-      + '<div class="panel"><div class="panel-head">일자별 매출 <span class="panel-sub">막대 = 그날 매출</span></div>'
+      + '<div class="panel"><div class="panel-head">일자별 매출 <span class="panel-sub">' + (maxDay ? '최고 ' + won(maxDay) + ' · ' : '') + '막대 = 그날 매출</span></div>'
       + '<div class="panel-body"><div class="mchart">' + chart + '</div><div class="mchart-axis">' + axis + '</div>'
       + '<div style="margin-top:10px">' + dayRows + '</div></div></div>'
       + '</div>'
