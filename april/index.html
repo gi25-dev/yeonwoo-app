@@ -327,8 +327,8 @@ canvas.hw.done{border-style:solid;border-color:#BFE3D2}
   .sheet{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-50%);width:92%;max-width:680px;border-radius:20px;max-height:88%}
 }
 @media (max-width:430px){
-  .lesson-bar select{font-size:13px;letter-spacing:-.1px;padding:8px 23px 8px 9px;background-position:calc(100% - 15px) 20px,calc(100% - 10px) 20px}
-  .lesson-bar .add{font-size:12.5px;padding:0 9px}
+  .lesson-bar select{font-size:12px;letter-spacing:-.15px;padding:8px 21px 8px 8px;background-position:calc(100% - 13px) 20px,calc(100% - 8px) 20px}
+  .lesson-bar .add{font-size:12px;padding:0 8px}
 }
 @media (max-width:380px){
   .fc-word{font-size:34px}
@@ -512,9 +512,139 @@ function seedLesson8(){
   };
 }
 
+/* ---------- seed data: B3 Lesson 1 · What’s Bal Diwas? ---------- */
+function seedB3L1(){
+  return {
+    id: 'b3l1',
+    book: 'Seed 1 · B3',
+    no: 1,
+    bookCode: 'B3',
+    title: 'What’s Bal Diwas?',
+    passage: [
+      '“You don’t need [[your school uniform]],” Mom says. “It’s Bal Diwas today!”',
+      'Bonnie sighs. “I don’t know what that is. India has too many [[special celebrations]].”',
+      '“I know the culture seems strange,” Mom says, “but I’m glad we moved here.”',
+      '“I [[miss my old school]],” Bonnie says. “We had more playtime there.”',
+      '“Well, you’re in luck,” Mom says. “Today, you get to [[play all day]]. ‘Bal Diwas’ means ‘Children’s Day’!”'
+    ],
+    dialog: [
+      {who:'A', text:'What special day is it today?'},
+      {who:'B', text:'Oh, it’s Children’s Day!'},
+      {who:'A', text:'Huh? What’s that?'},
+      {who:'B', text:'It means you get to play all day.'}
+    ],
+    vocab: [
+      {w:'all day', m:'하루 종일', bold:true},
+      {w:'celebration', m:'기념 행사', bold:true},
+      {w:'Children’s Day', m:'어린이날', bold:true},
+      {w:'glad', m:'기쁜', bold:true},
+      {w:'luck', m:'운, 행운', bold:true},
+      {w:'move', m:'이사하다', bold:true},
+      {w:'old', m:'예전의', bold:true},
+      {w:'playtime', m:'놀이 시간', bold:true},
+      {w:'special', m:'특별한', bold:true},
+      {w:'strange', m:'낯선, 이상한', bold:true},
+      {w:'culture', m:'문화', bold:false},
+      {w:'India', m:'인도', bold:false},
+      {w:'mean', m:'뜻하다', bold:false},
+      {w:'miss', m:'그리워하다', bold:false},
+      {w:'need', m:'필요하다', bold:false},
+      {w:'play', m:'놀다', bold:false},
+      {w:'school uniform', m:'교복', bold:false},
+      {w:'seem', m:'(~인 것처럼) 보이다', bold:false},
+      {w:'sigh', m:'한숨을 쉬다', bold:false},
+      {w:'too', m:'너무', bold:false}
+    ],
+    keyVoca: [
+      {word:'all day', phrase:'play all day', m:'하루 종일 놀다'},
+      {word:'celebration', phrase:'special celebrations', m:'특별한 기념 행사들'},
+      {word:'Children’s Day', phrase:'Children’s Day', m:'어린이날'},
+      {word:'glad', phrase:'I’m glad', m:'나는 기쁘다'},
+      {word:'luck', phrase:'in luck', m:'운이 좋은'},
+      {word:'move', phrase:'moved here', m:'여기로 이사 왔다'},
+      {word:'old', phrase:'my old school', m:'나의 예전 학교'},
+      {word:'playtime', phrase:'had more playtime', m:'더 많은 놀이 시간이 있었다'},
+      {word:'special', phrase:'special celebrations', m:'특별한 기념 행사들'},
+      {word:'strange', phrase:'seems strange', m:'낯설게 보이다'}
+    ],
+    chunk: [
+      {s:'“You don’t need [[your school uniform]].”', m:'“너는 네 교복이 필요 없어.”'},
+      {s:'“India has too many [[special celebrations]].”', m:'“인도에는 너무 많은 특별한 기념 행사들이 있어요.”'},
+      {s:'“I [[miss my old school]].”', m:'“저는 제 옛 학교가 그리워요.”'},
+      {s:'“Today, you get to [[play all day]].”', m:'“오늘 너는 하루 종일 놀 수 있단다.”'}
+    ],
+    created: '2026-11-24'
+  };
+}
+
+/* ---------- seed data: B3 Lesson 2 · You’re Invited! ---------- */
+function seedB3L2(){
+  return {
+    id: 'b3l2',
+    book: 'Seed 1 · B3',
+    no: 2,
+    bookCode: 'B3',
+    title: 'You’re Invited!',
+    passage: [
+      'Dear Jing,',
+      'In November, we [[celebrate Thanksgiving]]. Everyone celebrates what they have. We think about how lucky we are.',
+      'Thanksgiving is also [[a day to eat]]! Mom is going to make pumpkin pie. Dad is going to make turkey stuffing. Together, we will [[cook a turkey]].',
+      'But do you know the best part? You and your family are invited! I hope that you can come. Please [[write back to me]] soon!',
+      'Your friend, Maria'
+    ],
+    dialog: [
+      {who:'A', text:'I can’t wait for Thanksgiving!'},
+      {who:'B', text:'What are you going to do? I have no plans.'},
+      {who:'A', text:'Our family is going to cook a turkey. You should come!'},
+      {who:'B', text:'That sounds fun. Now, I’m so excited!'}
+    ],
+    vocab: [
+      {w:'celebrate', m:'기념하다', bold:true},
+      {w:'eat', m:'먹다', bold:true},
+      {w:'hope', m:'바라다', bold:true},
+      {w:'invite', m:'초대하다', bold:true},
+      {w:'lucky', m:'운이 좋은', bold:true},
+      {w:'part', m:'부분', bold:true},
+      {w:'pumpkin', m:'호박', bold:true},
+      {w:'Thanksgiving', m:'추수감사절', bold:true},
+      {w:'turkey', m:'칠면조', bold:true},
+      {w:'write back', m:'답장하다', bold:true},
+      {w:'best', m:'가장 좋은', bold:false},
+      {w:'come', m:'오다', bold:false},
+      {w:'cook', m:'요리하다', bold:false},
+      {w:'November', m:'11월', bold:false},
+      {w:'pie', m:'파이', bold:false},
+      {w:'plan', m:'계획', bold:false},
+      {w:'soon', m:'곧', bold:false},
+      {w:'sound', m:'들리다', bold:false},
+      {w:'think', m:'생각하다', bold:false},
+      {w:'together', m:'다 같이', bold:false}
+    ],
+    keyVoca: [
+      {word:'celebrate', phrase:'celebrate Thanksgiving', m:'추수감사절을 기념한다'},
+      {word:'eat', phrase:'a day to eat', m:'먹기 위한 날'},
+      {word:'hope', phrase:'hope that you can come', m:'네가 올 수 있길 바란다'},
+      {word:'invite', phrase:'are invited', m:'초대되었다'},
+      {word:'lucky', phrase:'how lucky we are', m:'우리가 얼마나 운이 좋은지'},
+      {word:'part', phrase:'the best part', m:'가장 좋은 부분'},
+      {word:'pumpkin', phrase:'pumpkin pie', m:'호박 파이'},
+      {word:'Thanksgiving', phrase:'celebrate Thanksgiving', m:'추수감사절을 기념한다'},
+      {word:'turkey', phrase:'cook a turkey', m:'칠면조를 요리하다'},
+      {word:'write back', phrase:'write back to me', m:'나에게 답장하다'}
+    ],
+    chunk: [
+      {s:'In November, we [[celebrate Thanksgiving]].', m:'11월에 우리는 추수감사절을 기념해.'},
+      {s:'Thanksgiving is also [[a day to eat]]!', m:'추수감사절은 또한 먹기 위한 날이기도 해!'},
+      {s:'Together, we will [[cook a turkey]].', m:'우리는 다 같이 칠면조를 요리할 거야.'},
+      {s:'Please [[write back to me]] soon!', m:'부디 곧 나에게 답장해 줘!'}
+    ],
+    created: '2026-11-24'
+  };
+}
+
 /* 기본 내장 레슨 — 앱을 열 때 저장된 기록에 빠진 레슨은 자동으로 합쳐요 */
 function builtinLessons(){
-  return [seedLesson7(), seedLesson8()];
+  return [seedLesson7(), seedLesson8(), seedB3L1(), seedB3L2()];
 }
 
 /* 저장된 데이터는 그대로 두고, 없는 내장 레슨만 뒤에 덧붙입니다 */
@@ -527,18 +657,46 @@ function mergeBuiltins(d){
     for(var j=0;j<d.lessons.length;j++){
       var L = d.lessons[j];
       if(!L) continue;
-      if(L.id === built[i].id || parseInt(L.no,10) === built[i].no){ has = true; break; }
+      /* 같은 id이거나, 같은 권(bookCode)의 같은 Lesson 번호면 이미 있는 레슨이에요 */
+      if(L.id === built[i].id){ has = true; break; }
+      if(parseInt(L.no,10) === built[i].no && codeOf(L) === codeOf(built[i])){ has = true; break; }
     }
-    if(!has){ d.lessons.push(built[i]); added.push(built[i]); }
+    if(!has){ d.lessons.push(built[i]); added.push(built[i]); ensureBookOf(d, built[i]); }
   }
   return added;
+}
+/* 책 이름에 들어 있는 권 코드(A3, B3 …)만 꼽아요 — A4 같은 이름은 A3로 치지 않아요 */
+function nameCode(nm){
+  var m = String(nm == null ? '' : nm).toUpperCase().match(/\b[AB][123]\b/g);
+  if(!m) return '';
+  for(var i=0;i<m.length;i++){ if(BOOK_CODES.indexOf(m[i]) >= 0) return m[i]; }
+  return '';
+}
+/* 레슨이 새로 들어온 권의 Level 그래프(책)가 없으면 함께 만들어요 */
+function ensureBookOf(d, l){
+  if(!d.books || !d.books.length) return false;
+  var code = codeOf(l);
+  var name = DEFAULT_SEED + ' · ' + code;
+  for(var i=0;i<d.books.length;i++){
+    var nm = String(d.books[i].name == null ? '' : d.books[i].name);
+    if(nm.replace(/^\s+|\s+$/g,'') === name || nameCode(nm) === code){ return false; }
+  }
+  var id = 'b' + code.toLowerCase();
+  for(var k=0;k<d.books.length;k++){ if(d.books[k].id === id) id = id + '_' + ((new Date()).getTime()); }
+  d.books.push({id:id, name:name, scores:{}, max10:false});
+  if(!d._bookAdded) d._bookAdded = [];
+  d._bookAdded.push(name);
+  return true;
 }
 
 function freshDB(){
   return {
     v: 1,
     lessons: builtinLessons(),
-    books: [{id:'b1', name: DEFAULT_BOOK, scores:{}, max10:false}],
+    books: [
+      {id:'b1', name: DEFAULT_BOOK, scores:{}, max10:false},
+      {id:'bb3', name: DEFAULT_SEED + ' · B3', scores:{}, max10:false}
+    ],
     progress: {},
     games: {match:{best:0, plays:0}, blank:{best:0, plays:0}},
     last: {tab:'chunk', lessonId:'l7', section:'lesson', bookId:'b1'},
@@ -548,7 +706,10 @@ function freshDB(){
 
 var DB = loadDB();
 var NEW_LESSONS = DB._added || [];
-if(NEW_LESSONS.length){ delete DB._added; save(); }
+if(NEW_LESSONS.length || DB._bookAdded){
+  delete DB._added; delete DB._bookAdded;
+  save();
+}
 
 function loadDB(){
   try{
@@ -613,6 +774,12 @@ function codeOf(l){
   var m = String(l.book || '').toUpperCase().match(/\b([AB][123])\b/);
   return m ? m[1] : DEFAULT_BOOK_CODE;
 }
+/* 목록 정렬: 권 순서(A1→B3) 다음에 Lesson 번호 */
+function lessonOrder(l){
+  var ci = BOOK_CODES.indexOf(codeOf(l));
+  if(ci < 0) ci = BOOK_CODES.length;
+  return ci * 1000 + (parseInt(l && l.no, 10) || 0);
+}
 function toast(msg){
   var t = $('toast'); t.textContent = msg; t.className = 'on';
   clearTimeout(t._tm); t._tm = setTimeout(function(){ t.className = ''; }, 2200);
@@ -642,6 +809,7 @@ function blankSentence(text){
 function wordForms(word){
   var w = String(word||'');
   var out = [w, w+'s', w+'es', w.replace(/y$/,'ies'), w+'ing', w+'ed'];
+  if(/e$/.test(w)) out.push(w+'d');
   if(/\s/.test(w)){
     var p = w.split(' ');
     var tail = p.slice(1).join(' ');
@@ -770,7 +938,7 @@ var UI = {
    ========================================================= */
 function renderChunk(){
   var L = currentLesson();
-  var lessons = DB.lessons.slice().sort(function(a,b){ return (a.no||0)-(b.no||0); });
+  var lessons = DB.lessons.slice().sort(function(a,b){ return lessonOrder(a)-lessonOrder(b); });
   var opts = '';
   for(var i=0;i<lessons.length;i++){
     var l = lessons[i];
@@ -2426,7 +2594,7 @@ $('tabs').onclick = function(e){
 renderApp();
 if(NEW_LESSONS.length){
   var _names = [];
-  for(var _n=0;_n<NEW_LESSONS.length;_n++) _names.push('Lesson ' + NEW_LESSONS[_n].no);
+  for(var _n=0;_n<NEW_LESSONS.length;_n++) _names.push(codeOf(NEW_LESSONS[_n]) + ' Lesson ' + NEW_LESSONS[_n].no);
   setTimeout(function(){ toast('📚 ' + _names.join(', ') + ' 새 레슨이 추가됐어요!'); }, 800);
 }
 window.addEventListener('beforeunload', function(){ Speech.stop(); });
