@@ -3687,10 +3687,7 @@ body.editing .book.custom .mini-del { display: flex; }
   /* --------------------------------------------------------------- layout */
   function layoutSpread() {
     const st = $('#stage');
-    const ansOpen = !!(window.__YSP_ANS && window.__YSP_ANS.isOpen && window.__YSP_ANS.isOpen());
-    const ansW = ansOpen && st.clientWidth > 900 ? 322 : 0;
-    st.classList.toggle('ans-open', ansOpen);
-    const availW = Math.max(160, st.clientWidth - 16 - ansW);
+    const availW = Math.max(160, st.clientWidth - 16);
     const availH = Math.max(160, st.clientHeight - 12);
     const n = S.spread ? 2 : 1;
     const gap = n === 2 ? 10 : 0;
@@ -3714,9 +3711,6 @@ body.editing .book.custom .mini-del { display: flex; }
       const sh = $('#sheet' + (i === 0 ? 'L' : 'R'));
       if (sh) sh.style.transform = 'scale(' + (pw / SHEET.w) + ')';
     }
-    sp.style.marginLeft = ansOpen && ansW ? '0px' : '0px';
-    const stEl = $('#stage');
-    stEl.style.paddingRight = ansOpen && ansW ? '322px' : '';
     sizeCanvas();
     fitSheets();
   }
@@ -4334,12 +4328,7 @@ body.editing .book.custom .mini-del { display: flex; }
     const html = A.pages.map((p) => {
       if (!p) return '';
       const g = groupFor(book, p.label) || groupFor(book, p.id);
-      if (!g || !g.items || !g.items.length) {
-        return `<section class="ans-g">
-          <div class="ans-gt">${esc(p.label || '')}<small>${esc(p.name || '')}</small></div>
-          <div class="ans-empty">이 쪽은 정답이 없어요</div>
-        </section>`;
-      }
+      if (!g || !g.items || !g.items.length) return '';
       const rows = g.items.map((it) => `<div class="ans-row">
           <span class="ans-n">${esc(it.n)}</span>
           <span class="ans-v">${it.q ? `<b class="ans-q">${esc(it.q)}</b>` : ''}${esc(it.a)}${it.note ? `<span class="ans-note">${esc(it.note)}</span>` : ''}</span>
