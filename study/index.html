@@ -2224,7 +2224,7 @@ window.__HAN__ = [{"ch":"敎","hun":"가르칠","eum":"교","n":11,"d":"M45 529 
   /* 큰 글자 + 획순 번호 + 방향 화살표 */
   function bigChar(h, vb) {
     const upx = vb.side / 560;                 // 화면 1px당 글리프 단위
-    const fs = Math.round(30 * upx);           // 번호 크기
+    const fs = Math.round(28 * upx);           // 번호 크기
     const aw = r1(4.6 * upx);                  // 점선 두께
     const ah = 17 * upx;                       // 화살촉 길이
     let s = `<svg class="hp-big" viewBox="${vb.x} ${vb.y} ${vb.side} ${vb.side}" xmlns="http://www.w3.org/2000/svg">`;
@@ -2250,7 +2250,6 @@ window.__HAN__ = [{"ch":"敎","hun":"가르칠","eum":"교","n":11,"d":"M45 529 
     });
 
     /* 번호끼리 겹치면 서로 밀어 낸다 */
-    const minD = fs * 1.2, m = fs * 0.5;
     for (let it = 0; it < 200; it++) {
       let moved = false;
       for (let i = 0; i < labels.length; i++) {
@@ -2258,17 +2257,19 @@ window.__HAN__ = [{"ch":"敎","hun":"가르칠","eum":"교","n":11,"d":"M45 529 
           const A = labels[i], B = labels[j];
           let dx = B.x - A.x, dy = B.y - A.y;
           let d = Math.hypot(dx, dy);
-          if (d >= minD) continue;
+          const need = fs * (1.3 + 0.55 * (Math.max(String(A.n).length, String(B.n).length) - 1));
+          if (d >= need) continue;
           if (d < 0.01) { dx = 0; dy = -1; d = 1; }
-          const push = (minD - d) / 2 + 0.8;
+          const push = (need - d) / 2 + 0.8;
           A.x -= (dx / d) * push; A.y -= (dy / d) * push;
           B.x += (dx / d) * push; B.y += (dy / d) * push;
           moved = true;
         }
       }
       labels.forEach((L) => {
-        L.x = clamp(L.x, vb.x + m, vb.x + vb.side - m);
-        L.y = clamp(L.y, vb.y + fs * 0.85, vb.y + vb.side - fs * 0.45);
+        const mx = fs * (0.42 + 0.3 * (String(L.n).length - 1));
+        L.x = clamp(L.x, vb.x + mx, vb.x + vb.side - mx);
+        L.y = clamp(L.y, vb.y + fs * 0.85, vb.y + vb.side - fs * 0.4);
       });
       if (!moved) break;
     }
@@ -2289,7 +2290,7 @@ window.__HAN__ = [{"ch":"敎","hun":"가르칠","eum":"교","n":11,"d":"M45 529 
   function page(idx) {
     const h = HAN[idx];
     const col = COLORS[idx % COLORS.length];
-    const vb = vbOf(h, 1.2);
+    const vb = vbOf(h, 1.21);
     const vbc = vbOf(h, 1.03);
     const cells = [];
     for (let k = 0; k < 8; k++) {
