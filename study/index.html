@@ -2672,13 +2672,14 @@ body.editing .book.custom .mini-del { display: flex; }
     const curIdx = book.groups.findIndex((g) => g.page === A.page);
     $('#ansPage').textContent = A.page || '';
     const note = curIdx < 0 ? '<div class="ans-note top">이 쪽은 정답이 없어요. 다른 쪽 정답을 봐요.</div>' : '';
-    box.innerHTML = note + book.groups.map((g, i) => {
+    const groups = curIdx >= 0 ? [book.groups[curIdx]] : book.groups;
+    box.innerHTML = note + groups.map((g, i) => {
       const rows = g.items.map((it) => `<div class="ans-row">
           <span class="ans-n">${esc(it.n)}</span>
           <span class="ans-v">${it.q ? `<b class="ans-q">${esc(it.q)}</b> → ` : ''}${esc(it.a)}${it.note ? `<span class="ans-note">${esc(it.note)}</span>` : ''}</span>
         </div>`).join('');
-      return `<section class="ans-g ${i === curIdx ? 'cur' : ''}">
-        <div class="ans-gt">${esc(g.name || g.page || '정답')}${g.name && g.page ? `<small>${esc(g.page)}</small>` : ''}${i === curIdx ? '<em>이 쪽</em>' : ''}</div>
+      return `<section class="ans-g ${curIdx >= 0 ? 'cur' : ''}">
+        <div class="ans-gt">${esc(g.name || g.page || '정답')}${g.name && g.page ? `<small>${esc(g.page)}</small>` : ''}${curIdx >= 0 ? '<em>이 쪽</em>' : ''}</div>
         ${rows}
       </section>`;
     }).join('');
