@@ -228,17 +228,17 @@ body.editing .book.custom .mini-del { display: flex; }
 .sep { width: 1px; height: 26px; background: var(--line); margin: 0 3px; flex: none; }
 
 .stage {
-  flex: 1; min-height: 0; overflow: auto; padding: 12px; display: flex;
+  flex: 1; min-height: 0; overflow: auto; padding: 12px; display: block;
   background:
     radial-gradient(circle at 20% 0%, #fff9f0, transparent 60%),
     #efe6d8;
   -webkit-overflow-scrolling: touch;
-  justify-content: center; align-items: flex-start;
+  text-align: center;
 }
 .paper {
-  position: relative; background: #fff; border-radius: 10px; flex: none;
+  position: relative; background: #fff; border-radius: 10px; display: inline-block; vertical-align: top;
   box-shadow: 0 12px 30px rgba(80, 55, 30, .18), 0 2px 6px rgba(80, 55, 30, .12);
-  overflow: hidden; margin: auto;
+  overflow: hidden;
 }
 .paper img { width: 100%; height: 100%; display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
 .sheet-wrap { position: absolute; inset: 0; overflow: hidden; background: #fff; pointer-events: none; }
@@ -2029,6 +2029,7 @@ body.editing .book.custom .mini-del { display: flex; }
     $('#nextBtn').disabled = S.pageIdx >= u.pages.length - 1;
     $('#pageLabel').textContent = p.label || '';
     layoutPaper();
+    fitSheet();
     if (window.__YSP_ANS) window.__YSP_ANS.refresh(S.bookId, p.label || '', S.pageKey);
     const st = $('#stage'); st.scrollTop = 0; st.scrollLeft = 0;
     /* 쪽마다 타이머: 학습지 시트는 열면 자동 시작 */
@@ -2062,6 +2063,18 @@ body.editing .book.custom .mini-del { display: flex; }
     if (!sh || !S.sheetKey) return;
     const k = paper().clientWidth / SHEET_SIZE().w;
     sh.style.transform = 'scale(' + k + ')';
+  }
+
+  /* 기기 글꼴 차이로 지문이 칸을 넘치면 조금씩 줄여 종이 안에 꼭 맞춘다 */
+  function fitSheet() {
+    const box = $('#sheet .passage');
+    if (!box) return;
+    let fs = 20, lh = 29;
+    for (let i = 0; i < 6; i++) {
+      box.querySelectorAll('p').forEach((p) => { p.style.fontSize = fs + 'px'; p.style.lineHeight = lh + 'px'; });
+      if (box.scrollWidth <= box.clientWidth + 2) break;
+      fs -= 0.6; lh -= 0.9;
+    }
   }
 
   function sizeCanvas() {
