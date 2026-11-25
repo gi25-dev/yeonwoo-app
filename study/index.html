@@ -174,18 +174,38 @@ body.editing .book.custom .mini-del { display: flex; }
 
 /* ---------- pad ---------- */
 .pad-top {
-  height: var(--hdr); flex: none; padding: var(--safe-t) 10px 0;
+  height: 56px; flex: none; padding: var(--safe-t) 10px 0;
   display: flex; align-items: center; gap: 8px;
   background: #fffaf2; border-bottom: 1px solid var(--line);
 }
-.pad-top .pt { font-size: 13.5px; font-weight: 800; letter-spacing: -.3px; overflow: hidden;
-  text-overflow: ellipsis; white-space: nowrap; }
-.pad-top .ps { font-size: 11px; color: var(--ink-soft); font-weight: 600; }
-.done-btn {
-  margin-left: auto; flex: none; border-radius: 999px; padding: 8px 13px; font-size: 12.5px; font-weight: 800;
-  background: #fff; border: 1.5px solid #d9cbb8; color: #8b7a66; white-space: nowrap;
+.round-btn {
+  width: 40px; height: 40px; border-radius: 50%; flex: none; display: grid; place-items: center;
+  background: #f7b23c; color: #fff; font-size: 15px; font-weight: 900;
+  box-shadow: 0 2px 6px rgba(180, 120, 20, .25), inset 0 -2px 0 rgba(0,0,0,.10);
 }
-.done-btn.on { background: var(--green); border-color: var(--green); color: #fff; }
+.timer-box { display: flex; align-items: center; gap: 6px; flex: none;
+  background: #fff; border: 1.5px solid #e6dac7; border-radius: 999px; padding: 3px 10px 3px 4px; }
+.timer-btn { display: flex; align-items: center; gap: 4px; border-radius: 999px; padding: 5px 9px;
+  font-size: 12.5px; font-weight: 800; color: #9a6b18; background: #fdf1d8; white-space: nowrap; }
+.timer-btn.on { background: #fde3c8; color: #b3652f; }
+.timer-num { font-size: 15px; font-weight: 800; letter-spacing: .3px; font-variant-numeric: tabular-nums; min-width: 46px; text-align: center; color: #4a4238; }
+.pt-wrap { min-width: 0; display: flex; flex-direction: column; justify-content: center; flex: 0 1 auto; }
+.pad-top .pt { font-size: 13px; font-weight: 800; letter-spacing: -.3px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; line-height: 1.25; }
+.pad-top .ps { font-size: 10.5px; color: var(--ink-soft); font-weight: 600; line-height: 1.2; }
+.submit-btn {
+  margin-left: auto; flex: none; border-radius: 999px; padding: 8px 15px; font-size: 13px; font-weight: 900;
+  background: #fff; border: 1.5px solid #9fd3b8; color: #1a8a60; white-space: nowrap;
+}
+.submit-btn.on { background: var(--green); border-color: var(--green); color: #fff; }
+.penmode { flex: none; display: flex; align-items: center; gap: 4px; border-radius: 12px; padding: 0 11px;
+  height: 40px; font-size: 12.5px; font-weight: 800; background: #f4ece0; color: #8b7a66; border: 1.5px solid transparent; white-space: nowrap; }
+.penmode.on { background: #fff; border-color: var(--accent); color: var(--accent); }
+.pagenav { display: flex; align-items: center; gap: 2px; flex: none; }
+.pagenav button { width: 34px; height: 36px; border-radius: 10px; font-size: 12px; color: #8b7a66;
+  background: #f4ece0; display: grid; place-items: center; }
+.pagenav button:disabled { opacity: .3; }
+.tools .spacer { flex: 1; }
 
 .tools {
   flex: none; display: flex; align-items: center; gap: 6px; padding: 7px 10px;
@@ -221,6 +241,14 @@ body.editing .book.custom .mini-del { display: flex; }
   overflow: hidden; margin: auto;
 }
 .paper img { width: 100%; height: 100%; display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.sheet-wrap { position: absolute; inset: 0; overflow: hidden; background: #fff; pointer-events: none; }
+.sheet-wrap[hidden] { display: none; }
+/* 원본 책 사진 보기 (종이·필기는 그대로 두고 사진만 잠깐 본다) */
+.orig-pop { position: fixed; inset: 0; z-index: 45; background: rgba(32, 25, 18, .58); display: grid; place-items: center; padding: 14px; }
+.orig-pop[hidden] { display: none; }
+.orig-card { position: relative; max-width: min(96vw, 900px); max-height: 94vh; background: #fff; border-radius: 14px; padding: 10px; box-shadow: 0 20px 50px rgba(0,0,0,.4); display: flex; }
+.orig-card img { max-width: 100%; max-height: calc(94vh - 20px); border-radius: 8px; object-fit: contain; }
+.orig-x { position: absolute; right: -10px; top: -10px; width: 34px; height: 34px; border-radius: 50%; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,.3); font-size: 14px; font-weight: 800; z-index: 2; }
 .paper, .paper canvas { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
 .paper canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
 .paper.pen-only canvas { touch-action: pan-x pan-y; }
@@ -289,6 +317,24 @@ body.editing .book.custom .mini-del { display: flex; }
 .tip b { color: #6b5537; }
 .tip .x { margin-left: auto; color: #b7a48d; font-weight: 800; flex: none; }
 
+@media (max-width: 860px) {
+  .pad-top { gap: 6px; padding-left: 8px; padding-right: 8px; }
+  .pad-top .pt { font-size: 12px; }
+  .timer-num { min-width: 40px; font-size: 13.5px; }
+  .timer-btn { padding: 5px 7px; font-size: 11.5px; }
+  .submit-btn { padding: 8px 12px; font-size: 12px; }
+  .chip { padding: 7px 10px; font-size: 11.5px; }
+  .tools { gap: 4px; padding: 6px 8px; }
+  .tool { width: 34px; height: 34px; font-size: 15px; border-radius: 10px; }
+  .penmode { height: 34px; padding: 0 8px; font-size: 11.5px; }
+  .sw { width: 21px; height: 21px; }
+  .swatches { gap: 4px; padding: 0 2px; }
+  .dot-btn { width: 24px; height: 30px; }
+  .sep { margin: 0 1px; }
+  .pagenav button { width: 30px; height: 32px; }
+  .pagenav #pageno { min-width: 44px; font-size: 12px; }
+}
+
 @media (max-width: 520px) {
   .subject { display: block; }
   .subject-head { flex-direction: row; align-items: baseline; gap: 8px; margin: 0 2px 7px; padding-top: 0; }
@@ -311,6 +357,168 @@ body.editing .book.custom .mini-del { display: flex; }
   .stage { padding: 8px; }
 }
 
+/* ===================================================================
+   디지털 학습지 시트 (스마트구몬 스타일 · 조판된 흰 종이)
+   설계 좌표계: 1240 × 900  (화면에서는 paper 크기에 맞춰 통째로 확대/축소)
+   =================================================================== */
+.sheet {
+  width: 1240px; height: 900px; flex: none;
+  background: #fff;
+  color: #211f1a;
+  padding: 30px 42px 20px;
+  font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Noto Sans CJK KR", system-ui, sans-serif;
+  font-size: 20px; line-height: 1.5;
+  letter-spacing: -.012em;
+  display: flex; flex-direction: column;
+  transform-origin: top left;
+  position: relative;
+  text-align: left;
+}
+.sheet * { box-sizing: border-box; }
+.sheet p { margin: 0; }
+.sheet .serif {
+  font-family: "AppleMyungjo", "Nanum Myeongjo", "Noto Serif KR", "Noto Serif CJK KR", "Batang", serif;
+  letter-spacing: 0;
+}
+
+/* ---------- 머리말 ---------- */
+.sh-head { flex: none; display: flex; align-items: center; gap: 14px; padding-bottom: 10px; border-bottom: 2px solid #f0eade; }
+.sh-num {
+  width: 70px; height: 70px; flex: none; border-radius: 19px; background: #f2603c; color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
+  box-shadow: inset 0 -4px 0 rgba(0,0,0,.13);
+}
+.sh-num small { font-size: 14px; font-weight: 800; letter-spacing: 2px; opacity: .95; }
+.sh-num b { font-size: 33px; font-weight: 900; margin-top: 4px; }
+.sh-num.blue { background: #2b8bd8; }
+.sh-title { font-size: 34px; font-weight: 900; letter-spacing: -.035em; line-height: 1.15; }
+.sh-title small { font-size: 18px; color: #9a9281; }
+.sh-title i { font-style: normal; font-size: 19px; color: #a09a8c; font-weight: 700; margin-left: 10px; }
+.sh-sub { font-size: 18px; color: #8d8578; font-weight: 700; }
+.sh-tag {
+  margin-left: auto; flex: none; font-size: 16px; font-weight: 800; color: #b3652f;
+  background: #fdf0e0; border-radius: 999px; padding: 8px 16px;
+}
+.sh-tag.b { color: #1f6fae; background: #e8f3fb; }
+
+/* ---------- 본문 ---------- */
+.sh-body { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 13px; padding-top: 14px; }
+.box { border: 2px solid #ddd5c7; border-radius: 14px; padding: 16px 20px; background: #fff; }
+.box.tint { background: #fdfbf6; }
+
+/* 지문 */
+.passage { flex: 1; min-height: 0; columns: 2; column-gap: 34px; column-rule: 1px solid #f0eade; padding: 12px 22px; }
+.passage p { margin: 0 0 5px; break-inside: avoid; font-size: 20px; line-height: 29px; }
+.passage p.d { padding-left: 12px; }
+.passage .brk { text-align: center; font-size: 17px; color: #a49b8c; font-weight: 700; letter-spacing: 3px; margin: 6px 0; }
+.passage .mark { font-weight: 900; color: #c9472c; margin-right: 2px; }
+.w { font-style: normal; border-bottom: 2px dotted rgba(207, 84, 52, .55); padding-bottom: 1px; }
+.w.solid { border-bottom: 2px solid #c9472c; }
+
+/* 낱말 뜻 */
+.gloss { flex: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px 18px; padding: 8px 18px; }
+.gloss .g { font-size: 14px; line-height: 1.25; color: #4b463d; }
+.gloss .g b { color: #1f1d18; font-weight: 900; margin-right: 5px; }
+.gloss .g b::after { content: "·"; color: #b9ae9c; margin-left: 4px; }
+
+/* 빈칸·밑줄·동그라미 자리 */
+.bx {
+  display: inline-block; height: 36px; width: 68px; border: 2px solid #e2a96a; border-radius: 7px;
+  background: #fffbf3; vertical-align: -9px; margin: 0 4px;
+}
+.uline { display: inline-block; height: 24px; width: 150px; border-bottom: 2.5px solid #c9bda9; vertical-align: -5px; margin-left: 8px; }
+.circ { display: inline-block; border: 2px dashed #d3c9b7; border-radius: 999px; padding: 1px 15px; margin: 0 5px; font-weight: 700; }
+.paren { color: #6f685c; font-weight: 700; }
+
+/* ---------- 문제 카드 ---------- */
+.qgrid { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; }
+.qcard { border: 2px solid #e4ddcf; border-radius: 16px; padding: 14px 18px 12px; display: flex; flex-direction: column; gap: 9px; min-height: 0; }
+.qhead { display: flex; align-items: flex-start; gap: 9px; }
+.qn {
+  width: 32px; height: 32px; flex: none; border-radius: 50%; background: #f2603c; color: #fff;
+  font-weight: 900; font-size: 18px; display: grid; place-items: center; margin-top: 1px;
+}
+.qn.b { background: #2b8bd8; }
+.qtag { flex: none; font-size: 14px; font-weight: 800; color: #b3652f; background: #fdf0e0; border-radius: 999px; padding: 2px 10px; margin-top: 3px; }
+.qstem { font-size: 19px; font-weight: 800; letter-spacing: -.025em; line-height: 1.35; }
+.qbody { flex: 1; min-height: 0; font-size: 18.5px; }
+.qbox { border: 2px solid #ddd5c7; border-radius: 12px; padding: 12px 14px; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+.choices { display: grid; grid-template-columns: repeat(3, auto); gap: 6px 22px; justify-content: start; font-size: 18px; font-weight: 700; padding: 2px 4px; }
+.choices .no { display: inline-block; width: 22px; color: #8c8477; font-weight: 800; }
+.ansline { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: #5e574b; }
+.ansline .bx { height: 34px; width: 62px; }
+
+/* ---------- 풀이 흐름 / 줄거리 ---------- */
+.flow { display: flex; flex-direction: column; gap: 2px; }
+.flow .step { border: 2px solid #ddd5c7; border-radius: 12px; padding: 7px 14px; font-size: 18px; }
+.flow .step .n { color: #b3652f; font-weight: 900; margin-right: 6px; }
+.flow .ar { text-align: center; color: #c9bda9; font-size: 15px; line-height: 1; }
+.story { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.story .st { border-top: 3px solid #e8dfd0; padding-top: 8px; }
+.story .st .lh { display: flex; align-items: center; gap: 7px; font-size: 16px; font-weight: 900; margin-bottom: 5px; }
+.story .st .dotc { width: 17px; height: 17px; border-radius: 50%; border: 3px solid #86b96a; flex: none; }
+.story .st .dotc.o { border-color: #e2803f; }
+.story .st .dotc.r { border-color: #d9573f; }
+.story .st .dotc.b { border-color: #4282bd; }
+.story .st p { font-size: 15px; line-height: 1.42; color: #4d483f; }
+
+/* ---------- 어휘 잇기 ---------- */
+.match { display: grid; grid-template-columns: 148px 1fr; align-content: start; }
+.match .mw { display: flex; align-items: center; justify-content: space-between; height: 54px; font-size: 19px; font-weight: 800; padding-right: 10px; }
+.match .mw .pill { background: #f4efe5; border-radius: 10px; padding: 5px 15px; }
+.match .mv { font-size: 15.5px; line-height: 1.28; display: flex; align-items: center; gap: 10px; height: 54px; padding-left: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #a99f8f; flex: none; }
+.match .msp { border-bottom: 1px dotted #efe8db; }
+.fillrow { font-size: 18.5px; line-height: 1.5; display: flex; align-items: center; gap: 4px; margin-bottom: 10px; }
+.fillrow:last-child { margin-bottom: 0; }
+.fillrow .bx { width: 118px; height: 34px; }
+.hintline { font-size: 17px; font-weight: 700; color: #8d8578; }
+.quote { font-size: 17.5px; line-height: 1.62; }
+
+/* ---------- 수학 ---------- */
+.mathhead { display: flex; align-items: center; gap: 12px; }
+.mtitle { font-size: 34px; font-weight: 900; letter-spacing: -.04em; }
+.daybadge { display: flex; align-items: center; gap: 6px; background: #fff3cf; border: 2px solid #f3cf6a; border-radius: 12px; padding: 6px 12px; font-size: 17px; font-weight: 900; color: #a7771a; }
+.concept { font-size: 18.5px; font-weight: 700; color: #33302a; }
+.example { border: 2.5px solid #ee8fa3; border-radius: 14px; background: #fffafb; padding: 12px 18px 10px; }
+.example .ex-h { display: inline-block; background: #e2557a; color: #fff; font-size: 16px; font-weight: 900; border-radius: 8px; padding: 4px 12px; margin-bottom: 6px; }
+.example .ex-body { display: flex; align-items: center; gap: 8px; }
+.example .ex-pair { font-size: 20px; font-weight: 800; }
+.example .ex-f { font-size: 18.5px; line-height: 1.5; }
+.example .hl { background: #fbd7d7; border-radius: 5px; padding: 0 5px; font-weight: 900; }
+.example .ex-a { margin-left: auto; font-size: 18px; font-weight: 800; color: #2c7d3e; white-space: nowrap; }
+
+.pgrid { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; }
+.pgrid3 { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.pcard { border: 2px solid #e2dbcd; border-radius: 14px; padding: 10px 16px; display: flex; flex-direction: column; gap: 6px; min-height: 0; }
+.pcard .pr { display: flex; align-items: center; gap: 8px; }
+.pcard .pq { width: 28px; height: 28px; border-radius: 50%; background: #2b8bd8; color: #fff; font-weight: 900; font-size: 16px; display: grid; place-items: center; flex: none; }
+.pcard .pair { font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
+.pcard .arrow { color: #e2557a; font-weight: 900; }
+.pcard .facline { display: flex; align-items: center; gap: 5px; font-size: 18px; font-weight: 700; margin-left: 36px; }
+.pcard .facline .bx { width: 40px; height: 32px; margin: 0; border-radius: 6px; }
+.pcard .gcd { margin-top: auto; display: flex; align-items: center; gap: 6px; font-size: 16.5px; font-weight: 800; color: #4d483f; white-space: nowrap; }
+.pcard .scratch { flex: 1; min-height: 0; margin: 8px 0 4px; border-top: 1.5px dashed #f0e8d9; border-bottom: 1.5px dashed #f0e8d9; position: relative; }
+.pcard .scratch span { position: absolute; right: 2px; top: 4px; font-size: 12px; font-weight: 700; color: #d3c8b4; }
+.pcard .gcd .uline { width: 130px; height: 20px; }
+.pcard .gcd .g { color: #2c7d3e; font-weight: 900; }
+
+.wcard .wtop { display: flex; align-items: center; gap: 8px; }
+.wcard .wtop .gcd { margin-left: auto; }
+.wcard .work { flex: 1; min-height: 0; border-radius: 8px; background:
+  linear-gradient(#fff, #fff) padding-box,
+  repeating-linear-gradient(0deg, #f2ece1 0 1px, transparent 1px 26px);
+  border: 1.5px dashed #e6ddcc; margin-top: 2px; position: relative; }
+.wcard .work span.cap { position: absolute; left: 8px; top: 5px; font-size: 12px; color: #c3b7a2; font-weight: 700; }
+
+.tipbox { border: 2.5px solid #e2557a; border-radius: 14px; padding: 10px 16px 10px; position: relative; background: #fffdfd; }
+.tipbox .tp { position: absolute; left: 14px; top: -15px; background: #e2557a; color: #fff; font-size: 15px; font-weight: 900; border-radius: 7px; padding: 2px 12px; }
+.tipbox p { font-size: 16.5px; line-height: 1.5; color: #3a362f; }
+
+/* ---------- 바닥 ---------- */
+.sh-foot { flex: none; display: flex; justify-content: space-between; align-items: flex-end; padding-top: 6px; font-size: 14px; color: #b0a795; font-weight: 700; }
+.sh-foot .fnum { font-size: 21px; color: #6f685c; font-weight: 900; }
+
 /* ======================= 정답 확인 시트 ======================= */
 .ans-btn {
   flex: none; border-radius: 999px; padding: 8px 13px; font-size: 12.5px; font-weight: 800;
@@ -319,8 +527,8 @@ body.editing .book.custom .mini-del { display: flex; }
 .ans-btn.on { background: #1d7a54; border-color: #1d7a54; color: #fff; }
 
 .ans-sheet {
-  position: fixed; z-index: 35; right: 12px; bottom: calc(70px + var(--safe-b));
-  width: min(332px, calc(100vw - 24px)); max-height: min(58vh, 440px);
+  position: fixed; z-index: 35; right: 12px; bottom: calc(14px + var(--safe-b));
+  width: min(336px, calc(100vw - 24px)); max-height: min(62vh, 470px);
   display: flex; flex-direction: column; overflow: hidden;
   background: #fffdf9; border: 1px solid var(--line); border-radius: 16px;
   box-shadow: 0 18px 44px rgba(60, 42, 24, .24), 0 3px 8px rgba(60, 42, 24, .10);
@@ -360,6 +568,13 @@ body.editing .book.custom .mini-del { display: flex; }
 .ans-sub { display: block; margin-top: 1px; font-size: 10.5px; font-weight: 650; color: #9b8a76; letter-spacing: -.1px; }
 .ans-note { display: block; margin-top: 1px; font-size: 10.5px; font-weight: 700; color: #a4937f; }
 .ans-note.top { margin: 6px 2px 2px; font-size: 11.5px; color: #8b7a66; }
+.ans-foot {
+  flex: none; display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  border-top: 1px solid var(--line); background: #fff9f0;
+}
+.ans-foot .ok { font-size: 11.5px; font-weight: 850; color: #1d7a54; }
+.ans-foot .undo { margin-left: auto; font-size: 11.5px; font-weight: 800; color: #8b7a66;
+  background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
 
 @media (max-width: 520px) {
   .ans-btn { padding: 7px 11px; font-size: 12px; }
@@ -393,45 +608,49 @@ body.editing .book.custom .mini-del { display: flex; }
 
   <section id="view-pad" class="view">
     <div class="pad-top">
-      <button class="icon-btn" id="padBack" aria-label="뒤로">‹</button>
-      <div style="min-width:0">
-        <div class="pt" id="padTitle"></div>
-        <div class="ps"><span id="padSub"></span> <span id="pageLabel"></span></div>
+      <button class="round-btn" id="padBack" aria-label="뒤로">◀</button>
+      <div class="timer-box" id="timerBox">
+        <button class="timer-btn" id="timerBtn" aria-label="타이머"><span id="timerIcon">▶</span><span id="timerLbl">시작</span></button>
+        <span class="timer-num" id="timerNum">00:00</span>
       </div>
-      <button class="done-btn" id="padDone">⬜ 다 풀었어요</button>
-      <button class="ans-btn" id="ansBtn" hidden><span class="wide">✅ 정답 확인</span><span class="narrow">✅ 정답</span></button>
+      <div class="pt-wrap">
+        <div class="pt" id="padTitle"></div>
+        <div class="ps"><span id="padSub"></span> · <span id="pageLabel"></span></div>
+      </div>
+      <button class="chip" id="origBtn" hidden>📄 원본</button>
+      <button class="submit-btn" id="ansBtn">✓ 제출</button>
+      <button class="icon-btn ghost" id="pageMenu" aria-label="페이지 메뉴">⋯</button>
     </div>
 
     <div class="tools" id="tools">
+      <button class="penmode on" id="penBtn"><span class="wide">✏️ 펜슬만</span><span class="narrow">✏️</span></button>
+      <div class="sep"></div>
       <button class="tool on" data-tool="pen" aria-label="펜">✏️</button>
       <button class="tool" data-tool="hl" aria-label="형광펜">🖍️</button>
       <button class="tool" data-tool="eraser" aria-label="지우개">🧽</button>
-      <div class="sep"></div>
       <div class="swatches" id="swatches"></div>
-      <div class="sep"></div>
       <div class="dots" id="dots"></div>
       <div class="sep"></div>
       <button class="tool" id="undoBtn" aria-label="실행취소">↩️</button>
       <button class="tool" id="redoBtn" aria-label="다시실행">↪️</button>
       <button class="tool" id="clearBtn" aria-label="이 쪽 지우기">🗑️</button>
+      <div class="sep"></div>
+      <button class="tool" id="zoomBtn" aria-label="확대 보기">🔍</button>
+      <div class="spacer"></div>
+      <div class="pagenav">
+        <button id="prevBtn" aria-label="이전 쪽">◀</button>
+        <span id="pageno">1 / 4</span>
+        <button id="nextBtn" aria-label="다음 쪽">▶</button>
+      </div>
     </div>
 
     <div class="stage" id="stage">
       <div class="paper" id="paper">
         <img id="padImg" alt="문제집 페이지" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+        <div class="sheet-wrap" id="sheetWrap" hidden><div class="sheet" id="sheet"></div></div>
         <canvas id="padCanvas"></canvas>
         <div class="loading" id="padLoading">불러오는 중…</div>
       </div>
-    </div>
-
-    <div class="pad-bottom">
-      <button class="nav-btn" id="prevBtn">◀<span class="lbl"> 이전 쪽</span></button>
-      <div class="pageno" id="pageno">1 / 1</div>
-      <button class="nav-btn" id="nextBtn"><span class="lbl">다음 쪽 </span>▶</button>
-      <div class="spacer"></div>
-      <button class="chip" id="zoomBtn"><span class="wide">🔍 맞춤 보기</span><span class="narrow">🔍 맞춤</span></button>
-      <button class="chip on" id="penBtn"><span class="wide">✏️ 펜슬만 쓰기</span><span class="narrow">✏️ 펜슬만</span></button>
-      <button class="icon-btn ghost" id="pageMenu" aria-label="페이지 메뉴">⋯</button>
     </div>
 
     <aside class="ans-sheet" id="ansSheet" hidden>
@@ -441,11 +660,21 @@ body.editing .book.custom .mini-del { display: flex; }
         <button class="ans-x" id="ansClose" data-ans-close aria-label="닫기">✕</button>
       </div>
       <div class="ans-body" id="ansBody"></div>
+      <div class="ans-foot">
+        <span class="ok" id="ansDone">다 풀었어요 ✓</span>
+        <button class="undo" id="ansUndo">완료 취소</button>
+      </div>
     </aside>
   </section>
 
 </div>
 <div class="modal-back" id="modalBack"></div>
+<div class="orig-pop" id="origPop" hidden>
+  <div class="orig-card">
+    <button class="orig-x" id="origClose" aria-label="닫기">✕</button>
+    <img id="origImg" alt="원본 문제집 페이지">
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>window.__ANSWERS__ = {
@@ -619,6 +848,7 @@ body.editing .book.custom .mini-del { display: flex; }
   }
  }
 };</script>
+<script>window.__SHEETS__ = null; window.__SHEET_SIZE__ = null;</script>
 <script>window.__DATA__ = {
  "v": 1,
  "built": "2026-11-25",
@@ -1072,7 +1302,306 @@ body.editing .book.custom .mini-del { display: flex; }
   }
  ]
 };</script>
-<script>/* 연우 공부 패드 — 학습지 필기 앱 */
+<script>/* ===================================================================
+   디지털 학습지 시트 내용 — 빠작 문학독해(강아지똥) p.56~59 · 소마셈 p.16~18
+   모든 글자는 책에 있는 그대로 옮겨 적었다. (퀴즈·입력 UI 없음, 오직 종이)
+   =================================================================== */
+(function () {
+  'use strict';
+
+  const SHEET_W = 1240, SHEET_H = 900;
+  const B = (w) => `<i class="bx"${w ? ` style="width:${w}px"` : ''}></i>`;
+  const U = (w) => `<i class="uline"${w ? ` style="width:${w}px"` : ''}></i>`;
+
+  /* ------------------------------------------------------------ 국어 p.56 */
+  const lit56 = `
+  <div class="sh-head">
+    <div class="sh-num"><small>동화</small><b>04</b></div>
+    <div>
+      <div class="sh-title serif">강아지똥 <small>③</small></div>
+      <div class="sh-sub">권정생 · 지문 읽기</div>
+    </div>
+    <div class="sh-tag">지문 · p.56</div>
+  </div>
+  <div class="sh-body">
+    <div class="box passage serif">
+      <p>봄을 <i class="w">치장</i>하는 <i class="w">단비</i>가 <i class="w">촉촉이</i> 골목길을 적셨습니다. 강아지똥 앞에 파란 민들레 싹이 하나 내밀었습니다.</p>
+      <p class="d">‘너는 뭐니?’ 하고 강아지똥이 내려다보고 물었습니다.</p>
+      <p class="d">‘난 예쁜 꽃이 피는 민들레란다.’</p>
+      <p class="d">‘예쁜 꽃이라니! 하늘의 별만큼 고우니?’&nbsp; / &nbsp;‘그럼!’</p>
+      <p class="d">‘반짝반짝 빛이 나니?’&nbsp; / &nbsp;‘응, 샛노랗게 빛나.’</p>
+      <p>강아지똥은 가슴이 <i class="w">울렁거렸습니다</i>. 어쩌면 며칠 전에 제 가슴속에 심은 볕의 씨앗이 싹 터 나온 것이 아닌가 싶었기 때문입니다.</p>
+      <p class="d">‘네가 어떻게 그런 꽃을 피울 수 있니?’ 물어 놓고 얼른 대답을 기다렸습니다.</p>
+      <p class="d">‘그건 하느님께서 비를 내리시고 따뜻한 햇빛을 비추시기 때문이야.’ 민들레는 <i class="w">예사로</i> 그렇게 대답하였습니다.</p>
+      <p class="d">‘역시 그럴 거야. 나하고야 무슨 상관이 있을라고…….’ 금방 강아지똥의 얼굴이 또 슬프게 <i class="w">일그러졌습니다</i>.</p>
+      <p>그러자 민들레 싹이, ‘그리고 또 한 가지 꼭 필요한 게 있어.’ 하고는 강아지똥을 쳐다보며 눈을 반짝였습니다.</p>
+      <p class="d">‘…….’</p>
+      <p class="d">‘네가 거름이 되어 줘야 한단다.’ 강아지똥은 <i class="w">화들짝</i> 놀랐습니다.</p>
+      <p class="d">‘내가 거름이 되다니?’</p>
+      <p class="d">‘너의 몸뚱이를 <i class="w">고스란히</i> 녹여 내 몸속으로 들어와야 해. 그래서 예쁜 꽃을 피게 하는 것은 바로 네가 하는 거야.’</p>
+      <p class="brk">중 략</p>
+      <p><span class="mark">㉠</span> ‘내가 거름이 되어 벌처럼 고운 꽃이 피어난다면, 온몸을 녹여 내 살이 될게.’</p>
+      <p>비는 사흘 동안 계속 내렸습니다.</p>
+      <p>강아지똥은 온몸이 비에 맞아 자디잘게 부서졌습니다.</p>
+      <p>봄이 <i class="w">한창</i>인 어느 날, 민들레는 한 송이 아름다운 꽃을 피웠습니다. 샛노랗게 햇빛을 받고 별처럼 반짝였습니다. 향긋한 <i class="w">내음</i>이 바람을 타고 퍼져 나갔습니다.</p>
+    </div>
+    <div class="box tint gloss">
+      <div class="g"><b>치장</b>잘 만져서 보기 좋게 꾸밈.</div>
+      <div class="g"><b>단비</b>꼭 필요한 때 알맞게 내리는 비.</div>
+      <div class="g"><b>촉촉이</b>물기가 있어 조금 젖은 듯이.</div>
+      <div class="g"><b>울렁거렸습니다</b>너무 놀라거나 두려워서 가슴이 자꾸 두근거렸습니다.</div>
+      <div class="g"><b>예사로</b>보통 일처럼 아무렇지도 아니하게.</div>
+      <div class="g"><b>일그러졌습니다</b>물건이나 얼굴이 비뚤어지거나 우글쭈글해졌습니다.</div>
+      <div class="g"><b>화들짝</b>갑자기 펄쩍 뛸 듯이 놀라는 모양.</div>
+      <div class="g"><b>고스란히</b>조금도 줄거나 바뀐 것 없이 그대로.</div>
+      <div class="g"><b>한창</b>가장 무르익거나 활발한 때.</div>
+      <div class="g"><b>내음</b>코로 맡을 수 있는 냄새나 향기로운 기운.</div>
+    </div>
+  </div>
+  <div class="sh-foot"><span class="fnum">056</span><span>초등 국어 문학 독해 3단계</span></div>`;
+
+  /* ------------------------------------------------------------ 국어 p.57 */
+  const lit57 = `
+  <div class="sh-head">
+    <div class="sh-num"><small>동화</small><b>04</b></div>
+    <div>
+      <div class="sh-title">독해 문제</div>
+      <div class="sh-sub">강아지똥 · 지문 독해</div>
+    </div>
+    <div class="sh-tag">문제 · p.57</div>
+  </div>
+  <div class="sh-body">
+    <div class="qgrid">
+      <div class="qcard">
+        <div class="qhead"><span class="qn">1</span><span class="qtag">갈래</span>
+          <div class="qstem">일이 일어난 때와 곳은 언제, 어디인지 ○표 하세요.</div></div>
+        <div class="qbody"><div class="qbox">
+          <div>강아지똥이 파란 민들레 싹을 만난 때는 <span class="paren">(</span> <span class="circ">봄</span>, <span class="circ">여름</span> <span class="paren">)</span>이고,</div>
+          <div>둘이 만난 곳은 <span class="paren">(</span> <span class="circ">꽃밭</span>, <span class="circ">골목길</span> <span class="paren">)</span>이다.</div>
+        </div></div>
+      </div>
+      <div class="qcard">
+        <div class="qhead"><span class="qn">2</span><span class="qtag">세부 내용</span>
+          <div class="qstem">민들레 싹이 예쁜 꽃으로 피어나기 위해서 필요하다고 말한 것을 모두 고르세요.</div></div>
+        <div class="qbody"><div class="qbox">
+          <div class="choices">
+            <span><span class="no">①</span>비</span><span><span class="no">②</span>바람</span><span><span class="no">③</span>별빛</span>
+            <span><span class="no">④</span>거름</span><span><span class="no">⑤</span>햇빛</span>
+          </div>
+          <div class="ansline" style="justify-content:flex-end">( ${B(54)} , ${B(54)} , ${B(54)} )</div>
+        </div></div>
+      </div>
+      <div class="qcard">
+        <div class="qhead"><span class="qn">3</span><span class="qtag">어휘</span>
+          <div class="qstem">㉠과 가장 관련 있는 고사성어로 알맞은 것의 기호를 쓰세요.</div></div>
+        <div class="qbody"><div class="qbox" style="gap:4px;font-size:17.5px">
+          <div>㉠ 설상가상&nbsp;&nbsp;좋지 않은 일이 연거푸 일어남.</div>
+          <div>㉡ 살신성인&nbsp;&nbsp;자기의 몸을 희생하여 옳은 일을 함.</div>
+          <div>㉢ 관포지교&nbsp;&nbsp;매우 다정하고 거짓이 없는 친구 사이.</div>
+          <div class="ansline" style="margin-top:4px">답: ${B(90)}</div>
+        </div></div>
+      </div>
+      <div class="qcard">
+        <div class="qhead"><span class="qn">4</span><span class="qtag">적용</span>
+          <div class="qstem">이 글의 강아지똥과 비슷한 경험을 한 친구는 누구인지 쓰세요.</div></div>
+        <div class="qbody"><div class="qbox" style="gap:3px;font-size:16.5px">
+          <div><b>도윤</b> : 학교에서 열린 그림 그리기 대회에서 상을 받아 기뻤다.</div>
+          <div><b>은혜</b> : 편찮으신 엄마를 위해 힘들지만 열심히 청소를 했더니 뿌듯했다.</div>
+          <div><b>예진</b> : 친구와 싸우고 난 뒤에 용기를 내어 먼저 사과를 해서 마음이 후련했다.</div>
+          <div class="ansline" style="margin-top:4px">( ${B(90)} )</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-foot"><span class="fnum">057</span><span>초등 국어 문학 독해 3단계</span></div>`;
+
+  /* ------------------------------------------------------------ 국어 p.58 */
+  const lit58 = `
+  <div class="sh-head">
+    <div class="sh-num"><small>동화</small><b>04</b></div>
+    <div>
+      <div class="sh-title">지문 분석</div>
+      <div class="sh-sub">사건 전개 · 주제 · 전체 줄거리</div>
+    </div>
+    <div class="sh-tag">분석 · p.58</div>
+  </div>
+  <div class="sh-body">
+    <div style="display:flex; gap:14px; flex:1; min-height:0">
+      <div style="flex:1.06; min-width:0; display:flex; flex-direction:column; gap:7px">
+        <div class="qhead"><span class="qn">1</span><span class="qtag">사건 전개</span>
+          <div class="qstem">일어난 일의 순서를 생각하며 빈칸에 알맞은 말을 쓰세요.</div></div>
+        <div class="flow" style="flex:1; justify-content:space-between">
+          <div class="step"><span class="n">①</span>봄을 치장하는 ( ${B(96)} )가 촉촉하게 내림.</div>
+          <div class="ar">▼</div>
+          <div class="step"><span class="n">②</span>강아지똥 앞에 민들레 ( ${B(96)} )이 나옴.</div>
+          <div class="ar">▼</div>
+          <div class="step"><span class="n">③</span>민들레 싹이 강아지똥에게 ( ${B(96)} )이 되어 달라고 함.</div>
+          <div class="ar">▼</div>
+          <div class="step"><span class="n">④</span>봄이 한창인 어느 날, ( ${B(96)} )가 ( ${B(96)} )을 피움.</div>
+        </div>
+      </div>
+      <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:7px">
+        <div class="qhead"><span class="qn">2</span><span class="qtag">주제</span>
+          <div class="qstem">이 글의 주제를 생각하며 ( ) 안에 들어갈 알맞은 말에 ○표 하세요.</div></div>
+        <div class="box" style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:10px; font-size:18px; line-height:1.55">
+          <div>슬픔 없는 존재라며 슬퍼하던 강아지똥이 민들레꽃을 피우기 위해 기쁜 마음으로 자신을 희생하는 모습에서 세상의 모든 존재는 소중하며 <span class="paren">(</span> <span class="circ">가치</span>, <span class="circ">의미</span> <span class="paren">)</span>가 있다는 것을 알려 준다.</div>
+          <div class="ansline">답: ${B(96)}</div>
+        </div>
+      </div>
+    </div>
+    <div style="flex:none; display:flex; flex-direction:column; gap:6px">
+      <div style="display:flex; align-items:center; gap:10px">
+        <span class="qtag" style="background:#e8f3fb;color:#1f6fae">바탕 지식</span>
+        <span style="font-size:20px; font-weight:900">「강아지똥」 전체 줄거리</span>
+      </div>
+      <div class="story" style="flex:1; align-content:start">
+        <div class="st"><div class="lh"><span class="dotc"></span>발단</div>
+          <p>돌담 밑에 혼자 남겨진 강아지똥은 참새, 병아리에게 무시당하고 흙덩이에게도 강아지똥이라고 놀림을 받아 화를 냅니다.</p></div>
+        <div class="st"><div class="lh"><span class="dotc o"></span>전개</div>
+          <p>흙덩이는 강아지똥에게 자신도 버려진 신세라고 슬퍼했지만, 주인 아저씨가 흙덩이를 다시 데려가 고 강아지똥은 혼자 남습니다.</p></div>
+        <div class="st"><div class="lh"><span class="dotc r"></span>절정</div>
+          <p>암탉 가족을 만난 후 봄비가 내린 날, 강아지똥은 민들레 싹을 만나서 꽃을 피울 수 있게 거름이 되어 달라는 부탁을 받습니다.</p></div>
+        <div class="st"><div class="lh"><span class="dotc b"></span>결말</div>
+          <p>강아지똥은 자신을 희생하여 민들레 싹이 꽃을 피울 수 있도록 거름이 되었고, 그 자리에 예쁜 민들레꽃이 피어납니다.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-foot"><span class="fnum">058</span><span>초등 국어 문학 독해 3단계</span></div>`;
+
+  /* ------------------------------------------------------------ 국어 p.59 */
+  const lit59 = `
+  <div class="sh-head">
+    <div class="sh-num"><small>동화</small><b>04</b></div>
+    <div>
+      <div class="sh-title">오늘의 어휘</div>
+      <div class="sh-sub">강아지똥 · 낱말 익히기</div>
+    </div>
+    <div class="sh-tag">어휘 · p.59</div>
+  </div>
+  <div class="sh-body">
+    <div style="display:flex; gap:14px; flex:1; min-height:0">
+      <div style="flex:1.02; min-width:0; display:flex; flex-direction:column">
+        <div class="qstem" style="margin-bottom:8px">다음 낱말의 알맞은 뜻을 찾아 선으로 이으세요.</div>
+        <div class="match" style="flex:1; grid-auto-rows:76px">
+          <div class="mw"><span class="pill">치장</span><span class="dot"></span></div>
+          <div class="mv"><span class="dot"></span><span>아무렇지도 아니하게.</span></div>
+          <div class="mw"><span class="pill">단비</span><span class="dot"></span></div>
+          <div class="mv"><span class="dot"></span><span>가장 무르익거나 활발한 때.</span></div>
+          <div class="mw"><span class="pill">거름</span><span class="dot"></span></div>
+          <div class="mv"><span class="dot"></span><span>잘 만져서 보기 좋게 꾸밈.</span></div>
+          <div class="mw"><span class="pill">한창</span><span class="dot"></span></div>
+          <div class="mv"><span class="dot"></span><span>꼭 필요한 때 알맞게 내리는 비.</span></div>
+          <div class="mw"><span class="pill">예사로</span><span class="dot"></span></div>
+          <div class="mv"><span class="dot"></span><span>풀이나 나무가 잘 자라도록 흙에 뿌리거나 섞는 것.</span></div>
+        </div>
+      </div>
+      <div style="width:2px;background:#f0eade;flex:none"></div>
+      <div style="flex:1.28; min-width:0; display:flex; flex-direction:column">
+        <div class="qhead" style="margin-bottom:8px"><span class="qn">1</span>
+          <div class="qstem">다음 빈칸에 들어갈 알맞은 낱말을 <span class="qtag" style="margin:0 2px">오늘의 어휘</span>에서 찾아 쓰세요.</div></div>
+        <div class="hintline" style="margin:0 0 8px 41px">오늘의 어휘 : 치장 · 단비 · 거름 · 한창 · 예사로</div>
+        <div class="box" style="flex:1; display:flex; flex-direction:column; justify-content:flex-start; gap:12px; padding-top:16px; font-size:18px">
+          <div class="fillrow">• 그 아이는 동생을 ${B(120)} 업는다.</div>
+          <div class="fillrow">• 요즘 앞산에는 진달래가 ${B(120)}이다.</div>
+          <div class="fillrow">• 식물이 잘 자라도록 밭에 ${B(120)}을 뿌려 주었다.</div>
+          <div class="fillrow">• 가뭄 끝에 ${B(120)}가 내려 농부들은 신바람이 났다.</div>
+          <div class="fillrow">• 까마귀는 자신의 몸을 ${B(120)}하기 위해 다른 새들을 찾아갔다.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex; gap:14px; flex:none; align-items:flex-start">
+      <div class="qhead" style="flex:none; padding-top:6px"><span class="qn">2</span></div>
+      <div class="box quote" style="flex:1">
+        <div style="font-weight:800; margin-bottom:6px">다음 글에서 밑줄 친 말과 뜻이 비슷한 말을 찾아 쓰세요.</div>
+        <div>할아버지의 일흔 번째 생신날 가족사진을 찍기로 했다. 모두 깔끔한 옷으로 말끔히 차려 입고, 즐겁게 사진관에 갔다. 미용실에서 머리를 <i class="w solid">단장</i>하고 오신 할머니는 정말 고우셨다. 그 모습을 보신 할아버지께서는 젊었을 때, 곱게 치장을 하고 수줍게 웃으며 할아버지를 만나러 오시던 할머니 얼굴이 아직도 눈에 선하다고 말씀하셨다.</div>
+        <div class="ansline" style="margin-top:8px; justify-content:flex-end">답: ${B(120)}</div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-foot"><span class="fnum">059</span><span>초등 국어 문학 독해 3단계</span></div>`;
+
+  /* ------------------------------------------------------------ 수학 p.16 */
+  const fac = (n, boxes) => `<div class="facline"><span style="width:44px;text-align:right">${n} =</span>${boxes}</div>`;
+  const bxRow = (k, w) => Array.from({ length: k }, () => `<i class="bx" style="width:${w || 40}px"></i>`).join('<span style="color:#a09a8c">×</span>');
+  const problem16 = (q) => `
+    <div class="pcard">
+      <div class="pr"><span class="pq">${q.n}</span><span class="pair">(${q.a}, ${q.b})</span><span class="arrow">➜</span></div>
+      ${fac(q.a, bxRow(q.fa))}
+      ${fac(q.b, bxRow(q.fb))}
+      <div class="scratch"><span>풀이</span></div>
+      <div class="gcd"><span class="g">➜</span> 최대공약수 ${U(120)}</div>
+    </div>`;
+
+  const soma16 = `
+  <div class="sh-head">
+    <div class="daybadge">📅 3일차</div>
+    <div>
+      <div class="sh-title">최대공약수 구하기 <small style="font-size:24px">⑴</small></div>
+      <div class="sh-sub">1주 · 약수와 배수</div>
+    </div>
+    <div class="sh-tag b">연산 · p.16</div>
+  </div>
+  <div class="sh-body">
+    <div class="concept">다음과 같이 두 수를 가장 작은 수의 곱으로 나타낸 후, 공통으로 포함되어 있는 수들을 곱하여 최대공약수를 구하세요.</div>
+    <div class="example">
+      <div class="ex-h">가장 작은 수의 곱으로 나타내어 구하기</div>
+      <div class="ex-body">
+        <div class="ex-pair">(6, 18) <span class="arrow">➜</span></div>
+        <div class="ex-f">6 = <span class="hl">2</span> × <span class="hl">3</span><br>18 = <span class="hl">2</span> × <span class="hl">3</span> × 3</div>
+        <div class="ex-a">➜ 최대공약수&nbsp; 2×3 = 6</div>
+      </div>
+    </div>
+    <div class="pgrid3">
+      ${problem16({ n: 1, a: 10, b: 16, fa: 2, fb: 4 })}
+      ${problem16({ n: 2, a: 20, b: 36, fa: 3, fb: 4 })}
+      ${problem16({ n: 3, a: 8, b: 16, fa: 3, fb: 4 })}
+    </div>
+    <div class="tipbox" style="flex:none">
+      <span class="tp">TIP</span>
+      <p>두 수를 가장 작은 수의 곱으로 나타내는 것은 약수가 1과 자신뿐인 수의 곱으로 나타내는 것을 말합니다. 이때, 약수가 1과 자신뿐인 수를 소수라고 하고, 2, 3, 5, 7, 11, … 과 같은 수입니다.</p>
+    </div>
+  </div>
+  <div class="sh-foot"><span class="fnum">16</span><span>소마셈 – D4 · 1주 3일차</span></div>`;
+
+  /* ------------------------------------------------------- 수학 p.17, p.18 */
+  const wcard = (q) => `
+    <div class="pcard wcard">
+      <div class="wtop"><span class="pq">${q.n}</span><span class="pair">(${q.a}, ${q.b})</span><span class="arrow">➜</span>
+        <span class="gcd"><span class="g">➜</span> 최대공약수 ${U(112)}</span></div>
+      <div class="work"><span class="cap">소인수분해 · 풀이</span></div>
+    </div>`;
+
+  const somaPage = (page, pairs) => `
+  <div class="sh-head">
+    <div class="daybadge">📅 1주</div>
+    <div>
+      <div class="sh-title">최대공약수 구하기 <small style="font-size:24px">⑵</small></div>
+      <div class="sh-sub">약수와 배수 · ${page}쪽</div>
+    </div>
+    <div class="sh-tag b">연산 · p.${page}</div>
+  </div>
+  <div class="sh-body">
+    <div class="concept">두 수의 최대공약수를 구하세요.</div>
+    <div class="pgrid" style="grid-template-rows:1fr 1fr 1fr">
+      ${pairs.map(wcard).join('')}
+    </div>
+  </div>
+  <div class="sh-foot"><span class="fnum">${page}</span><span>소마셈 – D4 · 1주 3일차</span></div>`;
+
+  const soma17 = somaPage(17, [
+    { n: 1, a: 6, b: 9 }, { n: 2, a: 8, b: 18 }, { n: 3, a: 7, b: 28 },
+    { n: 4, a: 9, b: 15 }, { n: 5, a: 12, b: 20 }, { n: 6, a: 16, b: 18 }
+  ]);
+  const soma18 = somaPage(18, [
+    { n: 1, a: 6, b: 12 }, { n: 2, a: 7, b: 35 }, { n: 3, a: 9, b: 24 },
+    { n: 4, a: 16, b: 20 }, { n: 5, a: 21, b: 35 }, { n: 6, a: 24, b: 32 }
+  ]);
+
+  window.__SHEETS__ = { lit56, lit57, lit58, lit59, soma16, soma17, soma18 };
+  window.__SHEET_SIZE__ = { w: SHEET_W, h: SHEET_H };
+})();
+
+/* 연우 공부 패드 — 학습지 필기 앱 */
 (function () {
   'use strict';
 
@@ -1185,11 +1714,13 @@ body.editing .book.custom .mini-del { display: flex; }
     tool: 'pen',
     penColor: '#22201d',
     hlColor: '#ffe14d',
-    penW: 1,
+    penW: 0,
     hlW: 1,
     erW: 1,
     zoom: false,
     penOnly: localStorage.getItem('ysp-penOnly') !== '0',
+    orig: false,
+    sheetKey: null,
     imgAR: 0.75,
     ready: false,
     objectUrls: {},
@@ -1210,6 +1741,14 @@ body.editing .book.custom .mini-del { display: flex; }
   const curWidth = () => widthArr(S.tool)[widthIdx()];
   const curColor = () => (S.tool === 'hl' ? S.hlColor : S.tool === 'eraser' ? '#000' : S.penColor);
   const pageKey = (b, u, p) => b + '|' + u + '|' + p;
+
+  /* 조판된 디지털 학습지 시트가 있는 쪽 (스마트구몬 스타일) */
+  const SHEET_FOR = {
+    lit: { p56: 'lit56', p57: 'lit57', p58: 'lit58', p59: 'lit59' },
+    soma: { p16: 'soma16', p17: 'soma17', p18: 'soma18' }
+  };
+  const SHEET_SIZE = () => window.__SHEET_SIZE__ || { w: 1240, h: 900 };
+  const sheetKeyFor = (bookId, pageId) => (SHEET_FOR[bookId] || {})[pageId] || null;
 
   /* ---------------------------------------------------------------- library */
   function seedLibrary() {
@@ -1434,6 +1973,7 @@ body.editing .book.custom .mini-del { display: flex; }
 
   async function loadPage(first) {
     if (!first) await saveInkNow();
+    tmPause();
     const found = findBook(S.bookId);
     const b = found.book, u = findUnit(b, S.unitId);
     const p = u.pages[S.pageIdx];
@@ -1441,30 +1981,59 @@ body.editing .book.custom .mini-del { display: flex; }
     S.strokes = []; S.redo = [];
     const rec = await idbGet('ink', S.pageKey);
     if (rec) { S.strokes = rec.s || []; }
-    updateDoneUI();
+    S.sheetKey = sheetKeyFor(b.id, p.id);
     const img = $('#padImg');
-    const url = p.imgBlob ? (await blobUrl(p.imgBlob)) : assetUrl(p.img);
-    $('#padLoading').style.display = url ? 'none' : 'grid';
-    img.onload = () => {
-      S.imgAR = img.naturalWidth / img.naturalHeight || 0.72;
+    const wrap = $('#sheetWrap');
+    const sh = $('#sheet');
+
+    if (S.sheetKey && window.__SHEETS__ && window.__SHEETS__[S.sheetKey]) {
+      /* ---- 깨끗한 디지털 학습지 시트 ---- */
+      S.imgAR = SHEET_SIZE().w / SHEET_SIZE().h;
+      sh.innerHTML = window.__SHEETS__[S.sheetKey];
+      wrap.hidden = false;
+      wrap.style.display = 'block';
+      img.style.display = 'none';
       $('#padLoading').style.display = 'none';
-      layoutPaper();
-    };
-    img.onerror = () => { $('#padLoading').textContent = '페이지 사진을 불러오지 못했어요'; };
-    img.src = url;
-    if (img.complete && img.naturalWidth) { S.imgAR = img.naturalWidth / img.naturalHeight; img.onload(); }
-    // neighbour preload
-    [S.pageIdx + 1, S.pageIdx - 1].forEach((i) => {
-      const q = u.pages[i];
-      if (q && !q.imgBlob) { const pre = new Image(); pre.src = assetUrl(q.img); }
-    });
+      const url = p.imgBlob ? (await blobUrl(p.imgBlob)) : (p.img ? assetUrl(p.img) : '');
+      img.onload = () => {};
+      img.onerror = () => {};
+      img.src = url;
+      $('#origBtn').hidden = !url;
+      $('#origBtn').textContent = '📄 원본';
+    } else {
+      /* ---- 사진 페이지 (나머지 문제집 그대로) ---- */
+      $('#origBtn').hidden = true;
+      wrap.hidden = true;
+      wrap.style.display = 'none';
+      sh.innerHTML = '';
+      img.style.display = 'block';
+      const url = p.imgBlob ? (await blobUrl(p.imgBlob)) : assetUrl(p.img);
+      $('#padLoading').style.display = url ? 'none' : 'grid';
+      img.onload = () => {
+        S.imgAR = img.naturalWidth / img.naturalHeight || 0.72;
+        $('#padLoading').style.display = 'none';
+        layoutPaper();
+      };
+      img.onerror = () => { $('#padLoading').textContent = '페이지 사진을 불러오지 못했어요'; };
+      img.src = url;
+      if (img.complete && img.naturalWidth) { S.imgAR = img.naturalWidth / img.naturalHeight; img.onload(); }
+      // neighbour preload
+      [S.pageIdx + 1, S.pageIdx - 1].forEach((i) => {
+        const q = u.pages[i];
+        if (q && !q.imgBlob) { const pre = new Image(); pre.src = assetUrl(q.img); }
+      });
+    }
+    updateDoneUI();
     $('#pageno').textContent = `${S.pageIdx + 1} / ${u.pages.length}`;
     $('#prevBtn').disabled = S.pageIdx === 0;
     $('#nextBtn').disabled = S.pageIdx >= u.pages.length - 1;
     $('#pageLabel').textContent = p.label || '';
     layoutPaper();
-    if (window.__YSP_ANS) window.__YSP_ANS.refresh(S.bookId, p.label || '');
+    if (window.__YSP_ANS) window.__YSP_ANS.refresh(S.bookId, p.label || '', S.pageKey);
     const st = $('#stage'); st.scrollTop = 0; st.scrollLeft = 0;
+    /* 쪽마다 타이머: 학습지 시트는 열면 자동 시작 */
+    tmLoad();
+    if (S.sheetKey) tmStart();
   }
 
   function layoutPaper() {
@@ -1484,6 +2053,15 @@ body.editing .book.custom .mini-del { display: flex; }
     P.style.width = Math.round(w) + 'px';
     P.style.height = Math.round(h) + 'px';
     sizeCanvas();
+    scaleSheet();
+  }
+
+  /* 시트는 1240×900 설계 좌표로 그려 두고 종이 크기에 맞춰 통째로 확대·축소 */
+  function scaleSheet() {
+    const sh = $('#sheet');
+    if (!sh || !S.sheetKey) return;
+    const k = paper().clientWidth / SHEET_SIZE().w;
+    sh.style.transform = 'scale(' + k + ')';
   }
 
   function sizeCanvas() {
@@ -1666,11 +2244,12 @@ body.editing .book.custom .mini-del { display: flex; }
     const u = findUnit(findBook(S.bookId).book, S.unitId);
     const p = u.pages[S.pageIdx];
     const done = !!S.done[pageKey(S.bookId, S.unitId, p.id)];
-    $('#padDone').classList.toggle('on', done);
-    $('#padDone').textContent = done ? '✅ 다 풀었어요' : '⬜ 다 풀었어요';
+    const b = $('#ansBtn');
+    if (b) {
+      b.classList.toggle('on', done);
+      b.textContent = done ? '✓ 제출됨' : '✓ 제출';
+    }
     $('#zoomBtn').classList.toggle('on', S.zoom);
-    $('#zoomBtn .wide').textContent = S.zoom ? '🔎 확대 보기' : '🔍 맞춤 보기';
-    $('#zoomBtn .narrow').textContent = S.zoom ? '🔎 확대' : '🔍 맞춤';
   }
 
   async function toggleDone() {
@@ -1682,6 +2261,77 @@ body.editing .book.custom .mini-del { display: flex; }
     updateDoneUI();
     await saveDone();
   }
+
+  /* ------------------------------------------------------- 타이머 (쪽마다) */
+  const TM = { sec: 0, run: false, handle: 0, last: 0 };
+  const tmKey = () => 'ysp:tm:' + S.pageKey;
+
+  function tmRender() {
+    const s = Math.max(0, Math.floor(TM.sec));
+    const t = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+    const n = $('#timerNum'); if (n) n.textContent = t;
+    const btn = $('#timerBtn');
+    if (btn) {
+      btn.classList.toggle('on', TM.run);
+      $('#timerIcon').textContent = TM.run ? '⏸' : '▶';
+      $('#timerLbl').textContent = TM.run ? '일시정지' : (TM.sec > 0 ? '계속' : '시작');
+    }
+  }
+  function tmLoad() {
+    tmPause(true);
+    TM.sec = parseFloat(localStorage.getItem(tmKey()) || '0') || 0;
+    TM.run = false;
+    tmRender();
+  }
+  function tmSave() {
+    if (!S.pageKey) return;
+    try { localStorage.setItem(tmKey(), String(Math.round(TM.sec))); } catch (e) {}
+  }
+  function tmStart() {
+    if (TM.run) return;
+    TM.run = true; TM.last = Date.now();
+    clearInterval(TM.handle);
+    TM.handle = setInterval(() => {
+      const now = Date.now();
+      TM.sec += (now - TM.last) / 1000; TM.last = now;
+      tmRender();
+      if (Math.floor(TM.sec) % 5 === 0) tmSave();
+    }, 300);
+    tmRender();
+  }
+  function tmPause(silent) {
+    if (TM.run) { tmSave(); }
+    TM.run = false; clearInterval(TM.handle); TM.handle = 0;
+    if (!silent) tmRender();
+  }
+  function tmToggle() { if (TM.run) tmPause(); else tmStart(); }
+
+  /* ------------------------------------------------------- 제출 · 정답 */
+  async function submitPage() {
+    const u = findUnit(findBook(S.bookId).book, S.unitId);
+    const p = u.pages[S.pageIdx];
+    const k = pageKey(S.bookId, S.unitId, p.id);
+    S.done[k] = true;
+    updateDoneUI();
+    await saveDone();
+    tmPause();
+    if (window.__YSP_ANS && window.__YSP_ANS.has && window.__YSP_ANS.has(S.bookId)) {
+      window.__YSP_ANS.open();
+      toast('제출 완료! 정답만 모아 보여 줄게요 ✅', 2000);
+    } else {
+      toast('제출 완료! 이 쪽 다 풀었어요 ✅', 2000);
+    }
+  }
+
+  /* 원본 책 사진 보기 — 종이와 필기는 그대로 두고 사진만 크게 띄운다 */
+  function openOrig() {
+    if (!S.sheetKey) return;
+    const img = $('#padImg');
+    if (!img.src) { toast('원본 사진이 없어요'); return; }
+    $('#origImg').src = img.src;
+    $('#origPop').hidden = false;
+  }
+  function closeOrig() { $('#origPop').hidden = true; $('#origImg').src = ''; }
 
 
   /* ----------------------------------------------------------------- modals */
@@ -1883,8 +2533,12 @@ body.editing .book.custom .mini-del { display: flex; }
     });
 
     // pad
-    $('#padBack').onclick = async () => { if (window.__YSP_ANS) window.__YSP_ANS.close(); await saveInkNow(); await openBook(S.bookId); };
-    $('#padDone').onclick = toggleDone;
+    $('#padBack').onclick = async () => { tmPause(); if (window.__YSP_ANS) window.__YSP_ANS.close(); await saveInkNow(); await openBook(S.bookId); };
+    $('#ansBtn').onclick = submitPage;
+    $('#timerBtn').onclick = tmToggle;
+    $('#origBtn').onclick = openOrig;
+    $('#origClose').onclick = closeOrig;
+    $('#origPop').addEventListener('click', (e) => { if (e.target.id === 'origPop') closeOrig(); });
     $('#tools').addEventListener('click', (e) => {
       const t = e.target.closest('[data-tool]');
       if (t) { setTool(t.dataset.tool); return; }
@@ -1917,10 +2571,10 @@ body.editing .book.custom .mini-del { display: flex; }
       }
     });
 
-    $('#prevBtn').onclick = async () => { if (S.pageIdx > 0) { await saveInkNow(); S.pageIdx--; await loadPage(false); } };
+    $('#prevBtn').onclick = async () => { if (S.pageIdx > 0) { tmPause(); await saveInkNow(); S.pageIdx--; await loadPage(false); } };
     $('#nextBtn').onclick = async () => {
       const u = findUnit(findBook(S.bookId).book, S.unitId);
-      if (S.pageIdx < u.pages.length - 1) { await saveInkNow(); S.pageIdx++; await loadPage(false); }
+      if (S.pageIdx < u.pages.length - 1) { tmPause(); await saveInkNow(); S.pageIdx++; await loadPage(false); }
     };
     $('#zoomBtn').onclick = () => {
       S.zoom = !S.zoom;
@@ -1972,6 +2626,14 @@ body.editing .book.custom .mini-del { display: flex; }
     cv.addEventListener('contextmenu', (e) => e.preventDefault());
 
     $('#modalBack').addEventListener('click', (e) => { if (e.target.id === 'modalBack') closeModal(); });
+    document.addEventListener('ysp:unsubmit', async () => {
+      const u = findUnit(findBook(S.bookId).book, S.unitId);
+      const p = u.pages[S.pageIdx];
+      delete S.done[pageKey(S.bookId, S.unitId, p.id)];
+      updateDoneUI();
+      await saveDone();
+      toast('완료 표시를 지웠어요. 다시 풀어 보세요 ✏️');
+    });
     $('#shelfBody').addEventListener('keydown', (e) => {
       const b = e.target.closest('[data-book]');
       if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openBookOrPad(b.dataset.book); }
@@ -1981,8 +2643,8 @@ body.editing .book.custom .mini-del { display: flex; }
       if (S.view === 'pad') layoutPaper();
     });
     window.addEventListener('orientationchange', () => setTimeout(() => { if (S.view === 'pad') layoutPaper(); }, 250));
-    document.addEventListener('visibilitychange', () => { if (document.hidden) saveInkNow(); });
-    window.addEventListener('pagehide', () => saveInkNow());
+    document.addEventListener('visibilitychange', () => { if (document.hidden) { saveInkNow(); tmPause(); } });
+    window.addEventListener('pagehide', () => { saveInkNow(); tmPause(true); });
     document.addEventListener('keydown', (e) => {
       if (S.view !== 'pad') return;
       const mod = e.metaKey || e.ctrlKey;
@@ -1992,8 +2654,7 @@ body.editing .book.custom .mini-del { display: flex; }
     });
   }
 
-  /* ======================= 정답 확인 시트 ======================= */
-/* 문제집 페이지에서 펜으로 다 푼 뒤, 문항별 정답만 작게 보여 준다. */
+  /* ======================= 정답 확인 시트 (제출하면 정답만) ======================= */
 (function () {
   'use strict';
 
@@ -2010,11 +2671,11 @@ body.editing .book.custom .mini-del { display: flex; }
     if (!book || !box) return;
     const curIdx = book.groups.findIndex((g) => g.page === A.page);
     $('#ansPage').textContent = A.page || '';
-    const note = curIdx < 0 ? '<div class="ans-note top">이 쪽에는 문제가 없어요. 다른 쪽 정답을 봐요.</div>' : '';
+    const note = curIdx < 0 ? '<div class="ans-note top">이 쪽은 정답이 없어요. 다른 쪽 정답을 봐요.</div>' : '';
     box.innerHTML = note + book.groups.map((g, i) => {
       const rows = g.items.map((it) => `<div class="ans-row">
           <span class="ans-n">${esc(it.n)}</span>
-          <span class="ans-v">${it.q ? `<b class="ans-q">${esc(it.q)}</b> → ` : ''}${esc(it.a)}${it.sub ? `<span class="ans-sub">${esc(it.sub)}</span>` : ''}${it.note ? `<span class="ans-note">${esc(it.note)}</span>` : ''}</span>
+          <span class="ans-v">${it.q ? `<b class="ans-q">${esc(it.q)}</b> → ` : ''}${esc(it.a)}${it.note ? `<span class="ans-note">${esc(it.note)}</span>` : ''}</span>
         </div>`).join('');
       return `<section class="ans-g ${i === curIdx ? 'cur' : ''}">
         <div class="ans-gt">${esc(g.name || g.page || '정답')}${g.name && g.page ? `<small>${esc(g.page)}</small>` : ''}${i === curIdx ? '<em>이 쪽</em>' : ''}</div>
@@ -2024,46 +2685,55 @@ body.editing .book.custom .mini-del { display: flex; }
     const cur = box.querySelector('.ans-g.cur');
     if (cur) box.scrollTop = Math.max(0, cur.offsetTop - box.offsetTop - 6);
     else box.scrollTop = 0;
+    const done = $('#ansDone');
+    const key = done && done.dataset.key;
+    const isDone = !!(window.__YSP_DONE && key && window.__YSP_DONE()[key]);
+    if (done) done.textContent = isDone ? '이 쪽 다 풀었어요 ✓' : '아직 완료 전';
   }
 
+  function has(bookId) { return !!ANS[bookId]; }
+
   function open() {
-    if (!ANS[A.book]) return;
+    if (!ANS[A.book]) return false;
     A.open = true;
     const s = sheet();
     if (s) s.hidden = false;
-    const b = $('#ansBtn');
-    if (b) b.classList.add('on');
     render();
+    return true;
   }
 
   function close() {
     A.open = false;
     const s = sheet();
     if (s) s.hidden = true;
-    const b = $('#ansBtn');
-    if (b) b.classList.remove('on');
   }
 
   function toggle() { if (A.open) close(); else open(); }
 
   /* 패드가 쪽을 열 때마다 호출: 이 문제집에 정답이 있는지, 지금 몇 쪽인지 */
-  function refresh(bookId, page) {
+  function refresh(bookId, page, doneKey) {
     A.book = bookId;
     A.page = page || '';
     const btn = $('#ansBtn');
-    if (btn) btn.hidden = !ANS[bookId];
+    if (btn) btn.hidden = false;
+    const done = $('#ansDone');
+    if (done) done.dataset.key = doneKey || '';
     if (A.open) { if (!ANS[bookId]) close(); else render(); }
   }
 
   function init() {
-    const btn = $('#ansBtn');
-    if (btn) btn.onclick = toggle;
     const s = sheet();
     if (s) s.addEventListener('click', (e) => { if (e.target.closest('[data-ans-close]')) close(); });
+    const undo = $('#ansUndo');
+    if (undo) undo.onclick = () => {
+      close();
+      const ev = new CustomEvent('ysp:unsubmit');
+      document.dispatchEvent(ev);
+    };
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && A.open) close(); });
   }
 
-  window.__YSP_ANS = { init, refresh, close, toggle, open };
+  window.__YSP_ANS = { init, refresh, close, toggle, open, has };
 })();
 
 
@@ -2086,6 +2756,8 @@ body.editing .book.custom .mini-del { display: flex; }
   }
 
   // small inspection hook (used by automated checks)
+  window.__YSP_DONE = () => S.done;
+
   window.__YSP = {
     strokes: () => S.strokes.length,
     redo: () => S.redo.length,
@@ -2093,6 +2765,12 @@ body.editing .book.custom .mini-del { display: flex; }
     tool: () => S.tool,
     penOnly: () => S.penOnly,
     page: () => S.pageKey,
+    view: () => S.view,
+    sheet: () => S.sheetKey,
+    orig: () => !$('#origPop').hidden,
+    timer: () => Math.round(TM.sec),
+    timerRunning: () => TM.run,
+    ar: () => S.imgAR,
     library: () => S.lib
   };
 
