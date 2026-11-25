@@ -1,0 +1,1775 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="연우 공부방">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f6efe4">
+<title>연우 공부 패드</title>
+<style>:root {
+  --cream: #f6efe4;
+  --cream-deep: #ece1d1;
+  --paper: #fffdf8;
+  --ink: #2a231c;
+  --ink-soft: #6f6357;
+  --line: #e4d8c6;
+  --accent: #e8613c;
+  --accent-soft: #fde9e2;
+  --blue: #2f6feb;
+  --green: #17936a;
+  --shadow: 0 8px 20px rgba(90, 65, 40, .10), 0 2px 5px rgba(90, 65, 40, .07);
+  --radius: 18px;
+  --hdr: 58px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  font-size: 16px;
+}
+button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+button:active { transform: translateY(1px); }
+input, select { font: inherit; color: inherit; }
+
+#app { height: 100%; display: flex; flex-direction: column; }
+.view { flex: 1; display: none; flex-direction: column; min-height: 0; }
+.view.active { display: flex; }
+
+/* ---------- shelf ---------- */
+.topbar {
+  height: var(--hdr);
+  padding: var(--safe-t) 16px 0;
+  display: flex; align-items: center; gap: 10px;
+  background: linear-gradient(180deg, #fffaf2, #f8f1e6);
+  border-bottom: 1px solid var(--line);
+  flex: none;
+}
+.topbar .brand { font-size: 19px; font-weight: 800; letter-spacing: -.4px; margin-right: auto;
+  display: flex; align-items: center; gap: 8px; }
+.topbar .brand small { font-weight: 600; font-size: 12px; color: var(--ink-soft); letter-spacing: 0; }
+.btn-soft {
+  background: #fff; border: 1px solid var(--line); border-radius: 999px;
+  padding: 7px 13px; font-size: 13.5px; font-weight: 700; color: var(--ink-soft);
+  box-shadow: 0 1px 2px rgba(90, 65, 40, .06); white-space: nowrap;
+}
+.btn-soft.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn-soft:disabled { opacity: .45; }
+
+.shelf-scroll { flex: 1; overflow-y: auto; padding: 14px 16px calc(28px + var(--safe-b)); -webkit-overflow-scrolling: touch; }
+.subject { margin-bottom: 22px; }
+.subject-head { display: flex; align-items: baseline; gap: 9px; margin: 2px 2px 10px; }
+.subject-head h2 { margin: 0; font-size: 17px; font-weight: 800; letter-spacing: -.3px; }
+.subject-head .sub-count { font-size: 12px; color: var(--ink-soft); font-weight: 600; }
+.subject-head .del-subject { margin-left: auto; font-size: 12px; color: #b9a996; }
+
+.cat { margin: 0 0 14px; }
+.cat-name {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 800; color: #907c66;
+  letter-spacing: .02em; margin-bottom: 8px;
+}
+.cat-name::before { content: ""; width: 14px; height: 2px; border-radius: 2px; background: #d9c9b4; }
+
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); }
+
+.book {
+  position: relative; display: flex; flex-direction: column; gap: 8px;
+  padding: 0; text-align: left; border-radius: var(--radius);
+}
+.cover {
+  position: relative; width: 100%; aspect-ratio: 3 / 4; border-radius: 14px;
+  overflow: hidden; background: #fff; box-shadow: var(--shadow);
+  border: 1px solid rgba(120, 95, 65, .10);
+}
+.cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cover.plain { display: flex; align-items: center; justify-content: center; padding: 12px; }
+.cover.plain .ct { font-size: 15px; font-weight: 800; line-height: 1.28; letter-spacing: -.4px; text-align: center; }
+.cover.plain .ce { position: absolute; right: 9px; top: 8px; font-size: 20px; opacity: .9; }
+.cover.plain::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(150deg, rgba(255,255,255,.32), rgba(0,0,0,.04) 55%, rgba(0,0,0,.14));
+}
+.cover .spine {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 7px;
+  background: linear-gradient(90deg, rgba(0,0,0,.22), rgba(255,255,255,.14));
+}
+.badge {
+  position: absolute; right: 8px; bottom: 8px;
+  background: rgba(24, 20, 16, .72); color: #fff; border-radius: 999px;
+  font-size: 11px; font-weight: 800; padding: 3px 8px; backdrop-filter: blur(4px);
+}
+.badge.done { background: rgba(23, 147, 106, .92); }
+.book-title { font-size: 13.5px; font-weight: 800; letter-spacing: -.3px; line-height: 1.25; }
+.book-sub { font-size: 11px; color: var(--ink-soft); font-weight: 600; margin-top: 2px; line-height: 1.3;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.book .mini-del {
+  position: absolute; right: -4px; top: -4px; width: 24px; height: 24px; border-radius: 50%;
+  background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow);
+  font-size: 13px; display: none; align-items: center; justify-content: center;
+}
+body.editing .book.custom .mini-del { display: flex; }
+.empty-note { font-size: 12.5px; color: #a4937f; padding: 2px 2px 6px; }
+
+/* ---------- book detail ---------- */
+.header-lite {
+  height: var(--hdr); padding: var(--safe-t) 12px 0; flex: none;
+  display: flex; align-items: center; gap: 10px;
+  background: #fffaf2; border-bottom: 1px solid var(--line);
+}
+.icon-btn {
+  width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center;
+  font-size: 18px; background: #fff; border: 1px solid var(--line); flex: none;
+}
+.icon-btn.ghost { background: transparent; border-color: transparent; }
+.header-lite .ht { font-size: 15px; font-weight: 800; letter-spacing: -.3px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; }
+.header-lite .hs { font-size: 11.5px; color: var(--ink-soft); font-weight: 600; }
+.header-lite .spacer { flex: 1; }
+
+.book-scroll { flex: 1; overflow-y: auto; padding: 16px 16px calc(28px + var(--safe-b)); }
+.book-hero { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; }
+.book-hero .cover { width: 96px; flex: none; }
+.book-hero h1 { margin: 0 0 4px; font-size: 20px; font-weight: 850; letter-spacing: -.6px; }
+.book-hero .hs2 { font-size: 12.5px; color: var(--ink-soft); font-weight: 600; margin-bottom: 8px; }
+.progress-wrap { display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 700; color: var(--ink-soft); }
+.bar { flex: 1; height: 7px; border-radius: 99px; background: #e9dfd0; overflow: hidden; max-width: 190px; }
+.bar > i { display: block; height: 100%; background: linear-gradient(90deg, #f7a072, var(--accent)); border-radius: 99px; }
+
+.unit-list { display: flex; flex-direction: column; gap: 10px; list-style: none; margin: 0; padding: 0; }
+.unit-card {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 13px 14px;
+  box-shadow: 0 2px 6px rgba(90, 65, 40, .05);
+}
+.unit-card .uicon { font-size: 20px; width: 34px; text-align: center; flex: none; }
+.unit-card .ut { font-size: 14.5px; font-weight: 800; letter-spacing: -.3px; line-height: 1.3; }
+.unit-card .us { font-size: 11.5px; color: var(--ink-soft); font-weight: 600; margin-top: 3px; }
+.unit-card .ring { margin-left: auto; flex: none; font-size: 11.5px; font-weight: 800; color: var(--accent);
+  background: var(--accent-soft); border-radius: 999px; padding: 5px 10px; }
+.unit-card .ring.full { color: var(--green); background: #e6f6ef; }
+
+.add-row { margin-top: 14px; display: flex; gap: 9px; flex-wrap: wrap; }
+.dashed {
+  flex: 1; min-width: 180px; border: 1.6px dashed #d3c3ad; border-radius: 16px; padding: 15px;
+  font-size: 13.5px; font-weight: 800; color: #a58f76; background: rgba(255,255,255,.5);
+}
+.page-list { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.page-row { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--line);
+  border-radius: 13px; padding: 9px 12px; font-size: 13px; font-weight: 700; }
+.page-row .pl { color: var(--ink-soft); font-weight: 700; font-size: 12px; min-width: 44px; }
+.page-row .pg-done { color: var(--green); font-size: 12.5px; font-weight: 800; margin-left: auto; }
+.page-row .pg-del { color: #c9b6a1; font-size: 14px; padding: 2px 4px; }
+
+/* ---------- pad ---------- */
+.pad-top {
+  height: var(--hdr); flex: none; padding: var(--safe-t) 10px 0;
+  display: flex; align-items: center; gap: 8px;
+  background: #fffaf2; border-bottom: 1px solid var(--line);
+}
+.pad-top .pt { font-size: 13.5px; font-weight: 800; letter-spacing: -.3px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; }
+.pad-top .ps { font-size: 11px; color: var(--ink-soft); font-weight: 600; }
+.done-btn {
+  margin-left: auto; flex: none; border-radius: 999px; padding: 8px 13px; font-size: 12.5px; font-weight: 800;
+  background: #fff; border: 1.5px solid #d9cbb8; color: #8b7a66; white-space: nowrap;
+}
+.done-btn.on { background: var(--green); border-color: var(--green); color: #fff; }
+
+.tools {
+  flex: none; display: flex; align-items: center; gap: 6px; padding: 7px 10px;
+  background: #fffdf9; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none;
+}
+.tools::-webkit-scrollbar { display: none; }
+.tool {
+  width: 40px; height: 40px; border-radius: 12px; font-size: 18px; flex: none;
+  display: grid; place-items: center; background: #f4ece0; border: 1.5px solid transparent;
+}
+.tool.on { background: #fff; border-color: var(--accent); box-shadow: 0 2px 8px rgba(232, 97, 60, .18); }
+.swatches { display: flex; gap: 6px; align-items: center; padding: 0 4px; }
+.sw { width: 26px; height: 26px; border-radius: 50%; border: 2.5px solid #fff;
+  box-shadow: 0 0 0 1.4px #dccfbd; flex: none; }
+.sw.on { box-shadow: 0 0 0 2.6px var(--ink); }
+.dots { display: flex; gap: 3px; align-items: center; padding: 0 3px; }
+.dot-btn { width: 30px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: #f4ece0; }
+.dot-btn.on { background: #fff; box-shadow: inset 0 0 0 1.5px var(--accent); }
+.dot { background: #3b3128; border-radius: 50%; }
+.sep { width: 1px; height: 26px; background: var(--line); margin: 0 3px; flex: none; }
+
+.stage {
+  flex: 1; min-height: 0; overflow: auto; padding: 12px; display: flex;
+  background:
+    radial-gradient(circle at 20% 0%, #fff9f0, transparent 60%),
+    #efe6d8;
+  -webkit-overflow-scrolling: touch;
+  justify-content: center; align-items: flex-start;
+}
+.paper {
+  position: relative; background: #fff; border-radius: 10px; flex: none;
+  box-shadow: 0 12px 30px rgba(80, 55, 30, .18), 0 2px 6px rgba(80, 55, 30, .12);
+  overflow: hidden; margin: auto;
+}
+.paper img { width: 100%; height: 100%; display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.paper canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
+.paper.pen-only canvas { touch-action: pan-x pan-y; }
+.paper .loading { position: absolute; inset: 0; display: grid; place-items: center; color: #b7a48d;
+  font-size: 13px; font-weight: 700; }
+
+.pad-bottom {
+  flex: none; display: flex; align-items: center; gap: 8px; padding: 8px 12px calc(8px + var(--safe-b));
+  background: #fffaf2; border-top: 1px solid var(--line);
+}
+.nav-btn { border-radius: 12px; padding: 9px 13px; font-size: 13px; font-weight: 800; background: #fff;
+  border: 1px solid var(--line); color: var(--ink-soft); white-space: nowrap; }
+.nav-btn:disabled { opacity: .35; }
+.pageno { font-size: 13px; font-weight: 800; min-width: 58px; text-align: center; }
+.pad-bottom .spacer { flex: 1; }
+.narrow { display: none; }
+.chip { border-radius: 999px; padding: 8px 12px; font-size: 12.5px; font-weight: 800; background: #fff;
+  border: 1px solid var(--line); color: var(--ink-soft); white-space: nowrap; }
+.chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* ---------- modal ---------- */
+.modal-back {
+  position: fixed; inset: 0; background: rgba(40, 30, 22, .42); backdrop-filter: blur(3px);
+  display: none; align-items: center; justify-content: center; padding: 18px; z-index: 40;
+}
+.modal-back.show { display: flex; }
+.modal {
+  width: min(430px, 100%); max-height: 86vh; overflow-y: auto; background: #fffdf9;
+  border-radius: 22px; padding: 20px; box-shadow: 0 24px 60px rgba(50, 35, 20, .32);
+}
+.modal h3 { margin: 0 0 14px; font-size: 17px; font-weight: 850; letter-spacing: -.4px; }
+.field { margin-bottom: 12px; }
+.field label { display: block; font-size: 12px; font-weight: 800; color: #8b7a66; margin-bottom: 5px; }
+.field input[type=text], .field select {
+  width: 100%; padding: 11px 12px; border-radius: 12px; border: 1.5px solid var(--line);
+  background: #fff; font-size: 14.5px; font-weight: 600;
+}
+.field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
+.color-row { display: flex; gap: 9px; flex-wrap: wrap; }
+.color-pick { width: 34px; height: 34px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 1.5px #ddd0bd; }
+.color-pick.on { box-shadow: 0 0 0 3px var(--ink); }
+.file-btn {
+  display: block; width: 100%; text-align: center; padding: 12px; border-radius: 12px;
+  border: 1.6px dashed #d3c3ad; color: #a58f76; font-weight: 800; font-size: 13px; background: #fff;
+}
+.modal-actions { display: flex; gap: 9px; margin-top: 16px; }
+.modal-actions button { flex: 1; padding: 12px; border-radius: 13px; font-weight: 800; font-size: 14px; }
+.modal-actions .cancel { background: #f1e8db; color: #7d6c59; }
+.modal-actions .ok { background: var(--accent); color: #fff; }
+.modal-actions .ok.danger { background: #d93a2b; }
+.hint { font-size: 12px; color: #9b8a76; line-height: 1.45; margin-top: 8px; }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(74px + var(--safe-b)); transform: translateX(-50%) translateY(14px);
+  background: rgba(35, 27, 20, .92); color: #fff; padding: 10px 16px; border-radius: 999px;
+  font-size: 13px; font-weight: 700; opacity: 0; transition: .22s; pointer-events: none; z-index: 60;
+  max-width: 86vw; text-align: center;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.tip {
+  margin: 0 0 14px; padding: 11px 13px; border-radius: 14px; background: #fff6e8;
+  border: 1px solid #f0ddc2; font-size: 12.5px; font-weight: 650; color: #8a7457;
+  display: flex; gap: 8px; align-items: flex-start; line-height: 1.5;
+}
+.tip b { color: #6b5537; }
+.tip .x { margin-left: auto; color: #b7a48d; font-weight: 800; flex: none; }
+
+@media (max-width: 520px) {
+  .tools { flex-wrap: wrap; row-gap: 5px; }
+  .tools .sep { display: none; }
+  .nav-btn .lbl { display: none; }
+  .wide { display: none; }
+  .narrow { display: inline; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 11px; }
+  .book-title { font-size: 12.5px; }
+  .book-sub { font-size: 10.5px; }
+  .topbar .brand small { display: none; }
+  .tools { padding: 6px 8px; gap: 5px; }
+  .tool { width: 36px; height: 36px; font-size: 16px; }
+  .sw { width: 23px; height: 23px; }
+  .dot-btn { width: 27px; }
+  .pad-bottom { gap: 6px; padding: 7px 8px calc(7px + var(--safe-b)); }
+  .nav-btn { padding: 8px 10px; font-size: 12px; }
+  .chip { padding: 7px 10px; font-size: 11.5px; }
+  .stage { padding: 8px; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <section id="view-shelf" class="view active">
+    <div class="topbar">
+      <div class="brand">📚 연우 공부방 <small id="shelfStat"></small></div>
+      <button class="btn-soft" id="addBookBtn">＋ 문제집</button>
+      <button class="btn-soft primary" id="addSubjectBtn">＋ 과목</button>
+    </div>
+    <div class="shelf-scroll"><div id="shelfBody"></div></div>
+  </section>
+
+  <section id="view-book" class="view">
+    <div class="header-lite">
+      <button class="icon-btn" id="bookBack" aria-label="뒤로">‹</button>
+      <div style="min-width:0">
+        <div class="ht" id="bookTitle"></div>
+        <div class="hs" id="bookSub"></div>
+      </div>
+      <div class="spacer"></div>
+    </div>
+    <div class="book-scroll" id="bookBody"></div>
+  </section>
+
+  <section id="view-pad" class="view">
+    <div class="pad-top">
+      <button class="icon-btn" id="padBack" aria-label="뒤로">‹</button>
+      <div style="min-width:0">
+        <div class="pt" id="padTitle"></div>
+        <div class="ps"><span id="padSub"></span> <span id="pageLabel"></span></div>
+      </div>
+      <button class="done-btn" id="padDone">⬜ 다 풀었어요</button>
+    </div>
+
+    <div class="tools" id="tools">
+      <button class="tool on" data-tool="pen" aria-label="펜">✏️</button>
+      <button class="tool" data-tool="hl" aria-label="형광펜">🖍️</button>
+      <button class="tool" data-tool="eraser" aria-label="지우개">🧽</button>
+      <div class="sep"></div>
+      <div class="swatches" id="swatches"></div>
+      <div class="sep"></div>
+      <div class="dots" id="dots"></div>
+      <div class="sep"></div>
+      <button class="tool" id="undoBtn" aria-label="실행취소">↩️</button>
+      <button class="tool" id="redoBtn" aria-label="다시실행">↪️</button>
+      <button class="tool" id="clearBtn" aria-label="이 쪽 지우기">🗑️</button>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="paper" id="paper">
+        <img id="padImg" alt="문제집 페이지">
+        <canvas id="padCanvas"></canvas>
+        <div class="loading" id="padLoading">불러오는 중…</div>
+      </div>
+    </div>
+
+    <div class="pad-bottom">
+      <button class="nav-btn" id="prevBtn">◀<span class="lbl"> 이전 쪽</span></button>
+      <div class="pageno" id="pageno">1 / 1</div>
+      <button class="nav-btn" id="nextBtn"><span class="lbl">다음 쪽 </span>▶</button>
+      <div class="spacer"></div>
+      <button class="chip" id="zoomBtn"><span class="wide">🔍 맞춤 보기</span><span class="narrow">🔍 맞춤</span></button>
+      <button class="chip on" id="penBtn"><span class="wide">✏️ 펜슬만 쓰기</span><span class="narrow">✏️ 펜슬만</span></button>
+      <button class="icon-btn ghost" id="pageMenu" aria-label="페이지 메뉴">⋯</button>
+    </div>
+  </section>
+
+</div>
+<div class="modal-back" id="modalBack"></div>
+<div class="toast" id="toast"></div>
+
+<script>window.__DATA__ = {
+ "v": 1,
+ "built": "2026-11-25",
+ "subjects": [
+  {
+   "id": "kor",
+   "name": "국어",
+   "emoji": "📖",
+   "categories": [
+    {
+     "id": "kor-read",
+     "name": "독해",
+     "books": [
+      {
+       "id": "lit",
+       "title": "빠작 문학독해",
+       "subtitle": "문학독해 3단계",
+       "emoji": "📕",
+       "cover": {
+        "type": "img",
+        "src": "covers/cover-lit.webp"
+       },
+       "units": [
+        {
+         "id": "lit-u1",
+         "title": "동화 04 · 강아지똥",
+         "pages": [
+          {
+           "id": "p56",
+           "label": "p.56",
+           "img": "pages/lit-56.webp"
+          },
+          {
+           "id": "p57",
+           "label": "p.57",
+           "img": "pages/lit-57.webp"
+          },
+          {
+           "id": "p58",
+           "label": "p.58",
+           "img": "pages/lit-58.webp"
+          },
+          {
+           "id": "p59",
+           "label": "p.59",
+           "img": "pages/lit-59.webp"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "non",
+       "title": "빠작 비문학독해",
+       "subtitle": "비문학독해 3단계",
+       "emoji": "📗",
+       "cover": {
+        "type": "img",
+        "src": "covers/cover-non.webp"
+       },
+       "units": [
+        {
+         "id": "non-u1",
+         "title": "문화 01 · 반려동물을 대하는 올바른 자세",
+         "pages": [
+          {
+           "id": "p68",
+           "label": "p.68",
+           "img": "pages/non-68.webp"
+          },
+          {
+           "id": "p69",
+           "label": "p.69",
+           "img": "pages/non-69.webp"
+          },
+          {
+           "id": "p70",
+           "label": "p.70",
+           "img": "pages/non-70.webp"
+          },
+          {
+           "id": "p71",
+           "label": "p.71",
+           "img": "pages/non-71.webp"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "voc",
+       "title": "빠작 어휘독해",
+       "subtitle": "어휘독해 3단계",
+       "emoji": "📘",
+       "cover": {
+        "type": "img",
+        "src": "covers/cover-voc.webp"
+       },
+       "units": [
+        {
+         "id": "voc-u1",
+         "title": "설명문·사회 08 · 지도의 이해",
+         "pages": [
+          {
+           "id": "p40",
+           "label": "p.40",
+           "img": "pages/voc-40.webp"
+          },
+          {
+           "id": "p41",
+           "label": "p.41",
+           "img": "pages/voc-41.webp"
+          },
+          {
+           "id": "p42",
+           "label": "p.42",
+           "img": "pages/voc-42.webp"
+          },
+          {
+           "id": "p43",
+           "label": "p.43",
+           "img": "pages/voc-43.webp"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "kor-han",
+     "name": "한자",
+     "books": [
+      {
+       "id": "han",
+       "title": "예설라 한자",
+       "subtitle": "초등 2학년 12호",
+       "emoji": "🈶",
+       "cover": {
+        "type": "img",
+        "src": "covers/cover-han.webp"
+       },
+       "units": [
+        {
+         "id": "han-u1",
+         "title": "초등 2학년 12호 · 4주차 한자",
+         "pages": [
+          {
+           "id": "p180",
+           "label": "p.180",
+           "img": "pages/han-180.webp"
+          },
+          {
+           "id": "p181",
+           "label": "p.181",
+           "img": "pages/han-181.webp"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "eng",
+   "name": "영어",
+   "emoji": "🔤",
+   "categories": [
+    {
+     "id": "eng-read",
+     "name": "리딩",
+     "books": [
+      {
+       "id": "us",
+       "title": "미국교과서리딩",
+       "subtitle": "READING 3.1",
+       "emoji": "🇺🇸",
+       "cover": {
+        "type": "img",
+        "src": "covers/cover-us.webp"
+       },
+       "units": [
+        {
+         "id": "us-u1",
+         "title": "Unit 06 · Oceans",
+         "pages": [
+          {
+           "id": "p44",
+           "label": "p.44",
+           "img": "pages/us-44.webp"
+          },
+          {
+           "id": "p45",
+           "label": "p.45",
+           "img": "pages/us-45.webp"
+          },
+          {
+           "id": "p46",
+           "label": "p.46",
+           "img": "pages/us-46.webp"
+          },
+          {
+           "id": "p47",
+           "label": "p.47",
+           "img": "pages/us-47.webp"
+          },
+          {
+           "id": "p48",
+           "label": "p.48",
+           "img": "pages/us-48.webp"
+          },
+          {
+           "id": "p49",
+           "label": "p.49",
+           "img": "pages/us-49.webp"
+          },
+          {
+           "id": "p50",
+           "label": "p.50",
+           "img": "pages/us-50.webp"
+          },
+          {
+           "id": "p51",
+           "label": "p.51",
+           "img": "pages/us-51.webp"
+          },
+          {
+           "id": "wb6",
+           "label": "WB p.6",
+           "img": "pages/us-wb6.webp"
+          },
+          {
+           "id": "wb7",
+           "label": "WB p.7",
+           "img": "pages/us-wb7.webp"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "eng-gram",
+     "name": "문법",
+     "books": [
+      {
+       "id": "gr",
+       "title": "awesome grammar practice",
+       "subtitle": "Awesome Grammar Practice 2",
+       "emoji": "🔤",
+       "cover": {
+        "type": "img",
+        "src": "covers/cover-gr.webp"
+       },
+       "units": [
+        {
+         "id": "gr-u1",
+         "title": "Unit 13 · Past Simple 1: Was/Were",
+         "pages": [
+          {
+           "id": "p34",
+           "label": "p.34",
+           "img": "pages/gr-34.webp"
+          },
+          {
+           "id": "p35",
+           "label": "p.35",
+           "img": "pages/gr-35.webp"
+          },
+          {
+           "id": "p68",
+           "label": "p.68",
+           "img": "pages/gr-68.webp"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mat",
+   "name": "수학",
+   "emoji": "🔢",
+   "categories": [
+    {
+     "id": "mat-calc",
+     "name": "연산",
+     "books": [
+      {
+       "id": "soma",
+       "title": "소마셈",
+       "subtitle": "D4 4학년 · 약수와 배수",
+       "emoji": "🔢",
+       "cover": {
+        "type": "img",
+        "src": "covers/cover-soma.webp"
+       },
+       "units": [
+        {
+         "id": "soma-u1",
+         "title": "1주 · 최대공약수 구하기",
+         "pages": [
+          {
+           "id": "p16",
+           "label": "p.16",
+           "img": "pages/soma-16.webp"
+          },
+          {
+           "id": "p17",
+           "label": "p.17",
+           "img": "pages/soma-17.webp"
+          },
+          {
+           "id": "p18",
+           "label": "p.18",
+           "img": "pages/soma-18.webp"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "gyo",
+       "title": "교과셈",
+       "subtitle": "초등 3·1",
+       "emoji": "➗",
+       "cover": {
+        "type": "img",
+        "src": "covers/cover-gyo.webp"
+       },
+       "units": [
+        {
+         "id": "gyo-u1",
+         "title": "PART 1. 덧셈과 뺄셈 · 09B",
+         "pages": [
+          {
+           "id": "p44",
+           "label": "p.44",
+           "img": "pages/gyo-44.webp"
+          },
+          {
+           "id": "p45",
+           "label": "p.45",
+           "img": "pages/gyo-45.webp"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "mat-real",
+     "name": "실전",
+     "books": [
+      {
+       "id": "wang",
+       "title": "왕수학",
+       "subtitle": "실력편 3-1",
+       "emoji": "👑",
+       "cover": {
+        "type": "img",
+        "src": "covers/cover-wang.webp"
+       },
+       "units": [
+        {
+         "id": "wang-u1",
+         "title": "6. 분수와 소수 · Step 3 기본 유형 다지기",
+         "pages": [
+          {
+           "id": "p152",
+           "label": "p.152",
+           "img": "pages/wang-152.webp"
+          },
+          {
+           "id": "p153",
+           "label": "p.153",
+           "img": "pages/wang-153.webp"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "top",
+       "title": "최상위s",
+       "subtitle": "초등 3·1",
+       "emoji": "🏆",
+       "cover": {
+        "type": "img",
+        "src": "covers/cover-top.webp"
+       },
+       "units": [
+        {
+         "id": "top-u1",
+         "title": "6. 분수와 소수",
+         "pages": [
+          {
+           "id": "p146",
+           "label": "p.146",
+           "img": "pages/top-146.webp"
+          },
+          {
+           "id": "p147",
+           "label": "p.147",
+           "img": "pages/top-147.webp"
+          },
+          {
+           "id": "p150",
+           "label": "p.150",
+           "img": "pages/top-150.webp"
+          },
+          {
+           "id": "p151",
+           "label": "p.151",
+           "img": "pages/top-151.webp"
+          },
+          {
+           "id": "p152",
+           "label": "p.152",
+           "img": "pages/top-152.webp"
+          },
+          {
+           "id": "p153",
+           "label": "p.153",
+           "img": "pages/top-153.webp"
+          },
+          {
+           "id": "p154",
+           "label": "p.154",
+           "img": "pages/top-154.webp"
+          },
+          {
+           "id": "p155",
+           "label": "p.155",
+           "img": "pages/top-155.webp"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+};</script>
+<script>/* 연우 공부 패드 — 학습지 필기 앱 */
+(function () {
+  'use strict';
+
+  /* ------------------------------------------------------------------ utils */
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const uid = (p) => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const assetUrl = (p) => (window.__ASSET_MAP__ && window.__ASSET_MAP__[p]) || ('assets/' + p);
+
+  function toast(msg, ms = 1800) {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => t.classList.remove('show'), ms);
+  }
+
+  /* --------------------------------------------------------------- indexedDB */
+  const DB_NAME = 'yeonwoo-study-pad';
+  const DB_VER = 1;
+  let _db = null;
+
+  function db() {
+    if (_db) return Promise.resolve(_db);
+    return new Promise((res, rej) => {
+      const req = indexedDB.open(DB_NAME, DB_VER);
+      req.onupgradeneeded = () => {
+        const d = req.result;
+        if (!d.objectStoreNames.contains('meta')) d.createObjectStore('meta', { keyPath: 'k' });
+        if (!d.objectStoreNames.contains('ink')) d.createObjectStore('ink', { keyPath: 'k' });
+        if (!d.objectStoreNames.contains('blobs')) d.createObjectStore('blobs', { keyPath: 'k' });
+      };
+      req.onsuccess = () => { _db = req.result; res(_db); };
+      req.onerror = () => rej(req.error);
+    });
+  }
+
+  let LS_MODE = false;   // fallback when IndexedDB is unavailable (e.g. file:// on some browsers)
+  const lsKey = (store, key) => 'ysp:' + store + ':' + key;
+
+  function blobToDataUrl(blob) {
+    return new Promise((res) => {
+      const fr = new FileReader();
+      fr.onload = () => res(fr.result);
+      fr.onerror = () => res('');
+      fr.readAsDataURL(blob);
+    });
+  }
+
+  async function idbGet(store, key) {
+    if (LS_MODE) {
+      try { const v = localStorage.getItem(lsKey(store, key)); return v ? JSON.parse(v) : null; }
+      catch (e) { return null; }
+    }
+    try {
+      const d = await db();
+      return await new Promise((res, rej) => {
+        const tx = d.transaction(store, 'readonly');
+        const r = tx.objectStore(store).get(key);
+        r.onsuccess = () => res(r.result || null);
+        r.onerror = () => rej(r.error);
+      });
+    } catch (e) { LS_MODE = true; return idbGet(store, key); }
+  }
+
+  async function idbPut(store, val) {
+    if (LS_MODE) {
+      let v = val;
+      if (store === 'blobs' && val.blob) v = { k: val.k, url: await blobToDataUrl(val.blob) };
+      try { localStorage.setItem(lsKey(store, val.k), JSON.stringify(v)); } catch (e) { console.warn('저장 공간이 가득 찼어요', e); }
+      return true;
+    }
+    try {
+      const d = await db();
+      return await new Promise((res, rej) => {
+        const tx = d.transaction(store, 'readwrite');
+        tx.objectStore(store).put(val);
+        tx.oncomplete = () => res(true);
+        tx.onerror = () => rej(tx.error);
+      });
+    } catch (e) { LS_MODE = true; return idbPut(store, val); }
+  }
+
+  async function idbDel(store, key) {
+    if (LS_MODE) { try { localStorage.removeItem(lsKey(store, key)); } catch (e) {} return true; }
+    try {
+      const d = await db();
+      return await new Promise((res, rej) => {
+        const tx = d.transaction(store, 'readwrite');
+        tx.objectStore(store).delete(key);
+        tx.oncomplete = () => res(true);
+        tx.onerror = () => rej(tx.error);
+      });
+    } catch (e) { LS_MODE = true; return idbDel(store, key); }
+  }
+
+  /* ------------------------------------------------------------------ state */
+  const S = {
+    lib: null,
+    done: {},          // pageKey -> true
+    view: 'shelf',
+    bookId: null,
+    unitId: null,
+    pageIdx: 0,
+    pageKey: null,
+    strokes: [],
+    redo: [],
+    tool: 'pen',
+    penColor: '#22201d',
+    hlColor: '#ffe14d',
+    penW: 1,
+    hlW: 1,
+    erW: 1,
+    zoom: false,
+    penOnly: localStorage.getItem('ysp-penOnly') !== '0',
+    imgAR: 0.75,
+    ready: false,
+    objectUrls: {},
+    pan: null,
+    active: new Set(),
+    cur: null,
+    saveTimer: 0
+  };
+
+  const PEN_COLORS = ['#22201d', '#e23b3b', '#2563eb', '#1a9c62'];
+  const HL_COLORS = ['#ffe14d', '#ff9ecb', '#8ef0cd'];
+  const PEN_W = [0.0038, 0.0072, 0.0125];   // normalized to page width
+  const HL_W = [0.022, 0.032, 0.046];
+  const ER_W = [0.026, 0.045, 0.075];
+
+  const widthArr = (tool) => (tool === 'hl' ? HL_W : tool === 'eraser' ? ER_W : PEN_W);
+  const widthIdx = () => (S.tool === 'hl' ? S.hlW : S.tool === 'eraser' ? S.erW : S.penW);
+  const curWidth = () => widthArr(S.tool)[widthIdx()];
+  const curColor = () => (S.tool === 'hl' ? S.hlColor : S.tool === 'eraser' ? '#000' : S.penColor);
+  const pageKey = (b, u, p) => b + '|' + u + '|' + p;
+
+  /* ---------------------------------------------------------------- library */
+  function seedLibrary() {
+    const lib = JSON.parse(JSON.stringify(window.__DATA__));
+    let n = 0;
+    lib.subjects.forEach((s) => {
+      s.custom = false;
+      s.categories.forEach((c) => {
+        c.books.forEach((b) => {
+          b.custom = false; b.id = b.id || uid('b'); n++;
+          b.units.forEach((u) => {
+            u.custom = false; u.id = u.id || uid('u');
+            u.pages.forEach((p, i) => { p.id = p.id || 'p' + i; });
+          });
+        });
+      });
+    });
+    lib.meta = { books: n, created: Date.now() };
+    return lib;
+  }
+
+  async function loadAll() {
+    const rec = await idbGet('meta', 'library');
+    if (rec && rec.v) S.lib = rec.v;
+    else { S.lib = seedLibrary(); await saveLib(); }
+    const doneRec = await idbGet('meta', 'done');
+    S.done = (doneRec && doneRec.v) || {};
+    S.ready = true;
+  }
+
+  let libTimer = 0;
+  function saveLib() {
+    clearTimeout(libTimer);
+    return new Promise((res) => {
+      libTimer = setTimeout(async () => { await idbPut('meta', { k: 'library', v: S.lib }); res(); }, 120);
+    });
+  }
+  function saveDone() { return idbPut('meta', { k: 'done', v: S.done }); }
+
+  function findBook(bookId) {
+    for (const s of S.lib.subjects) for (const c of s.categories) {
+      const b = c.books.find((x) => x.id === bookId);
+      if (b) return { subject: s, category: c, book: b };
+    }
+    return null;
+  }
+  function findUnit(book, unitId) { return book.units.find((u) => u.id === unitId) || null; }
+
+  function bookProgress(book) {
+    let total = 0, done = 0;
+    book.units.forEach((u) => u.pages.forEach((p) => {
+      total++;
+      if (S.done[pageKey(book.id, u.id, p.id)]) done++;
+    }));
+    return { total, done };
+  }
+  function unitProgress(book, unit) {
+    let done = 0;
+    unit.pages.forEach((p) => { if (S.done[pageKey(book.id, unit.id, p.id)]) done++; });
+    return { total: unit.pages.length, done };
+  }
+
+  /* ------------------------------------------------------------------ views */
+  function show(view) {
+    S.view = view;
+    $$('.view').forEach((v) => v.classList.toggle('active', v.id === 'view-' + view));
+    if (view === 'shelf') window.scrollTo(0, 0);
+  }
+
+  function coverHTML(book) {
+    const p = bookProgress(book);
+    const badge = p.total
+      ? (p.done >= p.total ? '<span class="badge done">완료 ✓</span>' : `<span class="badge">${p.done}/${p.total}</span>`)
+      : '';
+    const cv = book.cover || {};
+    if (cv.type === 'img') {
+      const src = cv.blob ? blobUrlSync(cv.blob) : assetUrl(cv.src);
+      return `<div class="cover"><img ${cv.blob ? `data-blob="${cv.blob}"` : ''} src="${esc(src)}" alt="" loading="lazy" decoding="async"><span class="spine"></span>${badge}</div>`;
+    }
+    const color = cv.color || book.color || '#e8613c';
+    const txt = esc(book.title);
+    return `<div class="cover plain" style="background:${color}">
+      <div class="ct" style="color:${lcText(color)}">${txt}</div>
+      <div class="ce">${book.emoji || '📘'}</div>
+      <span class="spine"></span>${badge}</div>`;
+  }
+
+  const blobCache = {};
+  function blobUrlSync(id) {
+    if (blobCache[id]) return blobCache[id];
+    idbGet('blobs', id).then((rec) => {
+      if (!rec) return;
+      blobCache[id] = rec.url || (rec.blob ? URL.createObjectURL(rec.blob) : '');
+      if (!blobCache[id]) return;
+      $$('img[data-blob="' + id + '"]').forEach((im) => { if (!im.src.startsWith('blob:')) im.src = blobCache[id]; });
+    });
+    return '';
+  }
+  async function blobUrl(id) {
+    if (blobCache[id]) return blobCache[id];
+    const rec = await idbGet('blobs', id);
+    if (!rec) return '';
+    blobCache[id] = rec.url || (rec.blob ? URL.createObjectURL(rec.blob) : '');
+    return blobCache[id] || '';
+  }
+  function lcText(hex) {
+    try {
+      const c = hex.replace('#', '');
+      const r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16);
+      return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#3a2f24' : '#fff';
+    } catch (e) { return '#fff'; }
+  }
+
+  function renderShelf() {
+    const wrap = $('#shelfBody');
+    let books = 0, pages = 0;
+    const parts = [];
+    for (const sub of S.lib.subjects) {
+      const subBooks = sub.categories.reduce((a, c) => a.concat(c.books), []);
+      books += subBooks.length;
+      subBooks.forEach((b) => b.units.forEach((u) => { pages += u.pages.length; }));
+      parts.push(`<section class="subject">
+        <div class="subject-head">
+          <h2>${esc(sub.emoji || '📚')} ${esc(sub.name)}</h2>
+          <span class="sub-count">${subBooks.length}권</span>
+          ${sub.custom ? `<button class="del-subject" data-del-subject="${sub.id}">과목 삭제</button>` : ''}
+        </div>`);
+      if (!subBooks.length) {
+        parts.push(`<div class="empty-note">아직 문제집이 없어요. <b>+ 문제집</b>으로 추가해 보세요.</div>`);
+      }
+      for (const cat of sub.categories) {
+        if (!cat.books.length) continue;
+        parts.push(`<div class="cat"><div class="cat-name">${esc(cat.name)}</div><div class="grid">`);
+        for (const b of cat.books) {
+          parts.push(`<div class="book ${b.custom ? 'custom' : ''}" data-book="${b.id}" role="button" tabindex="0">
+            ${coverHTML(b)}
+            <div>
+              <div class="book-title">${esc(b.title)}</div>
+              <div class="book-sub">${esc(b.subtitle || (b.units.length ? b.units[0].title : '단원을 추가해 보세요'))}</div>
+            </div>
+            ${b.custom ? `<button class="mini-del" data-del-book="${b.id}">✕</button>` : ''}
+          </div>`);
+        }
+        parts.push('</div></div>');
+      }
+      parts.push('</section>');
+    }
+    wrap.innerHTML = parts.join('');
+    $('#shelfStat').textContent = `${books}권 · ${pages}쪽`;
+  }
+
+  async function openBook(bookId) {
+    const found = findBook(bookId);
+    if (!found) return;
+    S.bookId = bookId;
+    const b = found.book;
+    const p = bookProgress(b);
+    $('#bookTitle').textContent = b.title;
+    $('#bookSub').textContent = b.subtitle || found.category.name;
+    const pct = p.total ? Math.round((p.done / p.total) * 100) : 0;
+    const units = b.units.map((u) => {
+      const up = unitProgress(b, u);
+      const full = up.total > 0 && up.done >= up.total;
+      return `<li><button class="unit-card" data-unit="${u.id}">
+        <span class="uicon">${u.pages.length ? '📄' : '📁'}</span>
+        <span>
+          <span class="ut">${esc(u.title)}</span>
+          <span class="us">${up.total}쪽${up.done ? ` · ${up.done}쪽 완료` : ''}</span>
+        </span>
+        <span class="ring ${full ? 'full' : ''}">${full ? '완료 ✓' : up.total ? up.done + '/' + up.total : '비어 있음'}</span>
+      </button></li>`;
+    }).join('');
+    $('#bookBody').innerHTML = `
+      <div class="book-hero">
+        <div style="width:96px;flex:none">${coverHTML(b)}</div>
+        <div style="min-width:0">
+          <h1>${esc(b.title)}</h1>
+          <div class="hs2">${esc(b.subtitle || '')}${b.subtitle ? ' · ' : ''}${esc(found.category.name)} · ${esc(found.subject.name)}</div>
+          <div class="progress-wrap"><span>${p.done}/${p.total}쪽</span><span class="bar"><i style="width:${pct}%"></i></span><span>${pct}%</span></div>
+        </div>
+      </div>
+      <ul class="unit-list">${units}</ul>
+      <div class="add-row">
+        <button class="dashed" id="addPagesBtn">＋ 단원 / 페이지 사진 추가</button>
+      </div>
+      ${b.units.length ? '' : '<div class="empty-note" style="margin-top:10px">아직 단원이 없어요. 문제집 사진을 찍어서 넣어 주세요.</div>'}`;
+    show('book');
+  }
+
+  /* -------------------------------------------------------------------- pad */
+  const paper = () => $('#paper');
+  const canvas = () => $('#padCanvas');
+  const ctx2d = () => canvas().getContext('2d');
+
+  async function openPad(bookId, unitId, idx) {
+    const found = findBook(bookId);
+    if (!found) return;
+    const b = found.book, u = findUnit(b, unitId);
+    if (!u || !u.pages.length) { toast('이 단원에는 아직 페이지가 없어요'); return; }
+    S.bookId = bookId; S.unitId = unitId; S.pageIdx = clamp(idx, 0, u.pages.length - 1);
+    S.zoom = localStorage.getItem('ysp-zoom') === '1';
+    $('#padTitle').textContent = u.title;
+    $('#padSub').textContent = b.title;
+    show('pad');
+    buildTools();
+    updatePenModeUI();
+    if (localStorage.getItem('ysp-tip') !== '1') {
+      localStorage.setItem('ysp-tip', '1');
+      setTimeout(() => toast('애플펜슬로 바로 써 보세요. 손바닥이 닿아도 괜찮아요 ✏️', 2600), 500);
+    }
+    await loadPage(true);
+  }
+
+  async function loadPage(first) {
+    if (!first) await saveInkNow();
+    const found = findBook(S.bookId);
+    const b = found.book, u = findUnit(b, S.unitId);
+    const p = u.pages[S.pageIdx];
+    S.pageKey = pageKey(b.id, u.id, p.id);
+    S.strokes = []; S.redo = [];
+    const rec = await idbGet('ink', S.pageKey);
+    if (rec) { S.strokes = rec.s || []; }
+    updateDoneUI();
+    const img = $('#padImg');
+    const url = p.imgBlob ? (await blobUrl(p.imgBlob)) : assetUrl(p.img);
+    $('#padLoading').style.display = url ? 'none' : 'grid';
+    img.onload = () => {
+      S.imgAR = img.naturalWidth / img.naturalHeight || 0.72;
+      $('#padLoading').style.display = 'none';
+      layoutPaper();
+    };
+    img.onerror = () => { $('#padLoading').textContent = '페이지 사진을 불러오지 못했어요'; };
+    img.src = url;
+    if (img.complete && img.naturalWidth) { S.imgAR = img.naturalWidth / img.naturalHeight; img.onload(); }
+    // neighbour preload
+    [S.pageIdx + 1, S.pageIdx - 1].forEach((i) => {
+      const q = u.pages[i];
+      if (q && !q.imgBlob) { const pre = new Image(); pre.src = assetUrl(q.img); }
+    });
+    $('#pageno').textContent = `${S.pageIdx + 1} / ${u.pages.length}`;
+    $('#prevBtn').disabled = S.pageIdx === 0;
+    $('#nextBtn').disabled = S.pageIdx >= u.pages.length - 1;
+    $('#pageLabel').textContent = p.label || '';
+    layoutPaper();
+  }
+
+  function layoutPaper() {
+    const st = $('#stage');
+    const availW = Math.max(120, st.clientWidth - 24);
+    const availH = Math.max(120, st.clientHeight - 24);
+    const ar = S.imgAR || 0.72;
+    let w, h;
+    if (S.zoom) {
+      h = availH * 1.7; w = h * ar;
+      if (w < availW * 0.96) { w = availW * 0.96; h = w / ar; }
+    } else {
+      h = availH; w = h * ar;
+      if (w > availW) { w = availW; h = w / ar; }
+    }
+    const P = paper();
+    P.style.width = Math.round(w) + 'px';
+    P.style.height = Math.round(h) + 'px';
+    sizeCanvas();
+  }
+
+  function sizeCanvas() {
+    const P = paper(); const cv = canvas();
+    const w = P.clientWidth, h = P.clientHeight;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    const ctx = ctx2d();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    redraw();
+  }
+
+  function tracePath(ctx, d, W, H) {
+    const n = d.length / 2;
+    ctx.beginPath();
+    if (n === 0) return;
+    ctx.moveTo(d[0] * W, d[1] * H);
+    if (n === 1) return;
+    if (n === 2) { ctx.lineTo(d[2] * W, d[3] * H); return; }
+    for (let i = 1; i < n - 1; i++) {
+      const xc = (d[2 * i] * W + d[2 * i + 2] * W) / 2;
+      const yc = (d[2 * i + 1] * H + d[2 * i + 3] * H) / 2;
+      ctx.quadraticCurveTo(d[2 * i] * W, d[2 * i + 1] * H, xc, yc);
+    }
+    ctx.lineTo(d[2 * (n - 1)] * W, d[2 * (n - 1) + 1] * H);
+  }
+
+  function paintStroke(ctx, st, W, H) {
+    const d = st.d;
+    if (!d || d.length < 2) return;
+    ctx.save();
+    if (st.t === 'h') { ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 0.42; }
+    else if (st.t === 'e') { ctx.globalCompositeOperation = 'destination-out'; ctx.globalAlpha = 1; }
+    else { ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; }
+    const lw = Math.max(0.7, (st.w || 0.005) * W);
+    ctx.lineWidth = lw; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.strokeStyle = st.c || '#22201d'; ctx.fillStyle = st.c || '#22201d';
+    if (d.length === 2) {
+      ctx.beginPath(); ctx.arc(d[0] * W, d[1] * H, lw / 2, 0, Math.PI * 2); ctx.fill();
+    } else {
+      tracePath(ctx, d, W, H);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function redraw() {
+    const cv = canvas();
+    const ctx = ctx2d();
+    const W = cv.clientWidth, H = cv.clientHeight;
+    ctx.clearRect(0, 0, W, H);
+    for (const st of S.strokes) paintStroke(ctx, st, W, H);
+  }
+
+  /* ------------------------------------------------------------ drawing I/O */
+  function pos(e) {
+    const r = canvas().getBoundingClientRect();
+    return [clamp((e.clientX - r.left) / r.width, 0, 1), clamp((e.clientY - r.top) / r.height, 0, 1)];
+  }
+
+  function onDown(e) {
+    if (!S.ready) return;
+    const type = e.pointerType || 'mouse';
+    if (type === 'pen') {
+      S.active.add(e.pointerId);
+      if (S.cur) return;
+      startStroke(e);
+      return;
+    }
+    if (S.penOnly) return;                       // 손가락·마우스는 화면 이동만
+    S.active.add(e.pointerId);
+    if (S.active.size > 1) { abortStroke(); startPan(e); return; }
+    startStroke(e);
+  }
+
+  function startStroke(e) {
+    e.preventDefault();
+    const cv = canvas();
+    if (cv.setPointerCapture) { try { cv.setPointerCapture(e.pointerId); } catch (err) {} }
+    const [x, y] = pos(e);
+    S.cur = { t: S.tool === 'hl' ? 'h' : S.tool === 'eraser' ? 'e' : 'p', c: curColor(), w: curWidth(), d: [x, y] };
+    S.redo = [];
+    S.strokes.push(S.cur);
+    redraw();
+    const ctx = ctx2d();
+    ctx.save();
+    ctx.fillStyle = S.cur.c; ctx.globalAlpha = S.cur.t === "h" ? 0.42 : 1;
+    ctx.beginPath(); ctx.arc(x * cv.clientWidth, y * cv.clientHeight, Math.max(0.7, S.cur.w * cv.clientWidth) / 2, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
+  function onMove(e) {
+    if (S.pan && S.active.size > 1) { doPan(e); return; }
+    if (!S.cur) return;
+    e.preventDefault();
+    const [x, y] = pos(e);
+    const d = S.cur.d;
+    const lx = d[d.length - 2], ly = d[d.length - 1];
+    if (Math.hypot(x - lx, y - ly) < 0.0012) return;
+    d.push(x, y);
+    // incremental paint of the new segment
+    const ctx = ctx2d(); const cv = canvas();
+    const W = cv.clientWidth, H = cv.clientHeight;
+    ctx.save();
+    if (S.cur.t === 'h') { ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 0.42; }
+    else if (S.cur.t === 'e') { ctx.globalCompositeOperation = 'destination-out'; ctx.globalAlpha = 1; }
+    ctx.lineWidth = Math.max(0.7, S.cur.w * W);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.strokeStyle = S.cur.c;
+    ctx.beginPath(); ctx.moveTo(lx * W, ly * H); ctx.lineTo(x * W, y * H); ctx.stroke();
+    ctx.restore();
+  }
+
+  function onUp(e) {
+    S.active.delete(e.pointerId);
+    if (S.pan) { if (S.active.size < 2) { S.pan = null; } return; }
+    if (!S.cur) return;
+    S.cur = null;
+    redraw();               // smooth redraw of the finished stroke
+    buildTools();
+    scheduleSave();
+  }
+
+  function abortStroke() {
+    if (S.cur) { S.strokes.pop(); S.cur = null; redraw(); }
+  }
+
+  function startPan(e) {
+    const st = $('#stage');
+    S.pan = { x: e.clientX, y: e.clientY, sl: st.scrollLeft, st: st.scrollTop, pts: {} };
+    S.pan.pts[e.pointerId] = [e.clientX, e.clientY];
+  }
+  function doPan(e) {
+    const st = $('#stage');
+    if (!S.pan.pts[e.pointerId]) S.pan.pts[e.pointerId] = [e.clientX, e.clientY];
+    const before = S.pan.pts[e.pointerId];
+    const dx = e.clientX - before[0], dy = e.clientY - before[1];
+    S.pan.pts[e.pointerId] = [e.clientX, e.clientY];
+    st.scrollLeft -= dx; st.scrollTop -= dy;
+  }
+
+  /* --------------------------------------------------------------- ink saves */
+  function scheduleSave() {
+    clearTimeout(S.saveTimer);
+    S.saveTimer = setTimeout(saveInkNow, 320);
+  }
+  async function saveInkNow() {
+    clearTimeout(S.saveTimer);
+    if (!S.pageKey) return;
+    try { await idbPut('ink', { k: S.pageKey, s: S.strokes, u: Date.now() }); } catch (err) { console.warn(err); }
+  }
+
+  /* ------------------------------------------------------------------ tools */
+  function buildTools() {
+    const sw = $('#swatches');
+    const cols = S.tool === 'hl' ? HL_COLORS : PEN_COLORS;
+    const active = S.tool === 'hl' ? S.hlColor : S.penColor;
+    sw.innerHTML = S.tool === 'eraser' ? '' : cols.map((c) => `<button class="sw ${c === active ? 'on' : ''}" data-color="${c}" style="background:${c}"></button>`).join('');
+    const dots = $('#dots');
+    const arr = widthArr(S.tool), idx = widthIdx();
+    dots.innerHTML = arr.map((v, i) => `<button class="dot-btn ${i === idx ? 'on' : ''}" data-w="${i}">
+      <span class="dot" style="width:${6 + i * 6}px;height:${6 + i * 6}px"></span></button>`).join('');
+    $$('.tool[data-tool]').forEach((t) => t.classList.toggle('on', t.dataset.tool === S.tool));
+    $('#undoBtn').style.opacity = S.strokes.length ? 1 : 0.35;
+    $('#redoBtn').style.opacity = S.redo.length ? 1 : 0.35;
+  }
+
+  function setTool(t) { S.tool = t; buildTools(); }
+
+  function updatePenModeUI() {
+    const on = S.penOnly;
+    const btn = $('#penBtn');
+    btn.classList.toggle('on', on);
+    btn.querySelector('.wide').textContent = on ? '✏️ 펜슬만 쓰기' : '👆 손가락도 쓰기';
+    btn.querySelector('.narrow').textContent = on ? '✏️ 펜슬만' : '👆 손가락';
+    paper().classList.toggle('pen-only', on);
+  }
+
+  function updateDoneUI() {
+    const u = findUnit(findBook(S.bookId).book, S.unitId);
+    const p = u.pages[S.pageIdx];
+    const done = !!S.done[pageKey(S.bookId, S.unitId, p.id)];
+    $('#padDone').classList.toggle('on', done);
+    $('#padDone').textContent = done ? '✅ 다 풀었어요' : '⬜ 다 풀었어요';
+    $('#zoomBtn').classList.toggle('on', S.zoom);
+    $('#zoomBtn .wide').textContent = S.zoom ? '🔎 확대 보기' : '🔍 맞춤 보기';
+    $('#zoomBtn .narrow').textContent = S.zoom ? '🔎 확대' : '🔍 맞춤';
+  }
+
+  async function toggleDone() {
+    const u = findUnit(findBook(S.bookId).book, S.unitId);
+    const p = u.pages[S.pageIdx];
+    const k = pageKey(S.bookId, S.unitId, p.id);
+    if (S.done[k]) { delete S.done[k]; toast('완료 표시를 지웠어요'); }
+    else { S.done[k] = true; toast('이 쪽 완료! 참 잘했어요 🎉'); }
+    updateDoneUI();
+    await saveDone();
+  }
+
+
+  /* ----------------------------------------------------------------- modals */
+  function modal(html, cls) {
+    const back = $('#modalBack');
+    back.innerHTML = `<div class="modal ${cls || ''}">${html}</div>`;
+    back.classList.add('show');
+    return back.firstElementChild;
+  }
+  function closeModal() { $('#modalBack').classList.remove('show'); $('#modalBack').innerHTML = ''; }
+
+  function confirmBox(title, text, okText, danger) {
+    return new Promise((res) => {
+      const m = modal(`
+        <h3>${esc(title)}</h3>
+        <div style="font-size:13.5px;line-height:1.6;color:#6f6357;font-weight:600">${text}</div>
+        <div class="modal-actions">
+          <button class="cancel" id="mNo">취소</button>
+          <button class="ok ${danger ? 'danger' : ''}" id="mYes">${esc(okText || '확인')}</button>
+        </div>`);
+      m.querySelector('#mNo').onclick = () => { closeModal(); res(false); };
+      m.querySelector('#mYes').onclick = () => { closeModal(); res(true); };
+    });
+  }
+
+  function subjectOptions(sel) {
+    return S.lib.subjects.map((s) => `<option value="${s.id}" ${s.id === sel ? 'selected' : ''}>${esc(s.name)}</option>`).join('');
+  }
+
+  function addSubjectModal() {
+    const m = modal(`
+      <h3>새 과목 추가</h3>
+      <div class="field"><label>과목 이름</label><input type="text" id="sName" placeholder="예: 과학" maxlength="14"></div>
+      <div class="field"><label>첫 분류 이름</label><input type="text" id="sCat" placeholder="예: 탐구" maxlength="14" value="기타"></div>
+      <div class="modal-actions"><button class="cancel" id="mNo">취소</button><button class="ok" id="mYes">추가</button></div>`);
+    m.querySelector('#sName').focus();
+    m.querySelector('#mNo').onclick = closeModal;
+    m.querySelector('#mYes').onclick = async () => {
+      const name = m.querySelector('#sName').value.trim();
+      const cat = m.querySelector('#sCat').value.trim() || '기타';
+      if (!name) { toast('과목 이름을 입력해 주세요'); return; }
+      S.lib.subjects.push({ id: uid('s'), name, emoji: '📚', custom: true, categories: [{ id: uid('c'), name: cat, books: [] }] });
+      await saveLib(); closeModal(); renderShelf(); toast(`'${name}' 과목을 추가했어요`);
+    };
+  }
+
+  const COVER_COLORS = ['#e8613c', '#2f6feb', '#17936a', '#8b5cf6', '#f59e0b', '#0f766e', '#db2777', '#475569'];
+
+  function addBookModal(presetSubject) {
+    const subId = presetSubject || S.lib.subjects[0].id;
+    const sub = S.lib.subjects.find((s) => s.id === subId) || S.lib.subjects[0];
+    const m = modal(`
+      <h3>새 문제집 추가</h3>
+      <div class="field"><label>과목</label><select id="bSub">${subjectOptions(sub.id)}</select></div>
+      <div class="field"><label>분류</label><select id="bCat"></select></div>
+      <div class="field" id="newCatWrap" style="display:none"><label>새 분류 이름</label><input type="text" id="bNewCat" placeholder="예: 어휘" maxlength="14"></div>
+      <div class="field"><label>문제집 이름</label><input type="text" id="bName" placeholder="예: 기적의 계산법" maxlength="24"></div>
+      <div class="field"><label>표지</label>
+        <div class="color-row" id="colorRow">${COVER_COLORS.map((c, i) => `<button class="color-pick ${i === 0 ? 'on' : ''}" data-color="${c}" style="background:${c}"></button>`).join('')}</div>
+        <div style="margin-top:10px"><label class="file-btn" for="bCoverFile">🖼 표지 사진 올리기</label>
+        <input type="file" id="bCoverFile" accept="image/*" style="display:none"></div>
+        <div class="hint" id="coverHint">색을 고르거나, 표지 사진을 올리면 아이콘으로 써요.</div>
+      </div>
+      <div class="modal-actions"><button class="cancel" id="mNo">취소</button><button class="ok" id="mYes">추가</button></div>`);
+
+    let color = COVER_COLORS[0];
+    let coverBlobId = null;
+
+    function fillCats() {
+      const s = S.lib.subjects.find((x) => x.id === m.querySelector('#bSub').value);
+      const sel = m.querySelector('#bCat');
+      sel.innerHTML = s.categories.map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join('') +
+        '<option value="__new">＋ 새 분류 만들기</option>';
+      m.querySelector('#newCatWrap').style.display = sel.value === '__new' ? 'block' : 'none';
+    }
+    m.querySelector('#bSub').onchange = fillCats;
+    m.querySelector('#bCat').onchange = () => { m.querySelector('#newCatWrap').style.display = m.querySelector('#bCat').value === '__new' ? 'block' : 'none'; };
+    fillCats();
+
+    m.querySelector('#colorRow').onclick = (e) => {
+      const b = e.target.closest('[data-color]'); if (!b) return;
+      color = b.dataset.color; coverBlobId = null;
+      m.querySelectorAll('.color-pick').forEach((x) => x.classList.toggle('on', x === b));
+      m.querySelector('#coverHint').textContent = '색 표지로 만들게요.';
+    };
+    m.querySelector('#bCoverFile').onchange = async (e) => {
+      const f = e.target.files[0]; if (!f) return;
+      const id = uid('cv');
+      await idbPut('blobs', { k: id, blob: f });
+      coverBlobId = id;
+      m.querySelector('#coverHint').textContent = '표지 사진을 올렸어요 ✓';
+      m.querySelectorAll('.color-pick').forEach((x) => x.classList.remove('on'));
+    };
+    m.querySelector('#mNo').onclick = closeModal;
+    m.querySelector('#mYes').onclick = async () => {
+      const name = m.querySelector('#bName').value.trim();
+      if (!name) { toast('문제집 이름을 입력해 주세요'); return; }
+      const s = S.lib.subjects.find((x) => x.id === m.querySelector('#bSub').value);
+      let catId = m.querySelector('#bCat').value;
+      if (catId === '__new') {
+        const cn = m.querySelector('#bNewCat').value.trim() || '기타';
+        const c = { id: uid('c'), name: cn, books: [] };
+        s.categories.push(c); catId = c.id;
+      }
+      const cat = s.categories.find((c) => c.id === catId);
+      cat.books.push({
+        id: uid('b'), title: name, subtitle: '', custom: true, emoji: '📘',
+        cover: coverBlobId ? { type: 'img', blob: coverBlobId } : { type: 'color', color },
+        units: []
+      });
+      await saveLib(); closeModal(); renderShelf(); toast('문제집을 추가했어요');
+    };
+  }
+
+  function addPagesModal() {
+    const found = findBook(S.bookId);
+    const b = found.book;
+    const m = modal(`
+      <h3>단원 · 페이지 사진 추가</h3>
+      <div class="field"><label>넣을 단원</label><select id="uSel">
+        ${b.units.map((u) => `<option value="${u.id}">${esc(u.title)}</option>`).join('')}
+        <option value="__new" ${b.units.length ? '' : 'selected'}>＋ 새 단원 만들기</option>
+      </select></div>
+      <div class="field" id="uNameWrap"><label>새 단원 이름</label><input type="text" id="uName" placeholder="예: 3단원 · 곱셈" maxlength="30"></div>
+      <div class="field"><label>페이지 사진 (여러 장 선택 가능)</label>
+        <label class="file-btn" for="pFiles" id="pFilesBtn">📷 사진 고르기 (앨범 · 카메라)</label>
+        <input type="file" id="pFiles" accept="image/*" multiple style="display:none">
+        <div class="hint" id="pFileHint">사진을 고르면 이 단원의 페이지로 들어가요. 페이지 순서는 고른 순서대로예요.</div>
+      </div>
+      <div class="modal-actions"><button class="cancel" id="mNo">취소</button><button class="ok" id="mYes">추가</button></div>`);
+    const uSel = m.querySelector('#uSel');
+    const syncWrap = () => { m.querySelector('#uNameWrap').style.display = uSel.value === '__new' ? 'block' : 'none'; };
+    uSel.onchange = syncWrap; syncWrap();
+    let files = [];
+    m.querySelector('#pFiles').onchange = (e) => {
+      files = Array.from(e.target.files || []);
+      m.querySelector('#pFileHint').textContent = files.length ? `${files.length}장 선택됨: ${files.map((f) => f.name).slice(0, 3).join(', ')}${files.length > 3 ? ' …' : ''}` : '사진을 고르면 이 단원의 페이지로 들어가요.';
+    };
+    m.querySelector('#mNo').onclick = closeModal;
+    m.querySelector('#mYes').onclick = async () => {
+      if (!files.length) { toast('사진을 먼저 골라 주세요'); return; }
+      let unit;
+      if (uSel.value === '__new') {
+        const t = m.querySelector('#uName').value.trim() || '새 단원';
+        unit = { id: uid('u'), title: t, custom: true, pages: [] };
+        b.units.push(unit);
+      } else unit = b.units.find((u) => u.id === uSel.value);
+      let i = unit.pages.length;
+      for (const f of files) {
+        const id = uid('pg');
+        await idbPut('blobs', { k: id, blob: f });
+        i += 1;
+        unit.pages.push({ id: uid('p'), label: 'p.' + i, imgBlob: id, custom: true });
+      }
+      await saveLib();
+      closeModal();
+      await openBook(b.id);
+      toast(`${files.length}쪽을 추가했어요`);
+    };
+  }
+
+  /* -------------------------------------------------------------- nav wiring */
+  function bind() {
+    // shelf
+    $('#shelfBody').addEventListener('click', async (e) => {
+      const delBook = e.target.closest('[data-del-book]');
+      if (delBook) {
+        e.stopPropagation();
+        const id = delBook.dataset.delBook;
+        const f = findBook(id);
+        if (await confirmBox('문제집 삭제', `<b>${esc(f.book.title)}</b>을(를) 지울까요? 필기한 내용도 함께 사라져요.`, '삭제', true)) {
+          f.category.books = f.category.books.filter((x) => x.id !== id);
+          await saveLib(); renderShelf();
+        }
+        return;
+      }
+      const delSub = e.target.closest('[data-del-subject]');
+      if (delSub) {
+        const id = delSub.dataset.delSubject;
+        const s = S.lib.subjects.find((x) => x.id === id);
+        if (await confirmBox('과목 삭제', `<b>${esc(s.name)}</b> 과목을 지울까요?`, '삭제', true)) {
+          S.lib.subjects = S.lib.subjects.filter((x) => x.id !== id);
+          await saveLib(); renderShelf();
+        }
+        return;
+      }
+      const b = e.target.closest('[data-book]');
+      if (b) openBook(b.dataset.book);
+    });
+    $('#addSubjectBtn').onclick = addSubjectModal;
+    $('#addBookBtn').onclick = addBookModal;
+
+    // book view
+    $('#bookBack').onclick = () => { renderShelf(); show('shelf'); };
+    $('#bookBody').addEventListener('click', (e) => {
+      const u = e.target.closest('[data-unit]');
+      if (u) openPad(S.bookId, u.dataset.unit, 0);
+      if (e.target.closest('#addPagesBtn')) addPagesModal();
+    });
+
+    // pad
+    $('#padBack').onclick = async () => { await saveInkNow(); await openBook(S.bookId); };
+    $('#padDone').onclick = toggleDone;
+    $('#tools').addEventListener('click', (e) => {
+      const t = e.target.closest('[data-tool]');
+      if (t) { setTool(t.dataset.tool); return; }
+      const c = e.target.closest('[data-color]');
+      if (c) {
+        if (S.tool === 'hl') S.hlColor = c.dataset.color; else S.penColor = c.dataset.color;
+        buildTools(); return;
+      }
+      const w = e.target.closest('[data-w]');
+      if (w) {
+        const i = +w.dataset.w;
+        if (S.tool === 'hl') S.hlW = i; else if (S.tool === 'eraser') S.erW = i; else S.penW = i;
+        buildTools(); return;
+      }
+      if (e.target.closest('#undoBtn')) {
+        if (S.strokes.length) { S.redo.push(S.strokes.pop()); redraw(); buildTools(); scheduleSave(); }
+        return;
+      }
+      if (e.target.closest('#redoBtn')) {
+        if (S.redo.length) { S.strokes.push(S.redo.pop()); redraw(); buildTools(); scheduleSave(); }
+        return;
+      }
+      if (e.target.closest('#clearBtn')) {
+        if (!S.strokes.length) { toast('지울 필기가 없어요'); return; }
+        confirmBox('이 쪽 지우기', '이 쪽에 쓴 필기를 <b>모두</b> 지울까요? 되돌릴 수 없어요.', '모두 지우기', true).then(async (ok) => {
+          if (!ok) return;
+          S.strokes = []; S.redo = []; redraw(); buildTools(); await saveInkNow(); toast('이 쪽을 지웠어요');
+        });
+        return;
+      }
+    });
+
+    $('#prevBtn').onclick = async () => { if (S.pageIdx > 0) { await saveInkNow(); S.pageIdx--; await loadPage(false); } };
+    $('#nextBtn').onclick = async () => {
+      const u = findUnit(findBook(S.bookId).book, S.unitId);
+      if (S.pageIdx < u.pages.length - 1) { await saveInkNow(); S.pageIdx++; await loadPage(false); }
+    };
+    $('#zoomBtn').onclick = () => {
+      S.zoom = !S.zoom;
+      localStorage.setItem('ysp-zoom', S.zoom ? '1' : '0');
+      layoutPaper(); updateDoneUI();
+      $('#stage').scrollTop = 0;
+    };
+    $('#penBtn').onclick = () => {
+      S.penOnly = !S.penOnly;
+      localStorage.setItem('ysp-penOnly', S.penOnly ? '1' : '0');
+      updatePenModeUI();
+      toast(S.penOnly ? '애플펜슬만 필기돼요 · 손가락은 화면 이동' : '손가락으로도 필기할 수 있어요');
+    };
+    $('#pageMenu').onclick = async () => {
+      const u = findUnit(findBook(S.bookId).book, S.unitId);
+      const p = u.pages[S.pageIdx];
+      const del = p.custom ? `<button class="ok danger" id="mDelPage">이 페이지 삭제</button>` : '';
+      const m = modal(`<h3>${esc(p.label || '페이지')} 메뉴</h3>
+        <div class="modal-actions" style="flex-direction:column">
+          <button class="cancel" id="mClear">이 쪽 필기 모두 지우기</button>
+          ${del}
+          <button class="cancel" id="mNo">닫기</button>
+        </div>`);
+      m.querySelector('#mNo').onclick = closeModal;
+      m.querySelector('#mClear').onclick = async () => {
+        S.strokes = []; S.redo = []; redraw(); buildTools(); await saveInkNow(); closeModal(); toast('이 쪽을 지웠어요');
+      };
+      const dp = m.querySelector('#mDelPage');
+      if (dp) dp.onclick = async () => {
+        closeModal();
+        if (!(await confirmBox('페이지 삭제', '이 페이지를 목록에서 지울까요?', '삭제', true))) return;
+        u.pages = u.pages.filter((x) => x.id !== p.id);
+        delete S.done[pageKey(S.bookId, S.unitId, p.id)];
+        await idbDel('ink', pageKey(S.bookId, S.unitId, p.id));
+        await saveLib(); await saveDone();
+        if (!u.pages.length) { await openBook(S.bookId); return; }
+        S.pageIdx = Math.min(S.pageIdx, u.pages.length - 1);
+        await loadPage(true);
+      };
+    };
+
+    // canvas
+    const cv = canvas();
+    cv.addEventListener('pointerdown', onDown);
+    cv.addEventListener('pointermove', onMove, { passive: false });
+    cv.addEventListener('pointerup', onUp);
+    cv.addEventListener('pointercancel', onUp);
+    cv.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && S.cur) onUp(e); });
+    cv.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    $('#modalBack').addEventListener('click', (e) => { if (e.target.id === 'modalBack') closeModal(); });
+    $('#shelfBody').addEventListener('keydown', (e) => {
+      const b = e.target.closest('[data-book]');
+      if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openBook(b.dataset.book); }
+    });
+
+    window.addEventListener('resize', () => {
+      if (S.view === 'pad') layoutPaper();
+    });
+    window.addEventListener('orientationchange', () => setTimeout(() => { if (S.view === 'pad') layoutPaper(); }, 250));
+    document.addEventListener('visibilitychange', () => { if (document.hidden) saveInkNow(); });
+    window.addEventListener('pagehide', () => saveInkNow());
+    document.addEventListener('keydown', (e) => {
+      if (S.view !== 'pad') return;
+      const mod = e.metaKey || e.ctrlKey;
+      if (mod && e.key.toLowerCase() === 'z') { e.preventDefault(); (e.shiftKey ? $('#redoBtn') : $('#undoBtn')).click(); }
+      else if (e.key === 'ArrowRight') $('#nextBtn').click();
+      else if (e.key === 'ArrowLeft') $('#prevBtn').click();
+    });
+  }
+
+  /* -------------------------------------------------------------------- boot */
+  async function boot() {
+    try {
+      await loadAll();
+    } catch (err) {
+      console.error(err);
+      toast('저장 공간을 열지 못했어요. 사파리를 다시 열어 주세요.');
+      S.lib = seedLibrary(); S.ready = true;
+    }
+    bind();
+    renderShelf();
+    show('shelf');
+    if (!localStorage.getItem('ysp-ver')) {
+      localStorage.setItem('ysp-ver', '1');
+    }
+  }
+
+  // small inspection hook (used by automated checks)
+  window.__YSP = {
+    strokes: () => S.strokes.length,
+    redo: () => S.redo.length,
+    done: () => Object.keys(S.done).length,
+    tool: () => S.tool,
+    penOnly: () => S.penOnly,
+    page: () => S.pageKey,
+    library: () => S.lib
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+</body>
+</html>
