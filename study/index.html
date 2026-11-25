@@ -311,284 +311,59 @@ body.editing .book.custom .mini-del { display: flex; }
   .stage { padding: 8px; }
 }
 
-/* ======================= 디지털 학습지 (국어·수학) ======================= */
-#view-digital { position: relative; background: #f7f1e7; }
-
-.dg-top {
-  height: var(--hdr); flex: none; padding: var(--safe-t) 12px 0;
-  display: flex; align-items: center; gap: 9px;
-  background: #fffaf2; border-bottom: 1px solid var(--line);
+/* ======================= 정답 확인 시트 ======================= */
+.ans-btn {
+  flex: none; border-radius: 999px; padding: 8px 13px; font-size: 12.5px; font-weight: 800;
+  background: #fff; border: 1.5px solid #b9dcc8; color: #1d7a54; white-space: nowrap;
 }
-.dg-top .dg-tt { min-width: 0; }
-.dg-top .dgt { font-size: 14.5px; font-weight: 800; letter-spacing: -.3px; overflow: hidden;
-  text-overflow: ellipsis; white-space: nowrap; }
-.dg-top .dgs { font-size: 11.5px; color: var(--ink-soft); font-weight: 600; overflow: hidden;
-  text-overflow: ellipsis; white-space: nowrap; }
-.dg-spacer { flex: 1; }
-.dg-prog { font-size: 12.5px; font-weight: 800; color: var(--accent); background: var(--accent-soft);
-  border-radius: 999px; padding: 5px 10px; white-space: nowrap; }
-.chip.dg-ico { padding: 8px 10px; }
-.chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
-.chip.mini { padding: 5px 9px; font-size: 11.5px; }
+.ans-btn.on { background: #1d7a54; border-color: #1d7a54; color: #fff; }
 
-.dg-body { flex: 1; min-height: 0; display: flex; overflow: hidden; }
-.dg-loading { flex: 1; display: grid; place-items: center; color: #b7a48d; font-weight: 700; font-size: 14px; }
-
-/* ---------- 국어: 2단 ---------- */
-.dg-body.kor { display: grid; grid-template-columns: minmax(0, 46%) minmax(0, 54%); }
-.dg-left { display: flex; flex-direction: column; min-height: 0; min-width: 0;
-  border-right: 1px solid var(--line); background: #f3ebdd; }
-.dg-lhead { flex: none; display: flex; align-items: center; gap: 5px; padding: 6px 9px;
-  background: #fffdf8; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
-.dg-lhead::-webkit-scrollbar { display: none; }
-.dg-lhead .lt { font-size: 12px; font-weight: 800; color: #7d6c59; margin-right: auto; white-space: nowrap; }
-.ptool { width: 34px; height: 34px; border-radius: 10px; font-size: 16px; flex: none;
-  display: grid; place-items: center; background: #f4ece0; border: 1.5px solid transparent; }
-.ptool.on { background: #fff; border-color: var(--accent); box-shadow: 0 2px 8px rgba(232, 97, 60, .16); }
-
-.dg-lscroll { flex: 1; overflow: auto; padding: 10px; -webkit-overflow-scrolling: touch; }
-.dg-paper { position: relative; background: #fff; border-radius: 14px; padding: 20px 22px 28px 30px;
-  box-shadow: 0 10px 26px rgba(90, 65, 40, .13), 0 2px 6px rgba(90, 65, 40, .07);
-  font-size: 19px; line-height: 1.92; letter-spacing: -.25px; color: #241e18; }
-.dg-ptitle { font-size: 23px; font-weight: 850; letter-spacing: -.7px; margin-bottom: 3px; }
-.dg-pauthor { font-size: 12px; color: #9a8a76; font-weight: 700; margin-bottom: 16px; letter-spacing: .1em; }
-.dgpar { position: relative; margin: 0 0 13px; }
-.pnum { position: absolute; left: -17px; top: 8px; font-size: 9.5px; font-weight: 800; color: #cdbda6;
-  letter-spacing: 0; line-height: 1; }
-.dgpar:last-child { margin-bottom: 0; }
-.pmk { display: inline-block; color: #c8452c; font-weight: 800; }
-.dgbrk { text-align: center; color: #a4937f; font-weight: 800; letter-spacing: .18em; margin: 16px 0; font-size: 15px; }
-mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(255, 225, 77, .85) 40%,
-  rgba(255, 225, 77, .85) 94%, rgba(255, 225, 77, 0) 94%); color: inherit; padding: 0; }
-.dgw { border-bottom: 2px dotted #e0713c; cursor: pointer; }
-.dgpar.reading { background: #fff6d9; border-radius: 8px; box-shadow: 0 0 0 5px #fff6d9; }
-.dg-pen { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; touch-action: none; }
-.dg-paper.penmode { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
-.dg-paper.penmode .dgpar { -webkit-user-select: none; user-select: none; }
-
-.dg-right { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
-.dg-tabs { flex: none; display: flex; gap: 6px; padding: 8px 10px; background: #fffdf8;
-  border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
-.dg-tabs::-webkit-scrollbar { display: none; }
-.dg-tab { border-radius: 999px; padding: 7px 12px; font-size: 12.5px; font-weight: 800;
-  background: #f2e9dc; color: #8b7a66; white-space: nowrap; }
-.dg-tab small { font-size: 10.5px; opacity: .7; font-weight: 700; }
-.dg-tab.on { background: var(--ink); color: #fff; }
-.dg-tab.full::after { content: " ✓"; color: #19a273; }
-.dg-tab.on.full::after { color: #9cf0c9; }
-.dg-qscroll { flex: 1; overflow: auto; padding: 11px 12px 24px; -webkit-overflow-scrolling: touch; }
-.dg-qfoot { flex: none; display: flex; align-items: center; gap: 9px; padding: 8px 12px calc(8px + var(--safe-b));
-  background: #fffaf2; border-top: 1px solid var(--line); }
-.dg-foot-note { font-size: 10.5px; color: #a4937f; font-weight: 650; margin-left: auto; text-align: right; line-height: 1.3; }
-.btn-grade-all { background: var(--accent); color: #fff; border-radius: 12px; padding: 10px 16px;
-  font-size: 13.5px; font-weight: 850; box-shadow: 0 3px 10px rgba(232, 97, 60, .25); white-space: nowrap; }
-.btn-link { font-size: 12px; font-weight: 800; color: #9b8a76; padding: 8px 6px; white-space: nowrap; }
-
-/* ---------- 문제 카드 ---------- */
-.qcard { background: #fff; border-radius: 16px; padding: 13px 14px 11px; margin-bottom: 12px;
-  border: 1.5px solid #efe4d5; box-shadow: 0 2px 8px rgba(90, 65, 40, .06); }
-.qcard.ok { border-color: #b7e6cf; background: #f7fffb; }
-.qcard.bad { border-color: #f4c8bd; background: #fffaf8; }
-.qhead { display: flex; align-items: flex-start; gap: 7px; }
-.qno { flex: none; display: inline-grid; place-items: center; width: 23px; height: 23px; border-radius: 50%;
-  background: var(--accent); color: #fff; font-weight: 850; font-size: 12.5px; margin-top: 1px; }
-.qstem { font-size: 13.5px; font-weight: 800; line-height: 1.45; letter-spacing: -.2px; }
-.qhint { margin: 7px 0 0; font-size: 11.5px; font-weight: 700; color: #a58f76; }
-.qaside { margin: 9px 0 0; background: #fdf6ea; border: 1px solid #f0e1cb; border-radius: 12px; padding: 9px 11px; }
-.qaside-t { font-size: 11px; font-weight: 850; color: #9b8467; letter-spacing: .04em; margin-bottom: 5px; }
-.qaside-i { font-size: 12.5px; font-weight: 650; color: #6b5c49; line-height: 1.55; }
-.qaside-i b { color: #a8712b; }
-.qquote { margin: 9px 0 0; background: #f6f2ea; border-radius: 12px; padding: 11px 12px;
-  font-size: 13px; line-height: 1.7; font-weight: 600; color: #4e4335; }
-.qbody { margin-top: 9px; }
-.qline { font-size: 15.5px; font-weight: 650; line-height: 2.25; color: #2b241c; }
-.qul { text-decoration-color: #c8452c; text-underline-offset: 3px; }
-
-.qin { border: 0; border-bottom: 2.2px solid #d9c9b4; background: #fffdf8; border-radius: 8px 8px 0 0;
-  font-size: 16px; font-weight: 800; text-align: center; padding: 3px 6px; color: #1f4fa8; min-width: 62px; }
-.qin:focus { outline: none; border-color: var(--accent); background: #fff7f2; }
-.qin.ok { border-color: #17936a; background: #f1fdf7; color: #0f7a57; }
-.qin.bad { border-color: #dc4a34; background: #fff2ef; color: #b7331f; }
-
-.picks { display: inline-flex; gap: 5px; align-items: center; margin: 0 3px; vertical-align: middle; }
-.pk { border: 1.6px solid #e2d5c3; background: #fffdf8; border-radius: 10px; padding: 3px 11px;
-  font-size: 15px; font-weight: 800; color: #6d5e4c; }
-.pk.on { background: var(--accent); border-color: var(--accent); color: #fff; }
-.pk.right { background: #e9f9f1; border-color: #17936a; color: #0f7a57; }
-.pk.wrong { background: #ffeeea; border-color: #dc4a34; color: #b7331f; }
-
-.opts { display: flex; flex-direction: column; gap: 7px; }
-.opt { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
-  padding: 9px 12px; border-radius: 12px; border: 1.6px solid #eadfd0; background: #fff; }
-.opt .onum { flex: none; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
-  background: #f2e9dc; color: #8b7a66; font-size: 12px; font-weight: 850; }
-.opt .otx { font-size: 15px; font-weight: 750; }
-.opt.sel { border-color: var(--accent); background: #fff3ee; box-shadow: inset 0 0 0 1px var(--accent); }
-.opt.sel .onum { background: var(--accent); color: #fff; }
-.opt.right { border-color: #17936a; background: #f1fdf7; }
-.opt.right .onum { background: #17936a; color: #fff; }
-.opt.wrong { border-color: #dc4a34; background: #fff2ef; text-decoration: line-through; text-decoration-color: #e2857a; }
-
-.match { display: flex; flex-direction: column; gap: 8px; }
-.mrow2 { display: flex; align-items: center; gap: 9px; }
-.mword { flex: none; min-width: 68px; font-size: 14.5px; font-weight: 850; color: #2b241c;
-  background: #f6efe2; border-radius: 9px; padding: 6px 9px; text-align: center; }
-.msel { flex: 1; min-width: 0; border: 1.6px solid #e2d5c3; border-radius: 10px; padding: 7px 9px;
-  font-size: 12.5px; font-weight: 700; background: #fffdf8; color: #4e4335; }
-.msel.ok { border-color: #17936a; background: #f1fdf7; }
-.msel.bad { border-color: #dc4a34; background: #fff2ef; }
-
-.qfoot { display: flex; align-items: center; gap: 7px; margin-top: 10px; flex-wrap: wrap; }
-.qbtn { border-radius: 10px; padding: 7px 12px; font-size: 12px; font-weight: 800;
-  background: #f4ece0; color: #7d6c59; border: 1.4px solid transparent; }
-.qbtn.grade { background: #fff; border-color: var(--accent); color: var(--accent); }
-.qbtn.sol { background: #fff; border-color: #e2d5c3; }
-.qbtn.hand.on, .qbtn.scratch-t.on { background: var(--ink); color: #fff; }
-.qres { margin-left: auto; font-size: 13px; font-weight: 850; }
-.qres.ok { color: #17936a; }
-.qres.bad { color: #d94a33; }
-.qexp { display: none; margin-top: 9px; background: #f7f4ee; border-radius: 12px; padding: 10px 12px;
-  font-size: 12.5px; line-height: 1.65; font-weight: 650; color: #4f4537; }
-.qexp.show { display: block; }
-.qexp b { color: #a8712b; margin-right: 4px; }
-.qmodel { background: #eaf5ff; border-radius: 9px; padding: 7px 10px; margin: -2px 0 8px;
-  font-size: 12.5px; font-weight: 800; color: #23507f; }
-.qmodel b { color: #2a5cad; margin-right: 6px; }
-
-.handwrap { display: none; position: relative; margin-top: 10px; height: 150px; border-radius: 12px;
-  border: 1.5px dashed #d8c9b4;
-  background: repeating-linear-gradient(#fffdf9, #fffdf9 30px, #efe6d8 30px, #efe6d8 31px); overflow: hidden; }
-.handwrap.open { display: block; }
-.handwrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
-.stools { position: absolute; right: 6px; top: 5px; display: flex; gap: 4px; z-index: 2; }
-.stools button { background: rgba(255, 255, 255, .92); border: 1px solid #e6d9c7; border-radius: 9px;
-  padding: 4px 7px; font-size: 11px; font-weight: 800; color: #7d6c59; }
-.stools button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
-
-/* ---------- 수학 ---------- */
-.dg-body.math { display: flex; }
-.dg-mwrap { flex: 1; display: flex; flex-direction: column; min-height: 0; min-width: 0; }
-.dg-mbar { flex: none; display: flex; align-items: center; gap: 7px; padding: 8px 12px;
-  background: #fffdf8; border-bottom: 1px solid var(--line); overflow-x: auto; }
-.dg-mbar .spacer { flex: 1; }
-.dg-mscroll { flex: 1; overflow: auto; padding: 12px 14px 40px; -webkit-overflow-scrolling: touch; }
-.dg-mscroll > * { max-width: 940px; margin: 0 auto; }
-
-.mintro { margin-bottom: 6px; }
-.mcard { background: #fff; border-radius: 16px; padding: 12px 14px; margin-bottom: 12px;
-  border: 1.5px solid #efe4d5; box-shadow: 0 2px 8px rgba(90, 65, 40, .06); }
-.mcard.ok { border-color: #b7e6cf; background: #f8fffb; }
-.mcard.bad { border-color: #f4c8bd; background: #fffaf8; }
-.mcard.concept { background: linear-gradient(180deg, #fffdf7, #fff8ec); border-color: #f0dfc4; }
-.mhead { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.mtag { background: var(--accent); color: #fff; border-radius: 8px; padding: 3px 9px;
-  font-size: 11.5px; font-weight: 850; letter-spacing: .02em; }
-.mpair { font-size: 16px; font-weight: 850; letter-spacing: -.2px; }
-.mconcept { font-size: 14px; font-weight: 650; line-height: 1.75; color: #3d3428; }
-.mexample { margin-top: 10px; background: #f7f4ee; border-radius: 12px; padding: 10px 12px; }
-.mexample.inline { margin: 0 0 10px; background: #fdf6ea; border: 1px solid #f0e1cb; }
-.mex-t { font-size: 11.5px; font-weight: 850; color: #a8712b; margin-bottom: 4px; }
-.mex-l { font-size: 14.5px; font-weight: 750; color: #3d3428; line-height: 1.7; }
-.mex-a { font-size: 13.5px; font-weight: 850; color: #1f7a57; margin-top: 4px; }
-.mtip { margin-top: 10px; background: #fff6e8; border: 1px solid #f0ddc2; border-radius: 12px; padding: 9px 12px; }
-.mtip summary { font-size: 12.5px; font-weight: 850; color: #8a7457; cursor: pointer; }
-.mtip > div { margin-top: 7px; font-size: 12.5px; line-height: 1.7; font-weight: 620; color: #6b5c49; }
-
-.msec { margin: 18px 0 0; }
-.msec:first-of-type { margin-top: 8px; }
-.msec-h { display: flex; align-items: baseline; gap: 8px; margin: 0 2px 9px; }
-.msec-p { font-size: 15px; font-weight: 850; color: var(--accent); letter-spacing: -.2px; }
-.msec-hint { font-size: 11.5px; font-weight: 700; color: #a4937f; }
-
-.mlines { display: flex; flex-wrap: wrap; gap: 10px 26px; }
-.mline { display: flex; align-items: center; gap: 6px; font-size: 17px; font-weight: 800; }
-.mnum { font-size: 19px; }
-.eq { color: #8b7a66; }
-.times { color: #8b7a66; font-size: 15px; }
-.nin { width: 52px; height: 46px; text-align: center; font-size: 20px; font-weight: 850;
-  border-radius: 11px; border: 1.8px solid #e2d5c3; background: #fffdf9; color: #1f4fa8; padding: 0; }
-.nin:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232, 97, 60, .14); }
-.nin.ok { border-color: #17936a; background: #f1fdf7; color: #0f7a57; }
-.nin.bad { border-color: #dc4a34; background: #fff2ef; color: #b7331f; }
-.mgcd { display: flex; align-items: center; gap: 9px; margin-top: 11px; }
-.mgcd-l { font-size: 14.5px; font-weight: 850; color: #5c5040; }
-.gcdin { width: 64px; background: #fffaf2; border-color: #d9c9b4; }
-.mfoot { display: flex; align-items: center; gap: 7px; margin-top: 10px; flex-wrap: wrap; }
-.mexp { display: none; margin-top: 9px; background: #f2f7ff; border-radius: 12px; padding: 10px 12px;
-  font-size: 12.5px; line-height: 1.65; font-weight: 650; color: #3b4b63; }
-.mexp.show { display: block; }
-.mexp b { color: #2a5cad; margin-right: 4px; }
-.scratch { position: relative; height: 0; overflow: hidden; margin-top: 0; border-radius: 12px;
-  border: 0 solid transparent; transition: height .16s ease; }
-.scratch.open { height: 150px; margin-top: 10px; border: 1.5px dashed #d8c9b4;
-  background: repeating-linear-gradient(#fffdf9, #fffdf9 28px, #eee5d7 28px, #eee5d7 29px); }
-.scratch canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
-
-/* ---------- 원본 사진 ---------- */
-.dg-photo { position: absolute; inset: 0; z-index: 22; display: none; flex-direction: column;
-  background: rgba(24, 19, 14, .95); }
-.dg-photo.show { display: flex; }
-.pv-bar { flex: none; display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: #1e1812; }
-.pv-t { font-size: 12.5px; font-weight: 800; color: #f3e7d6; white-space: nowrap; }
-.pv-tabs { display: flex; gap: 5px; overflow-x: auto; }
-.pv-tab { border-radius: 999px; padding: 5px 10px; font-size: 11.5px; font-weight: 800;
-  background: #362c22; color: #d8c9b4; white-space: nowrap; }
-.pv-tab.on { background: #f3e7d6; color: #221b14; }
-.pv-bar .icon-btn { margin-left: auto; background: #362c22; border-color: #4a3d30; color: #f3e7d6; }
-.pv-body { flex: 1; overflow: auto; display: grid; place-items: center; padding: 10px; }
-.pv-body img { max-width: 100%; max-height: 100%; border-radius: 8px; background: #fff;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
-.pv-empty { color: #d8c9b4; font-weight: 700; }
-
-/* ---------- 숫자 키패드 ---------- */
-.dg-keypad { position: fixed; left: 0; right: 0; bottom: 0; z-index: 36; display: none;
-  background: #fffaf2; border-top: 1px solid var(--line);
-  box-shadow: 0 -10px 26px rgba(80, 55, 30, .14); padding: 7px 10px calc(7px + var(--safe-b)); }
-.dg-keypad.show { display: block; }
-.kp-head { display: flex; align-items: center; justify-content: space-between; padding: 0 4px 5px; }
-.kp-head span { font-size: 11.5px; font-weight: 850; color: #8b7a66; }
-.kp-head button { font-size: 11.5px; font-weight: 800; color: #a4937f; }
-.kp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; max-width: 520px; margin: 0 auto; }
-.kp-grid button { height: 44px; border-radius: 12px; background: #fff; border: 1.5px solid #e6d9c7;
-  font-size: 19px; font-weight: 850; color: #2b241c; }
-.kp-grid button:active { background: #f2e9dc; }
-.kp-grid .go { background: var(--accent); border-color: var(--accent); color: #fff; font-size: 14px; }
-
-/* ---------- 축하 ---------- */
-.dg-confetti { position: fixed; inset: 0; pointer-events: none; z-index: 90; overflow: hidden; }
-.dg-confetti span { position: absolute; top: -8%; animation: dgFall 2.3s cubic-bezier(.3, .6, .5, 1) forwards; }
-@keyframes dgFall {
-  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-  10% { opacity: 1; }
-  100% { transform: translate(var(--drift, 0), 108vh) rotate(320deg); opacity: .95; }
+.ans-sheet {
+  position: fixed; z-index: 35; right: 12px; bottom: calc(70px + var(--safe-b));
+  width: min(332px, calc(100vw - 24px)); max-height: min(58vh, 440px);
+  display: flex; flex-direction: column; overflow: hidden;
+  background: #fffdf9; border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: 0 18px 44px rgba(60, 42, 24, .24), 0 3px 8px rgba(60, 42, 24, .10);
 }
-
-.digital-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%;
-  margin: 0 0 14px; padding: 13px 15px; border-radius: 16px; text-align: left;
-  background: linear-gradient(120deg, #e8613c, #f39250); color: #fff;
-  box-shadow: 0 8px 20px rgba(232, 97, 60, .28); }
-.digital-cta span { font-size: 15px; font-weight: 850; letter-spacing: -.3px; }
-.digital-cta small { font-size: 11.5px; font-weight: 650; opacity: .92; }
-.badge.dg { left: 8px; right: auto; bottom: 8px; background: linear-gradient(120deg, #e8613c, #f0904a);
-  color: #fff; font-size: 10.5px; letter-spacing: -.1px; }
-
-@media (max-width: 900px) {
-  .dg-body.kor { display: block; overflow-y: auto; }
-  .dg-body.kor .dg-left { border-right: 0; }
-  .dg-body.kor .dg-lscroll { overflow: visible; padding: 10px 10px 4px; }
-  .dg-body.kor .dg-right { display: block; }
-  .dg-body.kor .dg-tabs { position: sticky; top: 0; z-index: 6; }
-  .dg-body.kor .dg-qscroll { overflow: visible; padding-bottom: 8px; }
-  .dg-body.kor .dg-qfoot { position: sticky; bottom: 0; z-index: 6; }
-  .dg-paper { font-size: 17px; padding: 16px 16px 22px 26px; }
-  .dg-right { border-top: 1px solid var(--line); }
+.ans-sheet[hidden] { display: none; }
+.ans-h {
+  display: flex; align-items: center; gap: 8px; padding: 9px 10px 9px 12px;
+  background: #fff6e9; border-bottom: 1px solid var(--line); flex: none;
 }
+.ans-h .t { font-size: 13px; font-weight: 850; letter-spacing: -.2px; }
+.ans-h .pg {
+  margin-left: auto; font-size: 11px; font-weight: 800; color: #8b7a66;
+  background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px;
+}
+.ans-x {
+  width: 26px; height: 26px; flex: none; border-radius: 9px; display: grid; place-items: center;
+  font-size: 13px; background: #fff; border: 1px solid var(--line); color: #8b7a66;
+}
+.ans-body { overflow-y: auto; padding: 4px 10px 12px; -webkit-overflow-scrolling: touch; }
+.ans-g { padding: 6px 9px; border-radius: 12px; margin-top: 6px; }
+.ans-g.cur { background: #f1f8f4; box-shadow: inset 0 0 0 1.5px #c4e4d3; }
+.ans-gt {
+  display: flex; align-items: baseline; gap: 6px; margin: 1px 0 3px;
+  font-size: 11.5px; font-weight: 850; color: #7c6a55;
+}
+.ans-gt small { font-size: 10.5px; font-weight: 700; color: #a4937f; }
+.ans-gt em { margin-left: auto; font-style: normal; font-size: 10px; font-weight: 800; color: #1d7a54; }
+.ans-row { display: flex; gap: 8px; align-items: flex-start; padding: 2.5px 0; }
+.ans-n {
+  flex: none; min-width: 18px; height: 18px; padding: 0 5px; margin-top: 1px;
+  border-radius: 6px; background: #f1e7d7; color: #8a7257;
+  font-size: 10.5px; font-weight: 850; display: grid; place-items: center;
+}
+.ans-g.cur .ans-n { background: #dcefe3; color: #1d7a54; }
+.ans-v { font-size: 13px; font-weight: 750; line-height: 1.42; color: #2a231c; word-break: keep-all; }
+.ans-q { font-weight: 800; color: #6f6357; }
+.ans-sub { display: block; margin-top: 1px; font-size: 10.5px; font-weight: 650; color: #9b8a76; letter-spacing: -.1px; }
+.ans-note { display: block; margin-top: 1px; font-size: 10.5px; font-weight: 700; color: #a4937f; }
+.ans-note.top { margin: 6px 2px 2px; font-size: 11.5px; color: #8b7a66; }
 
-@media (max-width: 760px) {
-  .dg-top .dgs { display: none; }
-  .dg-prog { font-size: 11.5px; padding: 4px 8px; }
-  .dg-keypad .kp-grid button { height: 40px; }
-  .dg-foot-note { display: none; }
+@media (max-width: 520px) {
+  .ans-btn { padding: 7px 11px; font-size: 12px; }
+  .ans-sheet { right: 8px; left: 8px; width: auto; bottom: calc(62px + var(--safe-b)); max-height: 56vh; }
 }
 </style>
 </head>
@@ -624,6 +399,7 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
         <div class="ps"><span id="padSub"></span> <span id="pageLabel"></span></div>
       </div>
       <button class="done-btn" id="padDone">⬜ 다 풀었어요</button>
+      <button class="ans-btn" id="ansBtn" hidden><span class="wide">✅ 정답 확인</span><span class="narrow">✅ 정답</span></button>
     </div>
 
     <div class="tools" id="tools">
@@ -657,631 +433,82 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
       <button class="chip on" id="penBtn"><span class="wide">✏️ 펜슬만 쓰기</span><span class="narrow">✏️ 펜슬만</span></button>
       <button class="icon-btn ghost" id="pageMenu" aria-label="페이지 메뉴">⋯</button>
     </div>
-  </section>
 
-  <section id="view-digital" class="view">
-    <div class="dg-top">
-      <button class="icon-btn" id="dgBack" aria-label="뒤로">‹</button>
-      <div class="dg-tt">
-        <div class="dgt" id="dgTitle"></div>
-        <div class="dgs" id="dgSub"></div>
+    <aside class="ans-sheet" id="ansSheet" hidden>
+      <div class="ans-h">
+        <span class="t">✅ 정답 확인</span>
+        <span class="pg" id="ansPage"></span>
+        <button class="ans-x" id="ansClose" data-ans-close aria-label="닫기">✕</button>
       </div>
-      <div class="dg-spacer"></div>
-      <span class="dg-prog" id="dgProg"></span>
-      <button class="chip dg-ico" id="dgBookBtn" title="문제집 정보 · 사진으로 풀기" aria-label="문제집 정보">📚</button>
-      <button class="chip" id="dgPhotoBtn">📄 원본 사진</button>
-    </div>
-    <div class="dg-body" id="dgBody"></div>
-    <div class="dg-photo" id="dgPhoto"></div>
+      <div class="ans-body" id="ansBody"></div>
+    </aside>
   </section>
 
 </div>
-<div class="dg-keypad" id="dgKeypad"></div>
 <div class="modal-back" id="modalBack"></div>
 <div class="toast" id="toast"></div>
 
-<script>window.__DIGITAL__ = {
+<script>window.__ANSWERS__ = {
  "v": 1,
  "built": "2026-11-25",
  "books": {
   "lit": {
    "id": "lit",
-   "kind": "kor",
    "title": "빠작 문학독해 · 동화 04",
    "unit": "강아지똥",
-   "short": "문학독해 3단계 · p.56~59",
-   "photos": [
+   "groups": [
     {
-     "label": "p.56",
-     "img": "pages/lit-56.webp"
-    },
-    {
-     "label": "p.57",
-     "img": "pages/lit-57.webp"
-    },
-    {
-     "label": "p.58",
-     "img": "pages/lit-58.webp"
-    },
-    {
-     "label": "p.59",
-     "img": "pages/lit-59.webp"
-    }
-   ],
-   "passage": {
-    "title": "강아지똥",
-    "author": "권정생",
-    "paras": [
-     {
-      "t": "봄을 치장하는 단비가 촉촉이 골목길을 적셨습니다. 강아지똥 앞에 파란 민들레 싹이 하나 내밀었습니다."
-     },
-     {
-      "t": "‘너는 뭐니?’ 하고 강아지똥이 내려다보고 물었습니다."
-     },
-     {
-      "t": "‘난 예쁜 꽃이 피는 민들레란다.’"
-     },
-     {
-      "t": "‘예쁜 꽃이라니! 하늘의 별만큼 고우니?’ / ‘그럼!’"
-     },
-     {
-      "t": "‘반짝반짝 빛이 나니?’ / ‘응, 샛노랗게 빛나.’"
-     },
-     {
-      "t": "강아지똥은 가슴이 울렁거렸습니다. 어쩌면 며칠 전에 제 가슴속에 심은 볕의 씨앗이 싹 터 나온 것이 아닌가 싶었기 때문입니다."
-     },
-     {
-      "t": "‘네가 어떻게 그런 꽃을 피울 수 있니?’ 물어 놓고 얼른 대답을 기다렸습니다."
-     },
-     {
-      "t": "‘그건 하느님께서 비를 내리시고 따뜻한 햇빛을 비추시기 때문이야.’ 민들레는 예사로 그렇게 대답하였습니다."
-     },
-     {
-      "t": "‘역시 그럴 거야. 나하고야 무슨 상관이 있을라고…….’ 금방 강아지똥의 얼굴이 또 슬프게 일그러졌습니다."
-     },
-     {
-      "t": "그러자 민들레 싹이, ‘그리고 또 한 가지 꼭 필요한 게 있어.’ 하고는 강아지똥을 쳐다보며 눈을 반짝였습니다."
-     },
-     {
-      "t": "‘…….’"
-     },
-     {
-      "t": "‘네가 거름이 되어 줘야 한단다.’ 강아지똥은 화들짝 놀랐습니다."
-     },
-     {
-      "t": "‘내가 거름이 되다니?’"
-     },
-     {
-      "t": "‘너의 몸뚱이를 고스란히 녹여 내 몸속으로 들어와야 해. 그래서 예쁜 꽃을 피게 하는 것은 바로 네가 하는 거야.’"
-     },
-     {
-      "brk": "중략"
-     },
-     {
-      "t": "㉠ ‘내가 거름이 되어 벌처럼 고운 꽃이 피어난다면, 온몸을 녹여 내 살이 될게.’",
-      "mark": "㉠"
-     },
-     {
-      "t": "비는 사흘 동안 계속 내렸습니다."
-     },
-     {
-      "t": "강아지똥은 온몸이 비에 맞아 자디잘게 부서졌습니다."
-     },
-     {
-      "t": "봄이 한창인 어느 날, 민들레는 한 송이 아름다운 꽃을 피웠습니다. 샛노랗게 햇빛을 받고 별처럼 반짝였습니다. 향긋한 내음이 바람을 타고 퍼져 나갔습니다."
-     }
-    ],
-    "words": [
-     {
-      "w": "치장",
-      "d": "잘 만져서 보기 좋게 꾸밈."
-     },
-     {
-      "w": "단비",
-      "d": "꼭 필요한 때 알맞게 내리는 비."
-     },
-     {
-      "w": "촉촉이",
-      "d": "물기가 있어 조금 젖은 듯이."
-     },
-     {
-      "w": "울렁거렸습니다",
-      "d": "너무 놀라거나 두려워서 가슴이 자꾸 두근거렸습니다."
-     },
-     {
-      "w": "예사로",
-      "d": "보통 일처럼 아무렇지도 아니하게."
-     },
-     {
-      "w": "일그러졌습니다",
-      "d": "물건이나 얼굴이 비뚤어지거나 우글쭈글해졌습니다."
-     },
-     {
-      "w": "화들짝",
-      "d": "갑자기 펄쩍 뛸 듯이 놀라는 모양."
-     },
-     {
-      "w": "고스란히",
-      "d": "조금도 줄거나 바뀐 것 없이 그대로."
-     },
-     {
-      "w": "한창",
-      "d": "가장 무르익거나 활발한 때."
-     },
-     {
-      "w": "내음",
-      "d": "코로 맡을 수 있는 냄새나 향기로운 기운."
-     }
-    ]
-   },
-   "cards": [
-    {
-     "title": "「강아지똥」 전체 줄거리",
-     "sub": "바탕 지식 · p.58",
-     "lines": [
-      "동화 작가인 권정생 선생님이 지은 동화로, 똥을 단지 더럽고 냄새나는 것이라고만 생각하던 강아지똥이 제 가슴에 민들레를 피워 내는 숭고한 희생을 보여 주는 동화입니다.",
-      "발단 · 돌담 밑에 혼자 남겨진 강아지똥은 참새, 병아리에게 무시당하고 흙덩이에게도 강아지똥이라고 놀림을 받습니다.",
-      "전개 · 흙덩이는 강아지똥에게 자신도 버려진 신세라고 슬퍼했지만, 주인 아저씨가 데리러 와서 기뻐합니다.",
-      "절정 · 암탉 가족을 만난 후 봄비가 내린 날, 강아지똥은 민들레 싹을 만나서 꽃을 피우는 데 자신이 꼭 필요하다는 말을 듣습니다.",
-      "결말 · 강아지똥은 자신을 희생하여 민들레 싹이 꽃을 피울 수 있도록 거름이 됩니다."
-     ]
-    }
-   ],
-   "sections": [
-    {
-     "id": "read",
-     "name": "지문 독해",
      "page": "p.57",
-     "qs": [
+     "name": "지문 독해",
+     "items": [
       {
-       "n": 1,
-       "type": "blocks",
-       "stem": "일이 일어난 때와 곳은 언제, 어디인지 ○표 하세요.",
-       "blocks": [
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "강아지똥이 파란 민들레 싹을 만난 때는 ("
-          },
-          {
-           "k": "b",
-           "opts": [
-            "봄",
-            "여름"
-           ],
-           "a": [
-            "봄"
-           ]
-          },
-          {
-           "k": "t",
-           "s": ")이고, 둘이 만난 곳은 ("
-          },
-          {
-           "k": "b",
-           "opts": [
-            "꽃밭",
-            "골목길"
-           ],
-           "a": [
-            "골목길"
-           ]
-          },
-          {
-           "k": "t",
-           "s": ")이다."
-          }
-         ]
-        }
-       ],
-       "explain": "지문의 첫 문장 ‘봄을 치장하는 단비가 촉촉이 골목길을 적셨습니다.’에서 때는 봄, 곳은 골목길임을 알 수 있어요."
+       "n": "1",
+       "a": "봄 · 골목길"
       },
       {
-       "n": 2,
-       "type": "choice",
-       "multi": true,
-       "stem": "민들레 싹이 예쁜 꽃으로 피어나기 위해서 필요하다고 말한 것을 모두 고르세요.",
-       "opts": [
-        "비",
-        "바람",
-        "별빛",
-        "거름",
-        "햇빛"
-       ],
-       "a": [
-        0,
-        3,
-        4
-       ],
-       "explain": "민들레는 ‘하느님께서 비를 내리시고 따뜻한 햇빛을 비추시기 때문’이라고 했고, 강아지똥에게는 ‘네가 거름이 되어 줘야 한단다.’라고 말했어요. 바람과 별빛은 꽃을 피우는 데 필요한 것으로 나오지 않아요."
+       "n": "2",
+       "a": "① 비 · ④ 거름 · ⑤ 햇빛"
       },
       {
-       "n": 3,
-       "type": "blocks",
-       "stem": "㉠과 가장 관련 있는 고사성어로 알맞은 것의 기호를 쓰세요.",
-       "aside": {
-        "title": "고사성어",
-        "items": [
-         [
-          "㉠ 설상가상",
-          "좋지 않은 일이 연거푸 일어남."
-         ],
-         [
-          "㉡ 살신성인",
-          "자기의 몸을 희생하여 옳은 일을 함."
-         ],
-         [
-          "㉢ 관포지교",
-          "매우 다정하고 거짓이 없는 친구 사이."
-         ]
-        ]
-       },
-       "blocks": [
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "답: "
-          },
-          {
-           "k": "b",
-           "a": [
-            "㉡",
-            "살신성인"
-           ],
-           "w": 8,
-           "ph": "기호"
-          }
-         ]
-        }
-       ],
-       "explain": "㉠은 강아지똥이 자신의 온몸을 녹여 민들레꽃을 피우겠다고 다짐하는 장면이에요. 자신의 몸을 희생해 옳은 일을 한다는 뜻의 ‘살신성인(㉡)’과 관련이 있어요.",
-       "model": "㉡ (살신성인)"
+       "n": "3",
+       "a": "㉡ (살신성인)"
       },
       {
-       "n": 4,
-       "type": "blocks",
-       "stem": "이 글의 강아지똥과 비슷한 경험을 한 친구는 누구인지 쓰세요.",
-       "aside": {
-        "title": "친구들의 경험",
-        "items": [
-         [
-          "도윤",
-          "학교에서 열린 그림 그리기 대회에서 상을 받아 기뻤다."
-         ],
-         [
-          "은혜",
-          "편찮으신 엄마를 위해 힘들지만 열심히 청소를 했더니 뿌듯했다."
-         ],
-         [
-          "예진",
-          "친구와 싸우고 난 뒤에 용기를 내어 먼저 사과를 해서 마음이 후련했다."
-         ]
-        ]
-       },
-       "blocks": [
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "답: "
-          },
-          {
-           "k": "b",
-           "a": [
-            "은혜"
-           ],
-           "w": 8,
-           "ph": "이름"
-          }
-         ]
-        }
-       ],
-       "explain": "강아지똥은 자기 몸을 녹여 민들레가 꽃을 피우게 했어요. 은혜도 힘들지만 편찮으신 엄마를 위해 스스로 청소를 했으니, 다른 사람을 위해 자신을 내어 준 경험이에요.",
-       "model": "은혜"
+       "n": "4",
+       "a": "은혜"
       }
      ]
     },
     {
-     "id": "an",
-     "name": "지문 분석",
      "page": "p.58",
-     "qs": [
+     "name": "지문 분석",
+     "items": [
       {
-       "n": 1,
-       "type": "blocks",
-       "stem": "일어난 일의 순서를 생각하며 빈칸에 알맞은 말을 쓰세요.",
-       "blocks": [
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "• 봄을 치장하는 ("
-          },
-          {
-           "k": "b",
-           "a": [
-            "단비"
-           ],
-           "w": 5
-          },
-          {
-           "k": "t",
-           "s": ")가 촉촉하게 내림."
-          }
-         ]
-        },
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "• 강아지똥 앞에 민들레 ("
-          },
-          {
-           "k": "b",
-           "a": [
-            "싹"
-           ],
-           "w": 5
-          },
-          {
-           "k": "t",
-           "s": ")이 나옴."
-          }
-         ]
-        },
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "• 민들레 싹이 강아지똥에게 ("
-          },
-          {
-           "k": "b",
-           "a": [
-            "거름"
-           ],
-           "w": 5
-          },
-          {
-           "k": "t",
-           "s": ")이 되어 달라고 함."
-          }
-         ]
-        },
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "• 봄이 한창인 어느 날, ("
-          },
-          {
-           "k": "b",
-           "a": [
-            "민들레"
-           ],
-           "w": 5
-          },
-          {
-           "k": "t",
-           "s": ")가 ("
-          },
-          {
-           "k": "b",
-           "a": [
-            "꽃",
-            "아름다운꽃",
-            "한송이아름다운꽃"
-           ],
-           "w": 9
-          },
-          {
-           "k": "t",
-           "s": ")을 피움."
-          }
-         ]
-        }
-       ],
-       "explain": "지문에서 일이 일어난 순서대로 ㉠ 봄비(단비)가 내림 → ㉡ 민들레 싹이 나옴 → ㉢ 강아지똥에게 거름이 되어 달라고 함 → ㉣ 민들레가 꽃을 피움 순서예요.",
-       "model": "단비 / 싹 / 거름 / 민들레 / 꽃"
+       "n": "순서 빈칸",
+       "a": "단비 · 싹 · 거름 · 민들레 · 꽃"
       },
       {
-       "n": 2,
-       "type": "blocks",
-       "stem": "이 글의 주제를 생각하며 ( ) 안에 들어갈 알맞은 말에 ○표 하세요.",
-       "blocks": [
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "슬픔 없는 존재라며 슬퍼하던 강아지똥이 민들레꽃을 피우기 위해 기쁜 마음으로 자신을 희생하는 모습에서 세상의 모든 존재는 소중하며 ("
-          },
-          {
-           "k": "b",
-           "opts": [
-            "가치",
-            "의미"
-           ],
-           "a": [
-            "가치"
-           ]
-          },
-          {
-           "k": "t",
-           "s": ")가 있다는 것을 알려 준다."
-          }
-         ]
-        }
-       ],
-       "explain": "이 글은 보잘것없어 보이던 강아지똥도 다른 생명을 피워 내는 소중한 존재라는 점을 보여 줘요. 그래서 ‘세상의 모든 존재는 소중하며 가치가 있다’가 이 글의 주제예요. ‘의미’도 뜻이 통하는 것처럼 보이지만, 이 글에서 말하는 것은 존재가 지닌 값어치, 곧 ‘가치’예요.",
-       "model": "가치"
+       "n": "주제",
+       "a": "가치"
       }
      ]
     },
     {
-     "id": "voc",
-     "name": "오늘의 어휘",
      "page": "p.59",
-     "qs": [
+     "name": "오늘의 어휘",
+     "items": [
       {
-       "n": 1,
-       "type": "match",
-       "stem": "다음 낱말의 알맞은 뜻을 찾아 선으로 이으세요.",
-       "left": [
-        "치장",
-        "단비",
-        "거름",
-        "한창",
-        "예사로"
-       ],
-       "right": [
-        "아무렇지도 아니하게.",
-        "가장 무르익거나 활발한 때.",
-        "잘 만져서 보기 좋게 꾸밈.",
-        "꼭 필요한 때 알맞게 내리는 비.",
-        "풀이나 나무가 잘 자라도록 흙에 뿌리거나 섞는 것."
-       ],
-       "a": [
-        2,
-        3,
-        4,
-        1,
-        0
-       ],
-       "explain": "치장 – 잘 만져서 보기 좋게 꾸밈. / 단비 – 꼭 필요한 때 알맞게 내리는 비. / 거름 – 풀이나 나무가 잘 자라도록 흙에 뿌리거나 섞는 것. / 한창 – 가장 무르익거나 활발한 때. / 예사로 – 아무렇지도 아니하게.",
-       "model": "치장 → ③, 단비 → ④, 거름 → ⑤, 한창 → ②, 예사로 → ①"
+       "n": "낱말 잇기",
+       "a": "치장 ③ · 단비 ④ · 거름 ⑤ · 한창 ② · 예사로 ①",
+       "note": "뜻은 위에서부터 ①~⑤"
       },
       {
-       "n": 2,
-       "type": "blocks",
-       "stem": "다음 빈칸에 들어갈 알맞은 낱말을 ‘오늘의 어휘’에서 찾아 쓰세요.",
-       "hint": "오늘의 어휘: 치장 · 단비 · 거름 · 한창 · 예사로",
-       "blocks": [
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "• 그 아이는 동생을 ("
-          },
-          {
-           "k": "b",
-           "a": [
-            "예사로"
-           ],
-           "w": 6
-          },
-          {
-           "k": "t",
-           "s": ") 업는다."
-          }
-         ]
-        },
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "• 요즘 앞산에는 진달래가 ("
-          },
-          {
-           "k": "b",
-           "a": [
-            "한창"
-           ],
-           "w": 6
-          },
-          {
-           "k": "t",
-           "s": ")이다."
-          }
-         ]
-        },
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "• 식물이 잘 자라도록 밭에 ("
-          },
-          {
-           "k": "b",
-           "a": [
-            "거름"
-           ],
-           "w": 6
-          },
-          {
-           "k": "t",
-           "s": ")을 뿌려 주었다."
-          }
-         ]
-        },
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "• 가뭄 끝에 ("
-          },
-          {
-           "k": "b",
-           "a": [
-            "단비"
-           ],
-           "w": 6
-          },
-          {
-           "k": "t",
-           "s": ")가 내려 농부들은 신바람이 났다."
-          }
-         ]
-        },
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "• 까마귀는 자신의 몸을 ("
-          },
-          {
-           "k": "b",
-           "a": [
-            "치장"
-           ],
-           "w": 6
-          },
-          {
-           "k": "t",
-           "s": ")하기 위해 다른 새들을 찾아갔다."
-          }
-         ]
-        }
-       ],
-       "explain": "낱말의 뜻을 넣어 문장을 읽어 보면 자연스러운지 알 수 있어요. 동생을 예사로 업는다(아무렇지도 아니하게) · 진달래가 한창이다(가장 활발한 때) · 밭에 거름을 뿌린다 · 가뭄 끝에 단비가 내린다 · 몸을 치장한다(보기 좋게 꾸민다).",
-       "model": "예사로 / 한창 / 거름 / 단비 / 치장"
+       "n": "1",
+       "a": "예사로 · 한창 · 거름 · 단비 · 치장"
       },
       {
-       "n": 3,
-       "type": "blocks",
-       "stem": "다음 글에서 밑줄 친 말과 뜻이 비슷한 말을 ‘오늘의 어휘’에서 찾아 쓰세요.",
-       "quote": "할아버지의 일흔 번째 생신날 가족사진을 찍기로 했다. 모두 깔끔한 옷으로 말끔히 차려 입고, 즐겁게 사진관에 갔다. 미용실에서 머리를 ⟪단장⟫하고 오신 할머니는 정말 고우셨다. 그 모습을 보신 할아버지께서는 젊었을 때, 곱게 치장을 하고 수줍게 웃으며 할아버지를 만나러 오시던 할머니 얼굴이 아직도 눈에 선하다고 말씀하셨다.",
-       "blocks": [
-        {
-         "parts": [
-          {
-           "k": "t",
-           "s": "답: "
-          },
-          {
-           "k": "b",
-           "a": [
-            "치장"
-           ],
-           "w": 8,
-           "ph": "낱말"
-          }
-         ]
-        }
-       ],
-       "explain": "밑줄 친 ‘단장’은 머리나 옷을 보기 좋게 꾸민다는 뜻이에요. 글 속에 ‘곱게 치장을 하고’라는 부분이 있으니, 뜻이 비슷한 낱말은 ‘치장’이에요.",
-       "model": "치장"
+       "n": "2",
+       "a": "치장"
       }
      ]
     }
@@ -1289,344 +516,102 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
   },
   "soma": {
    "id": "soma",
-   "kind": "math",
    "title": "소마셈 D4 · 1주 3일차",
    "unit": "최대공약수 구하기 (1)",
-   "short": "4학년 · 약수와 배수 · p.16~18",
-   "photos": [
+   "groups": [
     {
-     "label": "p.16",
-     "img": "pages/soma-16.webp"
-    },
-    {
-     "label": "p.17",
-     "img": "pages/soma-17.webp"
-    },
-    {
-     "label": "p.18",
-     "img": "pages/soma-18.webp"
-    }
-   ],
-   "concept": {
-    "title": "개념",
-    "text": "다음과 같이 두 수를 가장 작은 수의 곱으로 나타낸 후, 공통으로 포함되어 있는 수들을 곱하여 최대공약수를 구하세요."
-   },
-   "example": {
-    "title": "예제",
-    "pair": "(6, 18)",
-    "lines": [
-     "6 = 2 × 3",
-     "18 = 2 × 3 × 3"
-    ],
-    "answer": "최대공약수 2 × 3 = 6"
-   },
-   "tip": {
-    "title": "TIP",
-    "text": "두 수를 가장 작은 수의 곱으로 나타내는 것은 약수가 1과 자신뿐인 수의 곱으로 나타내는 것을 말합니다. 이때, 약수가 1과 자신뿐인 수를 소수라고 하고, 2, 3, 5, 7, 11, … 과 같은 수입니다."
-   },
-   "sections": [
-    {
-     "id": "p16",
      "page": "p.16",
-     "hint": "두 수를 가장 작은 수의 곱으로 나타낸 후 최대공약수를 구하세요.",
-     "mode": "factors",
-     "qs": [
+     "name": "",
+     "items": [
       {
-       "n": 1,
-       "pair": [
-        10,
-        16
-       ],
-       "fa": [
-        "2",
-        "5"
-       ],
-       "fb": [
-        "2",
-        "2",
-        "2",
-        "2"
-       ],
-       "gcd": "2"
+       "n": "1",
+       "q": "(10, 16)",
+       "a": "2",
+       "sub": "10 = 2×5 · 16 = 2×2×2×2"
       },
       {
-       "n": 2,
-       "pair": [
-        20,
-        36
-       ],
-       "fa": [
-        "2",
-        "2",
-        "5"
-       ],
-       "fb": [
-        "2",
-        "2",
-        "3",
-        "3"
-       ],
-       "gcd": "4"
+       "n": "2",
+       "q": "(20, 36)",
+       "a": "4",
+       "sub": "20 = 2×2×5 · 36 = 2×2×3×3"
       },
       {
-       "n": 3,
-       "pair": [
-        8,
-        16
-       ],
-       "fa": [
-        "2",
-        "2",
-        "2"
-       ],
-       "fb": [
-        "2",
-        "2",
-        "2",
-        "2"
-       ],
-       "gcd": "8"
+       "n": "3",
+       "q": "(8, 16)",
+       "a": "8",
+       "sub": "8 = 2×2×2 · 16 = 2×2×2×2"
       }
      ]
     },
     {
-     "id": "p17",
      "page": "p.17",
-     "hint": "두 수의 최대공약수를 구하세요.",
-     "mode": "gcd",
-     "example": {
-      "pair": "(9, 12)",
-      "lines": [
-       "9 = 3 × 3",
-       "12 = 2 × 2 × 3"
-      ],
-      "answer": "최대공약수 3"
-     },
-     "qs": [
+     "name": "",
+     "items": [
       {
-       "n": 1,
-       "pair": [
-        6,
-        9
-       ],
-       "fa": [
-        "2",
-        "3"
-       ],
-       "fb": [
-        "3",
-        "3"
-       ],
-       "gcd": "3"
+       "n": "1",
+       "q": "(6, 9)",
+       "a": "3"
       },
       {
-       "n": 2,
-       "pair": [
-        8,
-        18
-       ],
-       "fa": [
-        "2",
-        "2",
-        "2"
-       ],
-       "fb": [
-        "2",
-        "3",
-        "3"
-       ],
-       "gcd": "2"
+       "n": "2",
+       "q": "(8, 18)",
+       "a": "2"
       },
       {
-       "n": 3,
-       "pair": [
-        7,
-        28
-       ],
-       "fa": [
-        "7"
-       ],
-       "fb": [
-        "2",
-        "2",
-        "7"
-       ],
-       "gcd": "7"
+       "n": "3",
+       "q": "(7, 28)",
+       "a": "7"
       },
       {
-       "n": 4,
-       "pair": [
-        9,
-        15
-       ],
-       "fa": [
-        "3",
-        "3"
-       ],
-       "fb": [
-        "3",
-        "5"
-       ],
-       "gcd": "3"
+       "n": "4",
+       "q": "(9, 15)",
+       "a": "3"
       },
       {
-       "n": 5,
-       "pair": [
-        12,
-        20
-       ],
-       "fa": [
-        "2",
-        "2",
-        "3"
-       ],
-       "fb": [
-        "2",
-        "2",
-        "5"
-       ],
-       "gcd": "4"
+       "n": "5",
+       "q": "(12, 20)",
+       "a": "4"
       },
       {
-       "n": 6,
-       "pair": [
-        16,
-        18
-       ],
-       "fa": [
-        "2",
-        "2",
-        "2",
-        "2"
-       ],
-       "fb": [
-        "2",
-        "3",
-        "3"
-       ],
-       "gcd": "2"
+       "n": "6",
+       "q": "(16, 18)",
+       "a": "2"
       }
      ]
     },
     {
-     "id": "p18",
      "page": "p.18",
-     "hint": "두 수의 최대공약수를 구하세요.",
-     "mode": "gcd",
-     "example": {
-      "pair": "(4, 8)",
-      "lines": [
-       "4 = 2 × 2",
-       "8 = 2 × 2 × 2"
-      ],
-      "answer": "최대공약수 2 × 2 = 4"
-     },
-     "qs": [
+     "name": "",
+     "items": [
       {
-       "n": 1,
-       "pair": [
-        6,
-        12
-       ],
-       "fa": [
-        "2",
-        "3"
-       ],
-       "fb": [
-        "2",
-        "2",
-        "3"
-       ],
-       "gcd": "6"
+       "n": "1",
+       "q": "(6, 12)",
+       "a": "6"
       },
       {
-       "n": 2,
-       "pair": [
-        7,
-        35
-       ],
-       "fa": [
-        "7"
-       ],
-       "fb": [
-        "5",
-        "7"
-       ],
-       "gcd": "7"
+       "n": "2",
+       "q": "(7, 35)",
+       "a": "7"
       },
       {
-       "n": 3,
-       "pair": [
-        9,
-        24
-       ],
-       "fa": [
-        "3",
-        "3"
-       ],
-       "fb": [
-        "2",
-        "2",
-        "2",
-        "3"
-       ],
-       "gcd": "3"
+       "n": "3",
+       "q": "(9, 24)",
+       "a": "3"
       },
       {
-       "n": 4,
-       "pair": [
-        16,
-        20
-       ],
-       "fa": [
-        "2",
-        "2",
-        "2",
-        "2"
-       ],
-       "fb": [
-        "2",
-        "2",
-        "5"
-       ],
-       "gcd": "4"
+       "n": "4",
+       "q": "(16, 20)",
+       "a": "4"
       },
       {
-       "n": 5,
-       "pair": [
-        21,
-        35
-       ],
-       "fa": [
-        "3",
-        "7"
-       ],
-       "fb": [
-        "5",
-        "7"
-       ],
-       "gcd": "7"
+       "n": "5",
+       "q": "(21, 35)",
+       "a": "7"
       },
       {
-       "n": 6,
-       "pair": [
-        24,
-        32
-       ],
-       "fa": [
-        "2",
-        "2",
-        "2",
-        "3"
-       ],
-       "fb": [
-        "2",
-        "2",
-        "2",
-        "2",
-        "2"
-       ],
-       "gcd": "8"
+       "n": "6",
+       "q": "(24, 32)",
+       "a": "8"
       }
      ]
     }
@@ -2294,27 +1279,22 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
     if (view === 'shelf') window.scrollTo(0, 0);
   }
 
-  function hasDigital(bookId) {
-    return !!(window.__DIGITAL__ && window.__DIGITAL__.books && window.__DIGITAL__.books[bookId]);
-  }
-
   function coverHTML(book, catName) {
     const p = bookProgress(book);
     const badge = p.total
       ? (p.done >= p.total ? '<span class="badge done">완료 ✓</span>' : `<span class="badge">${p.done}/${p.total}</span>`)
       : '';
-    const dg = hasDigital(book.id) ? '<span class="badge dg">✨ 디지털 문제</span>' : '';
     const cv = book.cover || {};
     if (cv.type === 'img') {
       const src = cv.blob ? blobUrlSync(cv.blob) : assetUrl(cv.src);
-      return `<div class="cover"><img ${cv.blob ? `data-blob="${cv.blob}"` : ''} src="${esc(src)}" alt="" loading="lazy" decoding="async"><span class="spine"></span>${catName ? `<span class="ctag">${esc(catName)}</span>` : ''}${badge}${dg}</div>`;
+      return `<div class="cover"><img ${cv.blob ? `data-blob="${cv.blob}"` : ''} src="${esc(src)}" alt="" loading="lazy" decoding="async"><span class="spine"></span>${catName ? `<span class="ctag">${esc(catName)}</span>` : ''}${badge}</div>`;
     }
     const color = cv.color || book.color || '#e8613c';
     const txt = esc(book.title);
     return `<div class="cover plain" style="background:${color}">
       <div class="ct" style="color:${lcText(color)}">${txt}</div>
       <div class="ce">${book.emoji || '📘'}</div>
-      <span class="spine"></span>${catName ? `<span class="ctag">${esc(catName)}</span>` : ''}${badge}${dg}</div>`;
+      <span class="spine"></span>${catName ? `<span class="ctag">${esc(catName)}</span>` : ''}${badge}</div>`;
   }
 
   const blobCache = {};
@@ -2383,6 +1363,7 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
   async function openBook(bookId) {
     const found = findBook(bookId);
     if (!found) return;
+    if (window.__YSP_ANS) window.__YSP_ANS.close();
     S.bookId = bookId;
     const b = found.book;
     const p = bookProgress(b);
@@ -2410,7 +1391,6 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
           <div class="progress-wrap"><span>${p.done}/${p.total}쪽</span><span class="bar"><i style="width:${pct}%"></i></span><span>${pct}%</span></div>
         </div>
       </div>
-      ${hasDigital(b.id) ? `<button class="digital-cta" id="digitalBtn"><span>✨ 디지털 문제로 풀기</span><small>채점·해설·손글씨 연습장이 있는 문제집</small></button>` : ''}
       <ul class="unit-list">${units}</ul>
       <div class="add-row">
         <button class="dashed" id="addPagesBtn">＋ 단원 / 페이지 사진 추가</button>
@@ -2423,6 +1403,15 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
   const paper = () => $('#paper');
   const canvas = () => $('#padCanvas');
   const ctx2d = () => canvas().getContext('2d');
+
+  /* 페이지가 있는 문제집은 첫 단원 학습지 패드로 바로, 여러 단원이면 단원 목록으로 */
+  function openBookOrPad(bookId) {
+    const found = findBook(bookId);
+    if (!found) return;
+    const units = found.book.units.filter((u) => u.pages.length);
+    if (units.length === 1) openPad(bookId, units[0].id, 0);
+    else openBook(bookId);
+  }
 
   async function openPad(bookId, unitId, idx) {
     const found = findBook(bookId);
@@ -2474,6 +1463,7 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
     $('#nextBtn').disabled = S.pageIdx >= u.pages.length - 1;
     $('#pageLabel').textContent = p.label || '';
     layoutPaper();
+    if (window.__YSP_ANS) window.__YSP_ANS.refresh(S.bookId, p.label || '');
     const st = $('#stage'); st.scrollTop = 0; st.scrollLeft = 0;
   }
 
@@ -2879,7 +1869,7 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
         return;
       }
       const b = e.target.closest('[data-book]');
-      if (b) { const id = b.dataset.book; if (hasDigital(id)) openDigital(id); else openBook(id); }
+      if (b) openBookOrPad(b.dataset.book);
     });
     $('#addSubjectBtn').onclick = addSubjectModal;
     $('#addBookBtn').onclick = addBookModal;
@@ -2888,13 +1878,12 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
     $('#bookBack').onclick = () => { renderShelf(); show('shelf'); };
     $('#bookBody').addEventListener('click', (e) => {
       const u = e.target.closest('[data-unit]');
-      if (u && !e.target.closest('#digitalBtn')) openPad(S.bookId, u.dataset.unit, 0);
+      if (u) openPad(S.bookId, u.dataset.unit, 0);
       if (e.target.closest('#addPagesBtn')) addPagesModal();
-      if (e.target.closest('#digitalBtn')) openDigital(S.bookId);
     });
 
     // pad
-    $('#padBack').onclick = async () => { await saveInkNow(); await openBook(S.bookId); };
+    $('#padBack').onclick = async () => { if (window.__YSP_ANS) window.__YSP_ANS.close(); await saveInkNow(); await openBook(S.bookId); };
     $('#padDone').onclick = toggleDone;
     $('#tools').addEventListener('click', (e) => {
       const t = e.target.closest('[data-tool]');
@@ -2985,7 +1974,7 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
     $('#modalBack').addEventListener('click', (e) => { if (e.target.id === 'modalBack') closeModal(); });
     $('#shelfBody').addEventListener('keydown', (e) => {
       const b = e.target.closest('[data-book]');
-      if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openBook(b.dataset.book); }
+      if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openBookOrPad(b.dataset.book); }
     });
 
     window.addEventListener('resize', () => {
@@ -3003,1011 +1992,79 @@ mark.dghl { background: linear-gradient(180deg, rgba(255, 225, 77, 0) 40%, rgba(
     });
   }
 
-  /* ======================= 디지털 학습지 (국어·수학) ======================= */
-const DGD = (window.__DIGITAL__ && window.__DIGITAL__.books) || {};
-const DG = {
-  bookId: null, book: null, secIdx: 0,
-  ans: {}, graded: {}, hl: [],
-  ptool: 'sel', photoIdx: 0,
-  ink: {}, ttsOn: false, ttsIdx: -1,
-  keyTarget: null, saveT: 0
-};
-const DG_NUM = ['①', '②', '③', '④', '⑤', '⑥', '⑦'];
+  /* ======================= 정답 확인 시트 ======================= */
+/* 문제집 페이지에서 펜으로 다 푼 뒤, 문항별 정답만 작게 보여 준다. */
+(function () {
+  'use strict';
 
-const dgQid = (sec, q) => sec.id + ':' + q.n;
+  const ANS = (window.__ANSWERS__ && window.__ANSWERS__.books) || {};
+  const A = { open: false, book: null, page: '' };
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-function normAns(s) {
-  return String(s == null ? '' : s)
-    .replace(/[\s\u00a0]/g, '')
-    .replace(/[()[\]{}<>]/g, '')
-    .replace(/[.,!?~…·'‘’"“”:;]/g, '')
-    .replace(/[○◯●]/g, '')
-    .toLowerCase();
-}
-const normNum = (s) => String(s == null ? '' : s).replace(/[^0-9]/g, '');
+  function sheet() { return $('#ansSheet'); }
 
-/* ------------------------------------------------------------ 저장 (IndexedDB) */
-function dgSave() {
-  clearTimeout(DG.saveT);
-  DG.saveT = setTimeout(() => {
-    if (!DG.bookId) return;
-    idbPut('meta', { k: 'dg:' + DG.bookId, ans: DG.ans, graded: DG.graded, u: Date.now() }).catch(() => {});
-  }, 180);
-}
-function dgSaveHL() {
-  if (!DG.bookId) return;
-  idbPut('ink', { k: 'dghl:' + DG.bookId, r: DG.hl, u: Date.now() }).catch(() => {});
-}
-
-/* ------------------------------------------------------------------- 잉크 엔진 */
-function mkInk(cv, key, opt) {
-  const o = opt || {};
-  const st = {
-    strokes: [], redo: [],
-    tool: o.tool || 'pen',
-    color: o.color || '#2a231c',
-    w: o.w || 0.0042
-  };
-  let cur = null, down = false;
-  const ctx = () => cv.getContext('2d');
-
-  function paint() {
-    const W = cv.clientWidth, H = cv.clientHeight;
-    if (!W || !H) return;
-    ctx().clearRect(0, 0, W, H);
-    for (const s of st.strokes) paintStroke(ctx(), s, W, H);
-  }
-  function resize() {
-    const W = cv.clientWidth, H = cv.clientHeight;
-    if (!W || !H) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
-    if (cv.width === Math.round(W * dpr) && cv.height === Math.round(H * dpr)) { paint(); return; }
-    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
-    ctx().setTransform(dpr, 0, 0, dpr, 0, 0);
-    paint();
-  }
-  function rel(e) {
-    const r = cv.getBoundingClientRect();
-    return [clamp((e.clientX - r.left) / r.width, 0, 1), clamp((e.clientY - r.top) / r.height, 0, 1)];
-  }
-  let t0 = 0;
-  function save() {
-    clearTimeout(t0);
-    t0 = setTimeout(() => { idbPut('ink', { k: key, s: st.strokes, u: Date.now() }).catch(() => {}); }, 320);
-  }
-  cv.addEventListener('pointerdown', (e) => {
-    if (e.button !== undefined && e.button > 0) return;
-    e.preventDefault();
-    try { cv.setPointerCapture(e.pointerId); } catch (err) {}
-    const [x, y] = rel(e);
-    down = true;
-    cur = {
-      t: st.tool === 'eraser' ? 'e' : st.tool === 'hl' ? 'h' : 'p',
-      c: st.tool === 'eraser' ? '#000' : st.color,
-      w: st.tool === 'eraser' ? 0.03 : st.w,
-      d: [x, y]
-    };
-    st.strokes.push(cur); st.redo = [];
-    paint();
-  });
-  cv.addEventListener('pointermove', (e) => {
-    if (!down || !cur) return;
-    e.preventDefault();
-    const [x, y] = rel(e);
-    const d = cur.d, lx = d[d.length - 2], ly = d[d.length - 1];
-    if (Math.hypot(x - lx, y - ly) < 0.0012) return;
-    d.push(x, y);
-    const W = cv.clientWidth, H = cv.clientHeight, c = ctx();
-    c.save();
-    if (cur.t === 'h') { const a = c.globalAlpha; c.globalAlpha = 0.32; }
-    if (cur.t === 'e') c.globalCompositeOperation = 'destination-out';
-    c.lineWidth = Math.max(0.8, cur.w * W); c.lineCap = 'round'; c.lineJoin = 'round';
-    c.strokeStyle = cur.c;
-    c.beginPath(); c.moveTo(lx * W, ly * H); c.lineTo(x * W, y * H); c.stroke();
-    c.restore();
-  });
-  const up = () => { if (!down) return; down = false; cur = null; paint(); save(); };
-  cv.addEventListener('pointerup', up);
-  cv.addEventListener('pointercancel', up);
-  cv.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') up(); });
-  cv.addEventListener('contextmenu', (e) => e.preventDefault());
-
-  if (key) idbGet('ink', key).then((rec) => { if (rec && rec.s && rec.s.length) { st.strokes = rec.s; paint(); } }).catch(() => {});
-  return { st, resize, paint, save };
-}
-
-function mountInk(el, key, opt) {
-  const cv = el.querySelector('canvas');
-  if (!cv) return null;
-  const ink = mkInk(cv, key, opt);
-  if (!DG.ink[key]) DG.ink[key] = ink;
-  const ro = new ResizeObserver(() => ink.resize());
-  ro.observe(cv);
-  setTimeout(() => ink.resize(), 30);
-  return ink;
-}
-
-/* ---------------------------------------------------------------- 열기 / 렌더 */
-async function openDigital(bookId) {
-  const found = findBook(bookId);
-  const data = DGD[bookId];
-  if (!found || !data) { await openBook(bookId); return; }
-  stopTTS();
-  DG.bookId = bookId; DG.book = data; DG.secIdx = 0;
-  DG.ans = {}; DG.graded = {}; DG.hl = []; DG.ink = {}; DG.ptool = 'sel';
-  DG.photoIdx = 0;
-  $('#dgTitle').textContent = data.title;
-  $('#dgSub').textContent = data.unit + ' · ' + data.short;
-  show('digital');
-  $('#dgBody').innerHTML = '<div class="dg-loading">불러오는 중…</div>';
-  $('#dgProg').textContent = '';
-  try {
-    const rec = await idbGet('meta', 'dg:' + bookId);
-    if (rec) { DG.ans = rec.ans || {}; DG.graded = rec.graded || {}; }
-    const hl = await idbGet('ink', 'dghl:' + bookId);
-    if (hl && hl.r) DG.hl = hl.r;
-  } catch (e) {}
-  renderDigital();
-  if (localStorage.getItem('dg-tip') !== '1') {
-    localStorage.setItem('dg-tip', '1');
-    setTimeout(() => toast(DG.book.kind === 'kor' ? '지문을 읽고 문제 카드에 답을 써 보세요 ✏️' : '빈칸을 눌러 숫자를 넣고, 연습장에 풀이를 써 보세요 ✏️', 2800), 600);
-  }
-}
-
-function renderDigital() {
-  const b = DG.book;
-  const body = $('#dgBody');
-  body.className = 'dg-body ' + b.kind;
-  body.innerHTML = b.kind === 'kor' ? korShell() : mathShell();
-  $('#dgBody').setAttribute('data-kind', b.kind);
-  if (b.kind === 'kor') {
-    renderPassage();
-    renderQuestions();
-  } else {
-    mountMathInk();
-  }
-  buildPhotoOverlay();
-  updateDgProgress();
-  applyHeaderChips();
-}
-
-function korShell() {
-  const b = DG.book;
-  return `
-  <section class="dg-left">
-    <div class="dg-lhead">
-      <span class="lt">📖 지문 · ${esc(b.passage.title)}</span>
-      <button class="ptool on" data-ptool="sel" aria-label="고르기">👆</button>
-      <button class="ptool" data-ptool="hl" aria-label="형광펜">🖍️</button>
-      <button class="ptool" data-ptool="pen" aria-label="펜">✏️</button>
-      <button class="ptool" data-ptool="eraser" aria-label="지우개">🧽</button>
-      <button class="ptool" data-ptool="clear" aria-label="필기 지우기">🗑️</button>
-      <button class="chip mini" id="dgTts">🔊 읽어주기</button>
-    </div>
-    <div class="dg-lscroll" id="dgLScroll">
-      <div class="dg-paper" id="dgPaper"></div>
-    </div>
-  </section>
-  <section class="dg-right">
-    <div class="dg-tabs" id="dgTabs">
-      ${b.sections.map((s, i) => `<button class="dg-tab ${i === DG.secIdx ? 'on' : ''}" data-sec="${s.id}">${esc(s.name)} <small>${esc(s.page)}</small></button>`).join('')}
-    </div>
-    <div class="dg-qscroll" id="dgQlist"></div>
-    <div class="dg-qfoot">
-      <button class="btn-grade-all" id="dgGradeAll">채점하기</button>
-      <button class="btn-link" id="dgReset">다시 풀기</button>
-      <span class="dg-foot-note">빈칸은 눌러서 쓰고, ✏️ 손글씨로도 쓸 수 있어요</span>
-    </div>
-  </section>`;
-}
-
-function wordList() {
-  const pw = DG.book.passage.words || [];
-  return pw.map((x) => x.w);
-}
-function wordDef(w) {
-  const f = (DG.book.passage.words || []).find((x) => x.w === w);
-  return f ? f.d : '';
-}
-
-/* 지문 안에서 형광펜·낱말 표시를 문자열 조각으로 만들기 */
-function richHTML(text, ranges, words) {
-  const n = text.length;
-  const hl = new Array(n).fill(false);
-  (ranges || []).forEach((r) => {
-    for (let i = Math.max(0, r.s); i < Math.min(n, r.e); i++) hl[i] = true;
-  });
-  const vw = new Array(n).fill(false);
-  (words || []).forEach((w) => {
-    if (!w) return;
-    let from = 0, idx;
-    while ((idx = text.indexOf(w, from)) >= 0) {
-      for (let i = idx; i < idx + w.length; i++) vw[i] = true;
-      from = idx + w.length;
-    }
-  });
-  let out = '', i = 0;
-  while (i < n) {
-    const key = (hl[i] ? 1 : 0) + (vw[i] ? 2 : 0);
-    let j = i;
-    while (j < n && ((hl[j] ? 1 : 0) + (vw[j] ? 2 : 0)) === key) j++;
-    const piece = esc(text.slice(i, j));
-    if (key === 0) out += piece;
-    else if (key === 1) out += `<mark class="dghl">${piece}</mark>`;
-    else if (key === 2) out += `<span class="dgw">${piece}</span>`;
-    else out += `<mark class="dghl"><span class="dgw">${piece}</span></mark>`;
-    i = j;
-  }
-  return out;
-}
-
-function renderPassage(keepInk) {
-  const p = DG.book.passage;
-  const paper = $('#dgPaper');
-  if (!paper) return;
-  const sc = $('#dgLScroll').scrollTop;
-  const prevStrokes = keepInk && DG.passageInk ? DG.passageInk.st.strokes.slice() : null;
-  const parts = [
-    `<div class="dg-ptitle">${esc(p.title)}</div>`,
-    `<div class="dg-pauthor">${esc(p.author)}</div>`
-  ];
-  let n = 1;
-  p.paras.forEach((para, i) => {
-    if (para.brk) { parts.push(`<div class="dgbrk">〈${esc(para.brk)}〉</div>`); return; }
-    const ranges = DG.hl.filter((r) => r.p === i);
-    const mk = para.mark ? `<span class="pmk">${esc(para.mark)}</span> ` : '';
-    const num = para.t && para.t.length > 24 ? `<span class="pnum">${n++}</span>` : '';
-    parts.push(`<p class="dgpar" data-p="${i}">${num}${mk}<span class="ptext">${richHTML(para.t, ranges, wordList())}</span></p>`);
-  });
-  parts.push('<canvas id="dgPen" class="dg-pen"></canvas>');
-  paper.innerHTML = parts.join('');
-  const cv = $('#dgPen');
-  DG.passageInk = mkInk(cv, 'dgink:' + DG.bookId + ':passage', { color: '#c8452c', w: 0.0038 });
-  if (prevStrokes) { DG.passageInk.st.strokes = prevStrokes; DG.passageInk.paint(); }
-  const ro = new ResizeObserver(() => DG.passageInk && DG.passageInk.resize());
-  ro.observe(paper);
-  setTimeout(() => { DG.passageInk.resize(); $('#dgLScroll').scrollTop = sc; }, 20);
-  applyPassageMode();
-}
-
-function applyPassageMode() {
-  const paper = $('#dgPaper');
-  if (!paper) return;
-  const pen = DG.ptool === 'pen' || DG.ptool === 'eraser';
-  paper.classList.toggle('penmode', pen);
-  const cv = $('#dgPen');
-  if (cv) cv.style.pointerEvents = pen ? 'auto' : 'none';
-  if (DG.passageInk) DG.passageInk.st.tool = DG.ptool === 'eraser' ? 'eraser' : 'pen';
-  $$('.ptool').forEach((b) => b.classList.toggle('on', b.dataset.ptool === DG.ptool));
-}
-
-const paraEl = (node) => {
-  let n = node && node.nodeType === 1 ? node : (node ? node.parentElement : null);
-  while (n && !(n.classList && n.classList.contains('dgpar'))) n = n.parentElement;
-  return n;
-};
-function offIn(el, node, off) {
-  const tEl = el.querySelector('.ptext') || el;
-  try {
-    const r = document.createRange();
-    r.selectNodeContents(tEl);
-    r.setEnd(node, off);
-    return Math.min(tEl.textContent.length, r.toString().length);
-  } catch (e) { return 0; }
-}
-function mergeHL(list) {
-  const out = [];
-  list.slice().sort((a, b) => (a.p - b.p) || (a.s - b.s)).forEach((r) => {
-    const last = out[out.length - 1];
-    if (last && last.p === r.p && r.s <= last.e) last.e = Math.max(last.e, r.e);
-    else out.push({ p: r.p, s: r.s, e: r.e });
-  });
-  return out;
-}
-function onPassageUp() {
-  if (DG.ptool !== 'hl') return;
-  const sel = window.getSelection();
-  if (!sel || !sel.rangeCount || sel.isCollapsed) return;
-  const r = sel.getRangeAt(0);
-  const paper = $('#dgPaper');
-  if (!paper || !paper.contains(r.commonAncestorContainer)) return;
-  const a = paraEl(r.startContainer), b = paraEl(r.endContainer);
-  if (!a || !b) return;
-  const i0 = +a.dataset.p, i1 = +b.dataset.p;
-  const paras = DG.book.passage.paras;
-  for (let p = i0; p <= i1; p++) {
-    const el = paper.querySelector('.dgpar[data-p="' + p + '"]');
-    if (!el) continue;
-    const t = (paras[p] && paras[p].t) || '';
-    let s = 0, e = t.length;
-    if (p === i0) s = offIn(el, r.startContainer, r.startOffset);
-    if (p === i1) e = offIn(el, r.endContainer, r.endOffset);
-    if (e - s >= 1) DG.hl.push({ p, s, e });
-  }
-  sel.removeAllRanges();
-  DG.hl = mergeHL(DG.hl);
-  dgSaveHL();
-  renderPassage(true);
-  toast('형광펜으로 표시했어요 🖍️', 1200);
-}
-
-/* ------------------------------------------------------------------ 문제 카드 */
-function renderQuestions() {
-  const sec = DG.book.sections[DG.secIdx];
-  const list = $('#dgQlist');
-  if (!list) return;
-  list.innerHTML = sec.qs.map((q) => qCardHTML(sec, q)).join('');
-  list.querySelectorAll('.qcard').forEach((card) => {
-    const g = DG.graded[card.dataset.qid];
-    if (g) paintResult(card, g.ok);
-    const hw = card.querySelector('.handwrap');
-    if (hw && hw.classList.contains('open')) mountInk(hw, 'dgink:' + DG.bookId + ':hand:' + card.dataset.qid);
-  });
-}
-
-function partHTML(pt, id, bidx) {
-  if (pt.k === 't') return esc(pt.s).replace(/⟪(.*?)⟫/g, '<u class="qul">$1</u>');
-  if (pt.k === 'b') {
-    const cur = DG.ans[id + '#' + bidx] || '';
-    if (pt.opts) {
-      return `<span class="picks" data-b="${bidx}">` + pt.opts.map((o) =>
-        `<button class="pk ${cur === o ? 'on' : ''}" data-qid="${id}" data-b="${bidx}" data-val="${esc(o)}">${esc(o)}</button>`).join('') + '</span>';
-    }
-    return `<input class="qin" data-qid="${id}" data-b="${bidx}" value="${esc(cur)}" style="width:${(pt.w || 6) * 10 + 14}px" placeholder="${esc(pt.ph || '')}" autocomplete="off" autocapitalize="off" spellcheck="false">`;
-  }
-  return '';
-}
-
-function qCardHTML(sec, q) {
-  const id = dgQid(sec, q);
-  let body = '';
-  if (q.type === 'choice') {
-    const sel = (DG.ans[id + '#sel'] || '').split(',').filter((x) => x !== '');
-    body = '<div class="opts">' + q.opts.map((o, oi) =>
-      `<button class="opt ${sel.includes(String(oi)) ? 'sel' : ''}" data-qid="${id}" data-oi="${oi}"><span class="onum">${DG_NUM[oi]}</span><span class="otx">${esc(o)}</span></button>`).join('') + '</div>';
-  } else if (q.type === 'match') {
-    body = '<div class="match">' + q.left.map((w, li) => {
-      const cur = DG.ans[id + '#m' + li] || '';
-      return `<div class="mrow2"><span class="mword">${esc(w)}</span><select class="msel" data-qid="${id}" data-mi="${li}">
-        <option value="">— 뜻 고르기</option>
-        ${q.right.map((r, ri) => `<option value="${ri}" ${cur === String(ri) ? 'selected' : ''}>${DG_NUM[ri]} ${esc(r)}</option>`).join('')}
-      </select></div>`;
-    }).join('') + '</div>';
-  } else {
-    body = (q.blocks || []).map((bk, bi) => '<div class="qline">' + bk.parts.map((pt, pi) => partHTML(pt, id, bi + '_' + pi)).join('') + '</div>').join('');
-  }
-  const aside = q.aside ? `<div class="qaside"><div class="qaside-t">${esc(q.aside.title)}</div>` +
-    q.aside.items.map((it) => `<div class="qaside-i"><b>${esc(it[0])}</b> · ${esc(it[1])}</div>`).join('') + '</div>' : '';
-  const hint = q.hint ? `<div class="qhint">${esc(q.hint)}</div>` : '';
-  const quote = q.quote ? `<div class="qquote">${esc(q.quote).replace(/⟪(.*?)⟫/g, '<u class="qul">$1</u>')}</div>` : '';
-  return `<div class="qcard" data-qid="${id}">
-    <div class="qhead"><span class="qno">${q.n}</span><span class="qstem">${esc(q.stem)}</span></div>
-    ${hint}${quote}${aside}
-    <div class="qbody">${body}</div>
-    <div class="qfoot">
-      <button class="qbtn grade" data-grade="${id}">채점</button>
-      <button class="qbtn sol" data-sol="${id}">해설 · 모범답안</button>
-      <button class="qbtn hand" data-hand="${id}">✏️ 손글씨</button>
-      <span class="qres" data-res="${id}"></span>
-    </div>
-    <div class="qexp" data-exp="${id}"></div>
-    <div class="handwrap" data-handwrap="${id}"><canvas></canvas>
-      <div class="stools"><button data-st="pen">✏️ 펜</button><button data-st="eraser">🧽 지우개</button><button data-st="clear">🗑️ 지우기</button></div>
-    </div>
-  </div>`;
-}
-
-function findQ(id) {
-  for (const sec of DG.book.sections) {
-    for (const q of sec.qs) if (dgQid(sec, q) === id) return { sec, q };
-  }
-  return null;
-}
-
-function paintResult(card, ok) {
-  card.classList.toggle('ok', !!ok);
-  card.classList.toggle('bad', !ok);
-  const res = card.querySelector('.qres');
-  if (res) { res.textContent = ok ? '⭕ 정답!' : '❌ 다시'; res.classList.toggle('ok', !!ok); res.classList.toggle('bad', !ok); }
-}
-
-/* ------------------------------------------------------------------- 채점 (국어) */
-function gradeOne(id) {
-  const f = findQ(id);
-  if (!f) return;
-  const { sec, q } = f;
-  const card = document.querySelector('.qcard[data-qid="' + id + '"]');
-  if (!card) return;
-  let ok = true;
-  if (q.type === 'choice') {
-    const sel = (DG.ans[id + '#sel'] || '').split(',').filter((x) => x !== '').map(Number).sort((a, b) => a - b);
-    const ans = q.a.slice().sort((a, b) => a - b);
-    ok = ans.length === sel.length && ans.every((v, i) => v === sel[i]);
-    card.querySelectorAll('.opt').forEach((o) => {
-      const oi = +o.dataset.oi;
-      o.classList.remove('sel', 'right', 'wrong');
-      if (ans.includes(oi)) o.classList.add('right');
-      else if (sel.includes(oi)) o.classList.add('wrong');
-    });
-  } else if (q.type === 'match') {
-    q.left.forEach((w, li) => {
-      const el = card.querySelector('.msel[data-mi="' + li + '"]');
-      const val = el ? el.value : '';
-      const good = val !== '' && String(q.a[li]) === val;
-      if (el) { el.classList.toggle('ok', good); el.classList.toggle('bad', !good); }
-      if (!good) ok = false;
-    });
-  } else {
-    (q.blocks || []).forEach((bk, bi) => {
-      bk.parts.forEach((pt, pi) => {
-        if (pt.k !== 'b') return;
-        const bidx = bi + '_' + pi;
-        const wants = pt.a.map(normAns);
-        if (pt.opts) {
-          const cur = DG.ans[id + '#' + bidx] || '';
-          const good = wants.includes(normAns(cur));
-          const wrap = card.querySelector('.picks[data-b="' + bidx + '"]');
-          if (wrap) wrap.querySelectorAll('.pk').forEach((b) => {
-            b.classList.remove('on', 'right', 'wrong');
-            if (wants.includes(normAns(b.dataset.val))) b.classList.add('right');
-            else if (b.dataset.val === cur) b.classList.add('wrong');
-          });
-          if (!good) ok = false;
-        } else {
-          const el = card.querySelector('.qin[data-b="' + bidx + '"]');
-          const v = el ? el.value : '';
-          const good = wants.includes(normAns(v));
-          if (el) { el.classList.toggle('ok', good); el.classList.toggle('bad', !good); }
-          if (!good) ok = false;
-        }
-      });
-    });
-  }
-  DG.graded[id] = { ok, t: Date.now() };
-  dgSave();
-  paintResult(card, ok);
-  showExplain(card, q);
-  afterGrade(sec, ok);
-}
-
-function showExplain(card, q, force) {
-  const id = card.dataset.qid;
-  const exp = card.querySelector('.qexp');
-  if (!exp) return;
-  const txt = q.explain || '';
-  if (exp.classList.contains('show') && !force) { exp.classList.remove('show'); return; }
-  const model = q.model ? `<div class="qmodel"><b>모범답안</b>${esc(q.model)}</div>` : '';
-  exp.innerHTML = model + (txt ? `<b>해설</b> ${esc(txt)}` : '<b>해설</b> 없음');
-  exp.classList.add('show');
-}
-
-function afterGrade(sec, ok) {
-  updateDgProgress();
-  const all = DG.book.sections.reduce((a, s) => a + s.qs.length, 0);
-  const good = DG.book.sections.reduce((a, s) => a + s.qs.filter((q) => DG.graded[dgQid(s, q)] && DG.graded[dgQid(s, q)].ok).length, 0);
-  if (good === all && all > 0) {
-    confetti(30, true);
-    toast('전부 맞혔어요! 별표를 받았어요 ⭐🎉', 2600);
-  } else if (ok && sec && sec.qs.every((q) => DG.graded[dgQid(sec, q)] && DG.graded[dgQid(sec, q)].ok)) {
-    confetti(16, false);
-    toast('이 부분 다 맞혔어요! 🎉', 2200);
-  }
-}
-
-/* ------------------------------------------------------------------- 채점 (수학) */
-function mathExplain(q) {
-  const fa = q.fa.join(' × '), fb = q.fb.join(' × ');
-  const pool = q.fb.slice(), common = [];
-  q.fa.forEach((f) => { const i = pool.indexOf(f); if (i >= 0) { common.push(f); pool.splice(i, 1); } });
-  let gcdLine;
-  if (common.length > 1) {
-    const prod = common.reduce((a, b) => a * +b, 1);
-    gcdLine = `공통인 수 ${common.join(' × ')} = ${prod}`;
-  } else gcdLine = `공통인 수 ${common[0] || '없음'}`;
-  return `${q.pair[0]} = ${fa}, ${q.pair[1]} = ${fb} → ${gcdLine} → 최대공약수 ${q.gcd}`;
-}
-
-function gradeMathCard(id) {
-  const card = document.querySelector('.mcard[data-qid="' + id + '"]');
-  if (!card) return;
-  const f = findQ(id);
-  if (!f) return;
-  const q = f.q;
-  let ok = true;
-  const group = (sel, want) => {
-    const els = Array.from(card.querySelectorAll(sel));
-    if (!els.length) return true;
-    const vals = els.map((e) => normNum(e.value));
-    const w = want.map(normNum).slice().sort();
-    const g = vals.slice().sort();
-    const good = vals.every((v) => v !== '') && w.length === g.length && w.every((v, i) => v === g[i]);
-    els.forEach((e) => { e.classList.toggle('ok', good); e.classList.toggle('bad', !good); });
-    return good;
-  };
-  if (f.sec.mode === 'factors') {
-    if (!group('[data-f="a"]', q.fa)) ok = false;
-    if (!group('[data-f="b"]', q.fb)) ok = false;
-  }
-  const gEl = card.querySelector('[data-g]');
-  const good = gEl && normNum(gEl.value) === normNum(q.gcd);
-  if (gEl) { gEl.classList.toggle('ok', !!good); gEl.classList.toggle('bad', !good); }
-  if (!good) ok = false;
-  DG.graded[id] = { ok: !!ok, t: Date.now() };
-  dgSave();
-  paintResult(card, ok);
-  const exp = card.querySelector('.mexp');
-  if (exp) { exp.innerHTML = `<b>풀이</b> ${esc(mathExplain(q))}`; exp.classList.add('show'); }
-  afterGrade(f.sec, !!ok);
-}
-
-/* ------------------------------------------------------------------ 수학 화면 */
-function mathShell() {
-  const b = DG.book;
-  return `
-  <div class="dg-mwrap">
-    <div class="dg-mbar" id="dgMbar">
-      ${b.sections.map((s, i) => `<button class="dg-tab ${i === DG.secIdx ? 'on' : ''}" data-msec="${s.id}">${esc(s.page)}</button>`).join('')}
-      <span class="spacer"></span>
-      <button class="btn-grade-all" id="dgGradeAll">채점하기</button>
-      <button class="btn-link" id="dgReset">다시 풀기</button>
-    </div>
-    <div class="dg-mscroll" id="dgMscroll">${mathBody()}</div>
-  </div>`;
-}
-
-function mathBody() {
-  const b = DG.book;
-  const out = [];
-  out.push(`<div class="mintro">
-    <div class="mcard concept">
-      <div class="mhead"><span class="mtag">개념</span><span class="mpair">${esc(b.unit)}</span></div>
-      <div class="mconcept">${esc(b.concept.text)}</div>
-      ${b.example ? `<div class="mexample">
-        <div class="mex-t">예제 ${esc(b.example.pair)}</div>
-        ${b.example.lines.map((l) => `<div class="mex-l">${esc(l)}</div>`).join('')}
-        <div class="mex-a">${esc(b.example.answer)}</div>
-      </div>` : ''}
-      ${b.tip ? `<details class="mtip"><summary>💡 ${esc(b.tip.title)}</summary><div>${esc(b.tip.text)}</div></details>` : ''}
-    </div>
-  </div>`);
-  b.sections.forEach((sec) => {
-    out.push(`<div class="msec" data-msecblock="${sec.id}">
-      <div class="msec-h"><span class="msec-p">${esc(sec.page)}</span><span class="msec-hint">${esc(sec.hint)}</span></div>
-      ${sec.example ? `<div class="mexample inline">
-        <div class="mex-t">예제 ${esc(sec.example.pair)}</div>
-        ${sec.example.lines.map((l) => `<div class="mex-l">${esc(l)}</div>`).join('')}
-        <div class="mex-a">${esc(sec.example.answer)}</div>
-      </div>` : ''}
-      ${sec.qs.map((q) => mathCardHTML(sec, q)).join('')}
-    </div>`);
-  });
-  return out.join('');
-}
-
-function mathCardHTML(sec, q) {
-  const id = dgQid(sec, q);
-  const v = (k) => DG.ans[id + '#' + k] || '';
-  const fac = (which, arr) => arr.map((_, i) =>
-    `<input class="nin" data-qid="${id}" data-f="${which}" data-i="${i}" value="${esc(v(which + i))}" inputmode="none" autocomplete="off">`).join('<span class="times">×</span>');
-  const g = DG.graded[id];
-  return `<div class="mcard ${g ? (g.ok ? 'ok' : 'bad') : ''}" data-qid="${id}">
-    <div class="mhead"><span class="qno">${q.n}</span><span class="mpair">(${q.pair[0]}, ${q.pair[1]})</span><span class="qres" data-res="${id}">${g ? (g.ok ? '⭕ 정답!' : '❌ 다시') : ''}</span></div>
-    ${sec.mode === 'factors' ? `<div class="mlines">
-      <div class="mline"><b class="mnum">${q.pair[0]}</b> <span class="eq">=</span> ${fac('a', q.fa)}</div>
-      <div class="mline"><b class="mnum">${q.pair[1]}</b> <span class="eq">=</span> ${fac('b', q.fb)}</div>
-    </div>` : ''}
-    <div class="mgcd"><span class="mgcd-l">최대공약수</span><input class="nin gcdin" data-qid="${id}" data-g="1" value="${esc(v('g'))}" inputmode="none" autocomplete="off"></div>
-    <div class="mfoot">
-      <button class="qbtn grade" data-mgrade="${id}">채점</button>
-      <button class="qbtn sol" data-msol="${id}">풀이 보기</button>
-      <button class="qbtn scratch-t" data-scratch="${id}">✏️ 연습장 접기</button>
-    </div>
-    <div class="mexp" data-mexp="${id}"></div>
-    <div class="scratch open" data-scr="${id}"><canvas data-ink="${id}"></canvas>
-      <div class="stools"><button data-st="pen">✏️ 펜</button><button data-st="eraser">🧽 지우개</button><button data-st="clear">🗑️ 지우기</button></div>
-    </div>
-  </div>`;
-}
-
-function mountMathInk() {
-  $$('.scratch').forEach((sc) => {
-    if (sc.classList.contains('open')) mountInk(sc, 'dgink:' + DG.bookId + ':scr:' + sc.dataset.scr, { color: '#1f4fa8', w: 0.0045 });
-  });
-}
-
-/* ------------------------------------------------------------------ 진행 표시 */
-function allQ() {
-  const a = [];
-  DG.book.sections.forEach((s) => s.qs.forEach((q) => a.push({ sec: s, q, id: dgQid(s, q) })));
-  return a;
-}
-function updateDgProgress() {
-  if (!DG.book) return;
-  const list = allQ();
-  const good = list.filter((x) => DG.graded[x.id] && DG.graded[x.id].ok).length;
-  const tried = list.filter((x) => DG.graded[x.id]).length;
-  const el = $('#dgProg');
-  if (el) el.textContent = `⭐ ${good}/${list.length}` + (tried && good < list.length ? ` · 채점 ${tried}` : '');
-  $$('.dg-tab[data-sec]').forEach((t) => {
-    const sec = DG.book.sections.find((s) => s.id === t.dataset.sec);
-    if (!sec) return;
-    const done = sec.qs.every((q) => DG.graded[dgQid(sec, q)] && DG.graded[dgQid(sec, q)].ok);
-    t.classList.toggle('full', done);
-  });
-  $$('.dg-tab[data-msec]').forEach((t) => {
-    const sec = DG.book.sections.find((s) => s.id === t.dataset.msec);
-    if (!sec) return;
-    const done = sec.qs.every((q) => DG.graded[dgQid(sec, q)] && DG.graded[dgQid(sec, q)].ok);
-    t.classList.toggle('full', done);
-  });
-}
-
-function applyHeaderChips() {
-  const ph = $('#dgPhotoBtn');
-  if (ph) ph.classList.toggle('on', !!DG.photoOpen);
-}
-
-/* -------------------------------------------------------------------- 원본 사진 */
-function buildPhotoOverlay() {
-  const photos = DG.book.photos || [];
-  const box = $('#dgPhoto');
-  if (!box) return;
-  const idx = clamp(DG.photoIdx, 0, Math.max(0, photos.length - 1));
-  box.innerHTML = `
-    <div class="pv-bar">
-      <span class="pv-t">📄 원본 사진 · ${esc(DG.book.title)}</span>
-      <div class="pv-tabs">${photos.map((p, i) => `<button class="pv-tab ${i === idx ? 'on' : ''}" data-pv="${i}">${esc(p.label)}</button>`).join('')}</div>
-      <button class="icon-btn" id="pvClose" aria-label="닫기">✕</button>
-    </div>
-    <div class="pv-body">${photos[idx] ? `<img src="${esc(assetUrl(photos[idx].img))}" alt="${esc(photos[idx].label)}">` : '<div class="pv-empty">사진이 없어요</div>'}</div>`;
-  box.classList.toggle('show', !!DG.photoOpen);
-}
-
-/* -------------------------------------------------------------------- TTS */
-function stopTTS() {
-  DG.ttsOn = false;
-  DG.ttsIdx = -1;
-  try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
-  $$('.dgpar.reading').forEach((p) => p.classList.remove('reading'));
-  const b = $('#dgTts');
-  if (b) { b.classList.remove('on'); b.textContent = '🔊 읽어주기'; }
-}
-function speakPassage() {
-  if (!('speechSynthesis' in window)) { toast('이 브라우저에서는 읽어주기를 쓸 수 없어요'); return; }
-  if (DG.ttsOn) { stopTTS(); return; }
-  const paras = $$('#dgPaper .dgpar');
-  if (!paras.length) return;
-  DG.ttsOn = true;
-  DG.ttsIdx = 0;
-  const btn = $('#dgTts');
-  if (btn) { btn.classList.add('on'); btn.textContent = '⏹ 멈추기'; }
-  const speakAt = (i) => {
-    if (!DG.ttsOn) return;
-    if (i >= paras.length) { stopTTS(); toast('끝까지 읽었어요 👏', 1600); return; }
-    paras.forEach((p) => p.classList.remove('reading'));
-    const el = paras[i];
-    el.classList.add('reading');
-    if (el.scrollIntoView) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    const u = new SpeechSynthesisUtterance(el.textContent.trim());
-    u.lang = 'ko-KR';
-    u.rate = 0.92;
-    u.pitch = 1.02;
-    const vs = window.speechSynthesis.getVoices() || [];
-    const ko = vs.find((v) => /ko(-|_)KR/i.test(v.lang)) || vs.find((v) => /^ko/i.test(v.lang));
-    if (ko) u.voice = ko;
-    u.onend = () => { if (DG.ttsOn) speakAt(i + 1); };
-    u.onerror = () => { if (DG.ttsOn) speakAt(i + 1); };
-    DG.ttsIdx = i;
-    try { window.speechSynthesis.speak(u); } catch (e) { stopTTS(); }
-  };
-  speakAt(0);
-}
-
-/* -------------------------------------------------------------------- 축하 효과 */
-function confetti(n, big) {
-  const box = document.createElement('div');
-  box.className = 'dg-confetti' + (big ? ' big' : '');
-  const emo = ['⭐', '🎉', '✨', '🌟', '💛', '🎈', '🥳'];
-  const count = n || 18;
-  for (let i = 0; i < count; i++) {
-    const s = document.createElement('span');
-    s.textContent = emo[i % emo.length];
-    s.style.left = (Math.random() * 96 + 2) + '%';
-    s.style.animationDelay = (Math.random() * 0.5).toFixed(2) + 's';
-    s.style.fontSize = (16 + Math.random() * 22).toFixed(0) + 'px';
-    s.style.setProperty('--drift', (Math.random() * 160 - 80).toFixed(0) + 'px');
-    box.appendChild(s);
-  }
-  document.body.appendChild(box);
-  setTimeout(() => box.remove(), 2700);
-}
-
-/* -------------------------------------------------------------------- 이벤트 연결 */
-function bindDigital() {
-  $('#dgBack').onclick = () => { stopTTS(); renderShelf(); show('shelf'); };
-
-  $('#dgPhotoBtn').onclick = () => {
-    DG.photoOpen = !DG.photoOpen;
-    buildPhotoOverlay();
-    applyHeaderChips();
-  };
-
-  const bookBtn = $('#dgBookBtn');
-  if (bookBtn) bookBtn.onclick = () => { stopTTS(); openBook(DG.bookId); };
-
-  const body = $('#dgBody');
-
-  const pvBox = $('#dgPhoto');
-  if (pvBox) {
-    pvBox.addEventListener('click', (e) => {
-      const pv = e.target.closest('[data-pv]');
-      if (pv) { DG.photoIdx = +pv.dataset.pv; buildPhotoOverlay(); return; }
-      if (e.target.closest('#pvClose')) { DG.photoOpen = false; buildPhotoOverlay(); applyHeaderChips(); }
-    });
+  function render() {
+    const book = ANS[A.book];
+    const box = $('#ansBody');
+    if (!book || !box) return;
+    const curIdx = book.groups.findIndex((g) => g.page === A.page);
+    $('#ansPage').textContent = A.page || '';
+    const note = curIdx < 0 ? '<div class="ans-note top">이 쪽에는 문제가 없어요. 다른 쪽 정답을 봐요.</div>' : '';
+    box.innerHTML = note + book.groups.map((g, i) => {
+      const rows = g.items.map((it) => `<div class="ans-row">
+          <span class="ans-n">${esc(it.n)}</span>
+          <span class="ans-v">${it.q ? `<b class="ans-q">${esc(it.q)}</b> → ` : ''}${esc(it.a)}${it.sub ? `<span class="ans-sub">${esc(it.sub)}</span>` : ''}${it.note ? `<span class="ans-note">${esc(it.note)}</span>` : ''}</span>
+        </div>`).join('');
+      return `<section class="ans-g ${i === curIdx ? 'cur' : ''}">
+        <div class="ans-gt">${esc(g.name || g.page || '정답')}${g.name && g.page ? `<small>${esc(g.page)}</small>` : ''}${i === curIdx ? '<em>이 쪽</em>' : ''}</div>
+        ${rows}
+      </section>`;
+    }).join('');
+    const cur = box.querySelector('.ans-g.cur');
+    if (cur) box.scrollTop = Math.max(0, cur.offsetTop - box.offsetTop - 6);
+    else box.scrollTop = 0;
   }
 
-  body.addEventListener('click', (e) => {
-    const t = e.target;
-
-    // 원본 사진 탭/닫기
-    const pv = t.closest('[data-pv]');
-    if (pv) { DG.photoIdx = +pv.dataset.pv; buildPhotoOverlay(); return; }
-    if (t.closest('#pvClose')) { DG.photoOpen = false; buildPhotoOverlay(); applyHeaderChips(); return; }
-
-    // 지문 도구
-    const tool = t.closest('[data-ptool]');
-    if (tool) {
-      const k = tool.dataset.ptool;
-      if (k === 'clear') {
-        confirmBox('지문 표시 지우기', '지문에 한 <b>형광펜</b>과 <b>펜 필기</b>를 모두 지울까요?', '모두 지우기', true).then((ok) => {
-          if (!ok) return;
-          DG.hl = []; dgSaveHL();
-          if (DG.passageInk) { DG.passageInk.st.strokes = []; DG.passageInk.paint(); DG.passageInk.save(); }
-          renderPassage(true);
-          toast('지문 표시를 지웠어요');
-        });
-        return;
-      }
-      DG.ptool = k;
-      applyPassageMode();
-      if (k === 'hl') toast('글자를 쓸-듯 밀어서 형광펜을 칠해 보세요 🖍️', 2200);
-      else if (k === 'pen') toast('펜으로 밑줄을 그어 보세요 ✏️', 1800);
-      return;
-    }
-    if (t.closest('#dgTts')) { speakPassage(); return; }
-
-    // 섹션 탭
-    const tab = t.closest('.dg-tab[data-sec]');
-    if (tab) { DG.secIdx = DG.book.sections.findIndex((s) => s.id === tab.dataset.sec); renderDigital(); return; }
-    const mtab = t.closest('.dg-tab[data-msec]');
-    if (mtab) {
-      const el = $('[data-msecblock="' + mtab.dataset.msec + '"]');
-      if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
-      $$('.dg-tab[data-msec]').forEach((b) => b.classList.toggle('on', b === mtab));
-      return;
-    }
-
-    // 보기 버튼 (객관식)
-    const opt = t.closest('.opt');
-    if (opt) {
-      const id = opt.dataset.qid, oi = opt.dataset.oi;
-      const f = findQ(id); if (!f) return;
-      let sel = (DG.ans[id + '#sel'] || '').split(',').filter((x) => x !== '');
-      if (f.q.multi) {
-        sel = sel.includes(oi) ? sel.filter((x) => x !== oi) : sel.concat(oi);
-      } else {
-        sel = sel.includes(oi) ? [] : [oi];
-      }
-      DG.ans[id + '#sel'] = sel.join(',');
-      dgSave();
-      opt.closest('.opts').querySelectorAll('.opt').forEach((o) => {
-        o.classList.toggle('sel', sel.includes(o.dataset.oi));
-        o.classList.remove('right', 'wrong');
-      });
-      const card = opt.closest('.qcard');
-      if (card) { card.classList.remove('ok', 'bad'); const r = card.querySelector('.qres'); if (r) r.textContent = ''; }
-      return;
-    }
-
-    // 고르기 칩
-    const pk = t.closest('.pk');
-    if (pk) {
-      const id = pk.dataset.qid, bidx = pk.dataset.b, val = pk.dataset.val;
-      DG.ans[id + '#' + bidx] = val;
-      dgSave();
-      pk.closest('.picks').querySelectorAll('.pk').forEach((b) => {
-        b.classList.toggle('on', b.dataset.val === val);
-        b.classList.remove('right', 'wrong');
-      });
-      const card = pk.closest('.qcard');
-      if (card) { card.classList.remove('ok', 'bad'); const r = card.querySelector('.qres'); if (r) r.textContent = ''; }
-      return;
-    }
-
-    // 채점 / 해설 / 손글씨
-    const g = t.closest('[data-grade]');
-    if (g) { gradeOne(g.dataset.grade); return; }
-    const mg = t.closest('[data-mgrade]');
-    if (mg) { gradeMathCard(mg.dataset.mgrade); return; }
-    const sol = t.closest('[data-sol]');
-    if (sol) {
-      const card = sol.closest('.qcard');
-      const f = findQ(sol.dataset.sol);
-      if (card && f) showExplain(card, f.q, true);
-      return;
-    }
-    const msol = t.closest('[data-msol]');
-    if (msol) {
-      const card = msol.closest('.mcard');
-      const f = findQ(msol.dataset.msol);
-      if (card && f) {
-        const exp = card.querySelector('.mexp');
-        exp.innerHTML = `<b>풀이</b> ${esc(mathExplain(f.q))}`;
-        exp.classList.add('show');
-      }
-      return;
-    }
-    const hand = t.closest('[data-hand]');
-    if (hand) {
-      const id = hand.dataset.hand;
-      const hw = document.querySelector('.handwrap[data-handwrap="' + id + '"]');
-      if (!hw) return;
-      hw.classList.toggle('open');
-      if (hw.classList.contains('open')) {
-        hand.classList.add('on');
-        mountInk(hw, 'dgink:' + DG.bookId + ':hand:' + id);
-      } else hand.classList.remove('on');
-      return;
-    }
-    const scr = t.closest('[data-scratch]');
-    if (scr) {
-      const id = scr.dataset.scratch;
-      const sc = document.querySelector('.scratch[data-scr="' + id + '"]');
-      if (!sc) return;
-      sc.classList.toggle('open');
-      const open = sc.classList.contains('open');
-      scr.textContent = open ? '✏️ 연습장 접기' : '✏️ 연습장 펴기';
-      if (open) mountInk(sc, 'dgink:' + DG.bookId + ':scr:' + id, { color: '#1f4fa8', w: 0.0045 });
-      return;
-    }
-
-    // 필기 도구 (연습장 · 손글씨)
-    const st = t.closest('[data-st]');
-    if (st) {
-      const wrap = st.closest('.scratch, .handwrap');
-      const cv = wrap && wrap.querySelector('canvas');
-      const key = wrap && (wrap.dataset.scr ? 'dgink:' + DG.bookId + ':scr:' + wrap.dataset.scr : 'dgink:' + DG.bookId + ':hand:' + wrap.dataset.handwrap);
-      const ink = key ? DG.ink[key] : null;
-      if (!ink) return;
-      if (st.dataset.st === 'clear') {
-        ink.st.strokes = []; ink.st.redo = []; ink.paint(); ink.save();
-        return;
-      }
-      ink.st.tool = st.dataset.st;
-      wrap.querySelectorAll('[data-st]').forEach((b) => b.classList.toggle('on', b === st && st.dataset.st !== 'clear'));
-      return;
-    }
-
-    // 낱말 뜻
-    const w = t.closest('.dgw');
-    if (w) { const d = wordDef(w.textContent.trim()); if (d) toast(w.textContent.trim() + ' — ' + d, 2600); return; }
-
-    // 전체 채점 / 다시 풀기
-    if (t.closest('#dgGradeAll')) {
-      if (DG.book.kind === 'kor') {
-        const sec = DG.book.sections[DG.secIdx];
-        sec.qs.forEach((q) => gradeOne(dgQid(sec, q)));
-      } else {
-        allQ().forEach((x) => gradeMathCard(x.id));
-      }
-      return;
-    }
-    if (t.closest('#dgReset')) {
-      const ids = DG.book.kind === 'kor'
-        ? DG.book.sections[DG.secIdx].qs.map((q) => dgQid(DG.book.sections[DG.secIdx], q))
-        : allQ().map((x) => x.id);
-      confirmBox('다시 풀기', '이 부분에 쓴 <b>답과 채점</b>을 지울까요? (필기는 그대로 남아요)', '답 지우기', true).then((ok) => {
-        if (!ok) return;
-        Object.keys(DG.ans).forEach((k) => { if (ids.some((id) => k.startsWith(id + '#'))) delete DG.ans[k]; });
-        ids.forEach((id) => delete DG.graded[id]);
-        dgSave();
-        if (DG.book.kind === 'kor') renderQuestions(); else renderDigital();
-        updateDgProgress();
-        toast('답을 지웠어요. 다시 풀어 보세요!');
-      });
-      return;
-    }
-  });
-
-  body.addEventListener('input', (e) => {
-    const el = e.target;
-    if (el.classList && el.classList.contains('qin')) {
-      DG.ans[el.dataset.qid + '#' + el.dataset.b] = el.value;
-      dgSave();
-      const card = el.closest('.qcard');
-      if (card) { card.classList.remove('ok', 'bad'); const r = card.querySelector('.qres'); if (r) r.textContent = ''; }
-    } else if (el.classList && el.classList.contains('nin')) {
-      const id = el.dataset.qid;
-      const k = el.dataset.f ? el.dataset.f + el.dataset.i : 'g';
-      DG.ans[id + '#' + k] = el.value;
-      dgSave();
-      const card = el.closest('.mcard');
-      if (card) { card.classList.remove('ok', 'bad'); const r = card.querySelector('.qres'); if (r) r.textContent = ''; }
-    }
-  });
-
-  body.addEventListener('change', (e) => {
-    const el = e.target;
-    if (el.classList && el.classList.contains('msel')) {
-      DG.ans[el.dataset.qid + '#m' + el.dataset.mi] = el.value;
-      dgSave();
-      const card = el.closest('.qcard');
-      if (card) { card.classList.remove('ok', 'bad'); const r = card.querySelector('.qres'); if (r) r.textContent = ''; }
-      el.classList.remove('ok', 'bad');
-    }
-  });
-
-  // 지문 형광펜 (선택 영역)
-  $('#dgBody').addEventListener('pointerup', (e) => {
-    if (DG.book && DG.book.kind === 'kor' && DG.ptool === 'hl' && e.target.closest('#dgPaper')) setTimeout(onPassageUp, 10);
-  });
-
-  // 숫자 키패드
-  const kp = $('#dgKeypad');
-  if (kp) {
-    kp.addEventListener('pointerdown', (e) => {
-      const k = e.target.closest('[data-k]');
-      if (!k) return;
-      e.preventDefault();
-      const key = k.dataset.k;
-      const el = DG.keyTarget;
-      if (!el) return;
-      if (key === 'bksp') el.value = el.value.slice(0, -1);
-      else if (key === 'next') {
-        const all = Array.from(document.querySelectorAll('.nin'));
-        const i = all.indexOf(el);
-        const nx = all[i + 1];
-        if (nx) { nx.focus(); nx.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
-        return;
-      } else if (el.value.length < 3) el.value += key;
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    });
-    kp.querySelector('#kpClose').addEventListener('pointerdown', (e) => { e.preventDefault(); showKeypad(false); });
+  function open() {
+    if (!ANS[A.book]) return;
+    A.open = true;
+    const s = sheet();
+    if (s) s.hidden = false;
+    const b = $('#ansBtn');
+    if (b) b.classList.add('on');
+    render();
   }
-  document.addEventListener('focusin', (e) => {
-    const el = e.target;
-    if (el.classList && el.classList.contains('nin')) {
-      DG.keyTarget = el;
-      showKeypad(true);
-    }
-  });
-  document.addEventListener('pointerdown', (e) => {
-    if (e.target.closest && (e.target.closest('#dgKeypad'))) return;
-    if (e.target.classList && e.target.classList.contains('nin')) return;
-    if (!document.querySelector('#dgKeypad.show')) return;
-    setTimeout(() => { if (!document.activeElement || !document.activeElement.classList.contains('nin')) showKeypad(false); }, 120);
-  });
-}
 
-function showKeypad(on) {
-  const kp = $('#dgKeypad');
-  if (!kp) return;
-  kp.classList.toggle('show', !!on);
-}
+  function close() {
+    A.open = false;
+    const s = sheet();
+    if (s) s.hidden = true;
+    const b = $('#ansBtn');
+    if (b) b.classList.remove('on');
+  }
 
-/* 숫자 키패드 html (한 번만 만든다) */
-function buildKeypad() {
-  const kp = $('#dgKeypad');
-  if (!kp || kp.dataset.ready) return;
-  kp.dataset.ready = '1';
-  kp.innerHTML = `<div class="kp-head"><span>🔢 숫자 넣기</span><button id="kpClose">숨기기</button></div>
-    <div class="kp-grid">
-      ${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `<button data-k="${n}">${n}</button>`).join('')}
-      <button data-k="bksp" class="wide2">⌫</button>
-      <button data-k="0">0</button>
-      <button data-k="next" class="go">다음 ▶</button>
-    </div>`;
-}
+  function toggle() { if (A.open) close(); else open(); }
+
+  /* 패드가 쪽을 열 때마다 호출: 이 문제집에 정답이 있는지, 지금 몇 쪽인지 */
+  function refresh(bookId, page) {
+    A.book = bookId;
+    A.page = page || '';
+    const btn = $('#ansBtn');
+    if (btn) btn.hidden = !ANS[bookId];
+    if (A.open) { if (!ANS[bookId]) close(); else render(); }
+  }
+
+  function init() {
+    const btn = $('#ansBtn');
+    if (btn) btn.onclick = toggle;
+    const s = sheet();
+    if (s) s.addEventListener('click', (e) => { if (e.target.closest('[data-ans-close]')) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && A.open) close(); });
+  }
+
+  window.__YSP_ANS = { init, refresh, close, toggle, open };
+})();
 
 
   /* -------------------------------------------------------------------- boot */
@@ -4020,8 +2077,7 @@ function buildKeypad() {
       S.lib = seedLibrary(); S.ready = true;
     }
     bind();
-    buildKeypad();
-    bindDigital();
+    if (window.__YSP_ANS) window.__YSP_ANS.init();
     renderShelf();
     show('shelf');
     if (!localStorage.getItem('ysp-ver')) {
