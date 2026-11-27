@@ -487,6 +487,65 @@ input,select,button,textarea{font-family:inherit}
   .seg-btn{padding:8px 14px;font-size:12px}
   .pay-amt{font-size:26px}
 }
+/* ---------------- 모바일 세로: 테이블 주문 좌우 2단 ---------------- */
+@media (max-width:767px){
+  /* 왼쪽 메뉴 / 오른쪽 주문 내역 나란히 */
+  .order-main{flex-direction:row;align-items:stretch}
+  .menu-pane{flex:0 0 52%;width:52%;max-width:none;padding:8px 6px 8px 8px}
+  .order-pane{
+    flex:1 1 auto;width:48%;min-width:0;max-height:none;
+    border-left:1px solid #e3e6eb;border-top:0;
+  }
+  /* 왼쪽: 카테고리 칩 한 줄 */
+  .cat-tabs{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;margin:0 0 7px;padding-bottom:1px}
+  .cat-tab{
+    flex:1 1 auto;min-width:0;text-align:center;font-size:12px;padding:7px 2px;
+    margin:0 4px 0 0;border-radius:16px;white-space:nowrap;
+  }
+  .cat-tab:last-child{margin-right:0}
+  /* 왼쪽: 메뉴 1열 */
+  .menu-grid{grid-template-columns:1fr;grid-auto-rows:max-content;grid-gap:7px;padding-right:2px}
+  .menu-btn{width:100%;min-height:0;padding:9px 10px;border-radius:10px}
+  .mb-name{font-size:13.5px;line-height:1.3}
+  .mb-price{font-size:11.5px;margin-top:4px}
+  /* 오른쪽: 주문 내역 */
+  .op-head{padding:9px 10px 7px}
+  .op-head h2{font-size:14px}
+  .op-clear{font-size:10.5px;padding:3px 0}
+  .op-list{padding:0 10px 6px}
+  .oi{flex-wrap:wrap;padding:8px 0}
+  .oi-info{
+    flex:1 1 100%;margin:0 0 5px;display:-webkit-box;display:flex;
+    align-items:baseline;justify-content:space-between;
+  }
+  .oi-name{flex:1 1 auto;font-size:13px;padding-right:6px}
+  .oi-price{flex:0 0 auto;font-size:10.5px;margin:0;white-space:nowrap}
+  .oi-qty{margin-right:6px}
+  .qbtn{width:23px;height:23px;font-size:13px;border-radius:6px}
+  .oi-qty b{min-width:18px;font-size:12.5px}
+  .oi-sum{flex:0 0 auto;min-width:0;font-size:12.5px;margin-left:auto}
+  .oi-del{font-size:13px;padding:2px 0 2px 6px}
+  .op-empty{padding:28px 6px;font-size:11.5px}
+  /* 오른쪽: 하단 고정 합계·버튼 */
+  .op-foot{padding:8px 10px 10px}
+  .op-total-row{margin-bottom:8px}
+  .op-total-row span{font-size:11px}
+  .op-total-row b{font-size:18px;letter-spacing:-.4px}
+  .op-actions{flex-direction:column}
+  .btn{font-size:12.5px;padding:10px 4px;border-radius:9px}
+  .btn-ghost{flex:0 0 auto;width:100%;margin:0 0 6px}
+  .btn-pay{width:100%;flex:0 0 auto;font-size:13.5px;padding:11px 4px}
+  .pay-ico{margin-right:6px}
+  /* 상단 헤더 컴팩트 */
+  .order-top{padding:8px 10px}
+  .back-btn{width:34px;height:34px;flex:0 0 34px;font-size:15px;border-radius:9px;margin-right:9px}
+  .ot-title{font-size:15px}
+  .ot-sub{font-size:10.5px;margin-top:2px}
+  .ot-seat{font-size:10px;padding:4px 8px}
+}
+@media (min-width:560px) and (max-width:767px){
+  .menu-grid{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>

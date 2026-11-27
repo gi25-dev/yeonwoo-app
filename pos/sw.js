@@ -1,5 +1,5 @@
 /* 원앙식당 POS - 오프라인 캐시 (cache-first) */
-var CACHE = 'wonang-pos-v3';
+var CACHE = 'wonang-pos-v4';
 var ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function (event) {
